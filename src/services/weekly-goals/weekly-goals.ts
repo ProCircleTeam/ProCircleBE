@@ -3,7 +3,7 @@ import { KnexService } from '@feathersjs/knex'
 import type { Application } from '../../declarations'
 import type { WeeklyGoal } from './weekly-goals.schema'
 
-export const weeklyGoalsPath = 'weekly-goals'
+export const weeklyGoalsPath = '/v1/weekly-goals'
 
 export class WeeklyGoalService extends KnexService<WeeklyGoal> {
   //@ts-ignore
@@ -36,9 +36,10 @@ export const weeklyGoals = (app: Application) => {
   })
 
   app.use(weeklyGoalsPath, weeklyGoalService)
+  app.use('weekly-goals', weeklyGoalService) // Register for internal reference
 
   // Get initialized service
-  const service = app.service(weeklyGoalsPath)
+  const service = app.service('weekly-goals')
 
   service.hooks({
     around: {

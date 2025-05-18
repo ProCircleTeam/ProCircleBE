@@ -4,7 +4,7 @@ import type { Application } from '../../declarations'
 import type { User } from './users.schema'
 import bcrypt from 'bcrypt'
 
-export const userPath = 'users'
+export const userPath = '/v1/users'
 
 export class UserService extends KnexService<User> {
   //@ts-ignore
@@ -16,10 +16,7 @@ export class UserService extends KnexService<User> {
 
     // Assign a random, unassigned code_name
     const knex = this.Model // Knex instance
-    const codeNameRow = await knex('code_names')
-      .where({ assigned: false })
-      .orderByRaw('RANDOM()')
-      .first()
+    const codeNameRow = await knex('code_names').where({ assigned: false }).orderByRaw('RANDOM()').first()
     if (!codeNameRow) {
       throw new Error('No available code names')
     }
@@ -37,9 +34,10 @@ export const users = (app: Application) => {
   })
 
   app.use(userPath, userService)
+  app.use('users', userService) // Register for internal reference
 
-  // Get our initialized service 
-  const service = app.service(userPath)
+  // Get our initialized service
+  const service = app.service('users')
 
   service.hooks({
     around: {

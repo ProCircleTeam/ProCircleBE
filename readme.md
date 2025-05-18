@@ -6,23 +6,44 @@
 
 This project uses [Feathers](http://feathersjs.com). An open source framework for building APIs and real-time applications.
 
-## Getting Started
+## Setup Instructions
 
-1. Make sure you have [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
-2. Install your dependencies
+### 1. Prerequisites
+- [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed
+- [PostgreSQL](https://www.postgresql.org/) installed locally, or access to a remote PostgreSQL database
 
-    ```
-    cd path/to/ProCircleBE
-    npm install
-    ```
+### 2. Configure Database
+- **Option A: Local PostgreSQL**
+  1. Create a database named `ProCircleBE`:
+     ```sh
+     createdb -U postgres ProCircleBE
+     ```
+  2. Set your local PostgreSQL username and password in your environment. You can copy `.env.sample` to `.env` and set:
+     ```env
+     DATABASE_URL=postgres://postgres:yourpassword@localhost:5432/ProCircleBE
+     ```
+     Replace `yourpassword` with your actual PostgreSQL password.
 
-3. Start your app
+- **Option B: Remote PostgreSQL**
+  1. Set your remote database URL in `.env`:
+     ```env
+     DATABASE_URL=your-remote-db-url
+     ```
 
-    ```
-    npm run compile # Compile TypeScript source
-    npm run migrate # Run migrations to set up the database
-    npm start
-    ```
+### 3. Install Dependencies
+```sh
+npm install
+```
+
+### 4. Run Database Migrations
+```sh
+npx knex migrate:latest --knexfile knexfile.ts
+```
+
+### 5. Start the App
+```sh
+npm start
+```
 
 ## Testing
 

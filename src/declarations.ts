@@ -13,7 +13,9 @@ export interface Configuration extends ApplicationConfiguration {}
 export interface ServiceTypes {
   'users': any,
   'weekly-goals': any,
-  'authentication': any
+  'authentication': any,
+  '/v1/users': any,
+  '/v1/weekly-goals': any
 }
 
 // The application instance type that will be used everywhere else
