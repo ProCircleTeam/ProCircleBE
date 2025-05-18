@@ -9,19 +9,35 @@ export const userPath = '/v1/users'
 export class UserService extends KnexService<User> {
   //@ts-ignore
   async create(data: Partial<User>, params?: any) {
-    // Hash password before storing
-    const { password, ...rest } = data
-    if (!password) throw new Error('Password is required')
-    const hash = await bcrypt.hash(password, 10)
+    // --- Validation ---
+    const email = data.email?.toLowerCase()
+    if (!email) return Promise.reject(new Error('Email is required'))
+    if (!data.password) return Promise.reject(new Error('Password is required'))
+    if (!data.name) return Promise.reject(new Error('Name is required'))
 
-    // Assign a random, unassigned code_name
-    const knex = this.Model // Knex instance
+    const knex = this.Model
+    const existing = await knex('users').where({ email }).first()
+    if (existing) return Promise.reject(new Error('Email already exists'))
+
+    // --- Hash password ---
+    const hash = await bcrypt.hash(data.password, 10)
+
+    // --- Assign code name ---
     const codeNameRow = await knex('code_names').where({ assigned: false }).orderByRaw('RANDOM()').first()
-    if (!codeNameRow) {
-      throw new Error('No available code names')
-    }
+    if (!codeNameRow) return Promise.reject(new Error('No available code names'))
     await knex('code_names').where({ id: codeNameRow.id }).update({ assigned: true })
-    return super.create({ ...rest, password: hash, code_name_id: codeNameRow.id }, params)
+
+    // --- Save user ---
+    const user = await super.create({
+      email,
+      password: hash,
+      name: data.name,
+      code_name_id: codeNameRow.id
+    }, params)
+
+    // --- Prepare response ---
+    const { password: _pw, code_name_id, ...userRest } = user
+    return { ...userRest, code_name: codeNameRow.name }
   }
 }
 
