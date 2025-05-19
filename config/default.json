@@ -11,15 +11,19 @@
   },
   "postgresql": {
     "client": "pg",
-    "connection": "postgres://postgres:@localhost:5432/ProCircleBE"
+    "connection": ""
   },
   "authentication": {
     "entity": "user",
     "service": "users",
-    "secret": "your-super-secret-key-change-this",
-    "authStrategies": ["jwt", "local"],
+    "authStrategies": [
+      "jwt",
+      "local"
+    ],
     "jwtOptions": {
-      "header": { "typ": "access" },
+      "header": {
+        "typ": "access"
+      },
       "audience": "https://yourdomain.com",
       "issuer": "feathers",
       "algorithm": "HS256",
@@ -28,6 +32,7 @@
     "local": {
       "usernameField": "email",
       "passwordField": "password"
-    }
+    },
+    "secret": "/+aYiOaC5fsGa6QLOypuxGNIcmZlLI46"
   }
 }

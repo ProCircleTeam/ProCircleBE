@@ -1,69 +1,66 @@
+// For more information about this file see https://dove.feathersjs.com/guides/cli/service.html
 import { authenticate } from '@feathersjs/authentication'
-import { KnexService } from '@feathersjs/knex'
+
+import { hooks as schemaHooks } from '@feathersjs/schema'
+
+import {
+  userDataValidator,
+  userPatchValidator,
+  userQueryValidator,
+  userResolver,
+  userExternalResolver,
+  userDataResolver,
+  userPatchResolver,
+  userQueryResolver
+} from './users.schema'
+
 import type { Application } from '../../declarations'
-import type { User } from './users.schema'
-import bcrypt from 'bcrypt'
+import { UserService, getOptions } from './users.class'
+import { userPath, userMethods } from './users.shared'
 
-export const userPath = '/v1/users'
+export * from './users.class'
+export * from './users.schema'
 
-export class UserService extends KnexService<User> {
-  //@ts-ignore
-  async create(data: Partial<User>, params?: any) {
-    // --- Validation ---
-    const email = data.email?.toLowerCase()
-    if (!email) return Promise.reject(new Error('Email is required'))
-    if (!data.password) return Promise.reject(new Error('Password is required'))
-    if (!data.name) return Promise.reject(new Error('Name is required'))
-
-    const knex = this.Model
-    const existing = await knex('users').where({ email }).first()
-    if (existing) return Promise.reject(new Error('Email already exists'))
-
-    // --- Hash password ---
-    const hash = await bcrypt.hash(data.password, 10)
-
-    // --- Assign code name ---
-    const codeNameRow = await knex('code_names').where({ assigned: false }).orderByRaw('RANDOM()').first()
-    if (!codeNameRow) return Promise.reject(new Error('No available code names'))
-    await knex('code_names').where({ id: codeNameRow.id }).update({ assigned: true })
-
-    // --- Save user ---
-    const user = await super.create({
-      email,
-      password: hash,
-      name: data.name,
-      code_name_id: codeNameRow.id
-    }, params)
-
-    // --- Prepare response ---
-    const { password: _pw, code_name_id, ...userRest } = user
-    return { ...userRest, code_name: codeNameRow.name }
-  }
-}
-
-export const users = (app: Application) => {
-  const userService = new UserService({
-    id: 'id',
-    paginate: app.get('paginate'),
-    Model: app.get('postgresqlClient'),
-    name: 'users'
+// A configure function that registers the service and its hooks via `app.configure`
+export const user = (app: Application) => {
+  // Register our service on the Feathers application
+  app.use(userPath, new UserService(getOptions(app)), {
+    // A list of all methods this service exposes externally
+    methods: userMethods,
+    // You can add additional custom events to be sent to clients here
+    events: []
   })
-
-  app.use(userPath, userService)
-  app.use('users', userService) // Register for internal reference
-
-  // Get our initialized service
-  const service = app.service('users')
-
-  service.hooks({
+  // Initialize hooks
+  app.service(userPath).hooks({
     around: {
-      all: [],
+      all: [schemaHooks.resolveExternal(userExternalResolver), schemaHooks.resolveResult(userResolver)],
       find: [authenticate('jwt')],
       get: [authenticate('jwt')],
       create: [],
       update: [authenticate('jwt')],
       patch: [authenticate('jwt')],
       remove: [authenticate('jwt')]
+    },
+    before: {
+      all: [schemaHooks.validateQuery(userQueryValidator), schemaHooks.resolveQuery(userQueryResolver)],
+      find: [],
+      get: [],
+      create: [schemaHooks.validateData(userDataValidator), schemaHooks.resolveData(userDataResolver)],
+      patch: [schemaHooks.validateData(userPatchValidator), schemaHooks.resolveData(userPatchResolver)],
+      remove: []
+    },
+    after: {
+      all: []
+    },
+    error: {
+      all: []
     }
   })
+}
+
+// Add this service to the service type index
+declare module '../../declarations' {
+  interface ServiceTypes {
+    [userPath]: UserService
+  }
 }

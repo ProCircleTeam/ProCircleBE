@@ -8,6 +8,9 @@
     "connection": "DATABASE_URL"
   },
   "authentication": {
-    "secret": "FEATHERS_SECRET"
+    "secret": "FEATHERS_SECRET",
+    "jwtOptions": {
+      "audience": "JWT_AUDIENCE"
+    }
   }
 }
