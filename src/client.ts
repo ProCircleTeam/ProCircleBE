@@ -4,6 +4,9 @@ import type { TransportConnection, Application } from '@feathersjs/feathers'
 import authenticationClient from '@feathersjs/authentication-client'
 import type { AuthenticationClientOptions } from '@feathersjs/authentication-client'
 
+import { goalsClient } from './services/goals/goals.shared'
+export type { Goals, GoalsData, GoalsQuery, GoalsPatch } from './services/goals/goals.shared'
+
 import { userClient } from './services/users/users.shared'
 export type { User, UserData, UserQuery, UserPatch } from './services/users/users.shared'
 
@@ -34,5 +37,6 @@ export const createClient = <Configuration = any,>(
   client.set('connection', connection)
 
   client.configure(userClient)
+  client.configure(goalsClient)
   return client
 }

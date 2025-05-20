@@ -15,7 +15,8 @@ export const userSchema = Type.Object(
     email: Type.String({ format: "email" }),
     password: Type.String({ minLength: 7 }),
     name: Type.String(),
-    code_name_id: Type.Optional(Type.Number())
+    code_name_id: Type.Optional(Type.Number()),
+    code_name: Type.Optional(Type.String()) // <-- Add this line
   },
   { $id: 'User', additionalProperties: false }
 )
@@ -25,11 +26,20 @@ export const userResolver = resolve<User, HookContext<UserService>>({})
 
 export const userExternalResolver = resolve<User, HookContext<UserService>>({
   // The password should never be visible externally
-  password: async () => undefined
+  password: async () => undefined,
+  code_name: async (value, user, context) => {
+    if (user.code_name_id && context.app) {
+      const knex = context.app.get('postgresqlClient')
+      const row = await knex('code_names').where({ id: user.code_name_id }).first()
+      return row ? row.name : undefined
+    }
+    return undefined
+  },
+  code_name_id: async () => undefined
 })
 
 // Schema for creating new entries
-export const userDataSchema = Type.Pick(userSchema, ['email', 'password'], {
+export const userDataSchema = Type.Pick(userSchema, ['email', 'password', 'name'], {
   $id: 'UserData'
 })
 export type UserData = Static<typeof userDataSchema>
