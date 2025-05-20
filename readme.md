@@ -12,7 +12,7 @@ This project uses [Feathers](http://feathersjs.com). An open source framework fo
 - [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed
 - [PostgreSQL](https://www.postgresql.org/) installed locally, or access to a remote PostgreSQL database
 
-### 2. Configure Database
+### 2.Setup ENV from .env.sample and Configure Database
 - **Option A: Local PostgreSQL**
   1. Create a database named `ProCircleBE`:
      ```sh
