@@ -20,9 +20,7 @@ import { postgresql } from './postgresql'
 import { authentication } from './authentication'
 import { services } from './services/index'
 import { channels } from './channels'
-
 const app: Application = express(feathers())
-
 // Load app configuration
 app.configure(configuration(configurationValidator))
 app.use(cors())
@@ -44,7 +42,6 @@ app.configure(postgresql)
 app.configure(authentication)
 app.configure(services)
 app.configure(channels)
-
 // Configure a middleware for 404s and the error handler
 app.use(notFound())
 app.use(errorHandler({ logger }))
