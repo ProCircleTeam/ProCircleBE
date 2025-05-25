@@ -1,5 +1,10 @@
-import { hooks as schemaHooks } from '@feathersjs/schema';
-import { userDataValidator } from './users.schema'
+import { hooks as schemaHooks } from '@feathersjs/schema'
+import {
+  userDataValidator,
+  userExternalResolver,
+  userDataResolver // Add this import
+} from './users.schema'
+// ...existing imports.
 import { authenticate } from '@feathersjs/authentication'
 import { HookContext } from '@feathersjs/feathers'
 import { BadRequest } from '@feathersjs/errors'
@@ -8,15 +13,13 @@ import type { Knex } from 'knex'
 const checkEmailExists = async (context: HookContext) => {
   const { app, data } = context
   const knex = app.get('postgresqlClient')
-  
-  const existingUser = await knex('users')
-    .where({ email: data.email.toLowerCase() })
-    .first()
+
+  const existingUser = await knex('users').where({ email: data.email.toLowerCase() }).first()
 
   if (existingUser) {
     throw new BadRequest('This email is already registered')
   }
-  
+
   return context
 }
 
@@ -25,21 +28,16 @@ const assignCodeName = async (context: HookContext) => {
   const knex: Knex = app.get('postgresqlClient')
 
   // Start a transaction since we need to make multiple updates atomically
-  await knex.transaction(async (trx) => {
+  await knex.transaction(async trx => {
     // Get a random unassigned code name
-    const codeName = await trx('code_names')
-      .where({ assigned: false })
-      .orderByRaw('RANDOM()')
-      .first()
+    const codeName = await trx('code_names').where({ assigned: false }).orderByRaw('RANDOM()').first()
 
     if (!codeName) {
       throw new BadRequest('No code names available')
     }
 
     // Mark the code name as assigned
-    await trx('code_names')
-      .where({ id: codeName.id })
-      .update({ assigned: true })
+    await trx('code_names').where({ id: codeName.id }).update({ assigned: true })
 
     // Assign the code name to the user
     context.data.code_name_id = codeName.id
@@ -50,10 +48,10 @@ const assignCodeName = async (context: HookContext) => {
 
 export const userHooks = {
   around: {
-    all: [],
+    all: [schemaHooks.resolveExternal(userExternalResolver)],
     find: [authenticate('jwt')],
     get: [authenticate('jwt')],
-    create: [schemaHooks.validateData(userDataValidator)],
+    create: [schemaHooks.validateData(userDataValidator), schemaHooks.resolveData(userDataResolver)],
     update: [authenticate('jwt')],
     patch: [authenticate('jwt')],
     remove: [authenticate('jwt')]

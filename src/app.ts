@@ -11,7 +11,6 @@ import express, {
 } from '@feathersjs/express'
 import configuration from '@feathersjs/configuration'
 import socketio from '@feathersjs/socketio'
-
 import type { Application } from './declarations'
 import { configurationValidator } from './configuration'
 import { logger } from './logger'
@@ -39,6 +38,21 @@ app.configure(
   })
 )
 app.configure(postgresql)
+const knex = app.get('postgresqlClient')
+
+// Log all users after knex is initialized
+if (typeof knex === 'function') {
+  knex('users')
+    .select('*')
+    .then(users => {
+      console.log('All users:', users)
+    })
+    .catch(err => {
+      console.error('Error fetching users:', err)
+    })
+} else {
+  console.error('Knex client is not initialized properly.')
+}
 app.configure(authentication)
 app.configure(services)
 app.configure(channels)
