@@ -19,6 +19,7 @@ const checkEmailExists = async (context: HookContext) => {
   if (existingUser) {
     throw new BadRequest('This email is already registered')
   }
+  
 
   return context
 }
@@ -51,7 +52,7 @@ export const userHooks = {
     all: [schemaHooks.resolveExternal(userExternalResolver)],
     find: [authenticate('jwt')],
     get: [authenticate('jwt')],
-    create: [schemaHooks.validateData(userDataValidator), schemaHooks.resolveData(userDataResolver)],
+    create: [schemaHooks.resolveData(userDataResolver)],
     update: [authenticate('jwt')],
     patch: [authenticate('jwt')],
     remove: [authenticate('jwt')]
@@ -60,7 +61,7 @@ export const userHooks = {
     all: [],
     find: [],
     get: [],
-    create: [schemaHooks.validateData(userDataValidator), checkEmailExists, assignCodeName],
+    create: [checkEmailExists, assignCodeName],
     patch: [],
     remove: []
   }

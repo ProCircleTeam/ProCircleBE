@@ -13,7 +13,7 @@ export const userSchema = Type.Object(
   {
     id: Type.Optional(Type.Number()),
     email: Type.String({ format: "email" }),
-    password: Type.String({ minLength: 7 }),
+    password: Type.Optional(Type.String({ minLength: 7 })),
     name: Type.String(),
     code_name_id: Type.Optional(Type.Number()),
     code_name: Type.Optional(Type.String()) // <-- Add this line
@@ -39,14 +39,12 @@ export const userExternalResolver = resolve<User, HookContext<UserService>>({
 })
 
 // Schema for creating new entries
-export const userDataSchema = Type.Pick(userSchema, ['email', 'password', 'name'], {
+export const userDataSchema = Type.Pick(userSchema, ['email', 'name'], {
   $id: 'UserData'
 })
 export type UserData = Static<typeof userDataSchema>
 export const userDataValidator = getValidator(userDataSchema, dataValidator)
-export const userDataResolver = resolve<User, HookContext<UserService>>({
-  password: passwordHash({ strategy: 'local' })
-})
+export const userDataResolver = resolve<User, HookContext<UserService>>({})
 
 // Schema for updating existing entries
 export const userPatchSchema = Type.Partial(userSchema, {
