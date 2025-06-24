@@ -1,84 +1,20 @@
 {
-  "name": "ProCircleBE",
-  "description": "procircle api",
-  "version": "0.0.0",
-  "homepage": "",
-  "private": true,
-  "keywords": [
-    "feathers"
-  ],
-  "author": {},
-  "contributors": [],
-  "bugs": {},
-  "engines": {
-    "node": ">= 19.4.0"
-  },
-  "feathers": {
-    "language": "ts",
-    "packager": "npm",
-    "database": "postgresql",
-    "framework": "express",
-    "transports": [
-      "rest",
-      "websockets"
-    ],
-    "schema": "typebox"
-  },
-  "directories": {
-    "lib": "src",
-    "test": "test"
-  },
-  "files": [
-    "lib/client.js",
-    "lib/**/*.d.ts",
-    "lib/**/*.shared.js"
-  ],
-  "main": "lib/client",
+  "name": "procirclebe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "dev": "nodemon -x ts-node src/index.ts",
-    "compile": "shx rm -rf lib/ && tsc",
-    "start": "node lib/",
-    "prettier": "npx prettier \"**/*.ts\" --write",
-    "mocha": "cross-env NODE_ENV=test mocha test/ --require ts-node/register --recursive --extension .ts --exit",
-    "test": "cross-env NODE_ENV=test npm run migrate && npm run mocha",
-    "bundle:client": "npm run compile && npm pack --pack-destination ./public",
-    "migrate": "knex migrate:latest",
-    "migrate:make": "knex migrate:make"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "@feathersjs/adapter-commons": "^5.0.34",
-    "@feathersjs/authentication": "^5.0.34",
-    "@feathersjs/authentication-client": "^5.0.34",
-    "@feathersjs/authentication-local": "^5.0.34",
-    "@feathersjs/authentication-oauth": "^5.0.34",
-    "@feathersjs/configuration": "^5.0.34",
-    "@feathersjs/errors": "^5.0.34",
-    "@feathersjs/express": "^5.0.34",
-    "@feathersjs/feathers": "^5.0.34",
-    "@feathersjs/knex": "^5.0.34",
-    "@feathersjs/schema": "^5.0.34",
-    "@feathersjs/socketio": "^5.0.34",
-    "@feathersjs/transport-commons": "^5.0.34",
-    "@feathersjs/typebox": "^5.0.34",
-    "bcrypt": "^6.0.0",
-    "compression": "^1.8.0",
-    "knex": "^3.1.0",
-    "pg": "^8.16.0",
-    "winston": "^3.17.0"
+    "express": "^5.1.0"
   },
   "devDependencies": {
-    "@feathersjs/cli": "^5.0.34",
-    "@feathersjs/rest-client": "^5.0.34",
-    "@types/bcrypt": "^5.0.2",
-    "@types/mocha": "^10.0.10",
-    "@types/node": "^22.15.17",
-    "axios": "^1.9.0",
-    "cross-env": "^7.0.3",
-    "mocha": "^11.2.2",
-    "nodemon": "^3.1.10",
-    "prettier": "^3.5.3",
-    "shx": "^0.4.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "nodemon": "^3.1.10"
   }
 }
