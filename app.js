@@ -5,17 +5,15 @@ const app = express();
 
 
 const db = require("./models")
-db.sequelize.authenticate()
-  .then(() => console.log('✅ Database connected successfully'))
-  .catch((err) => console.error('❌ Unable to connect to the database:', err));
-
+const authRoutes = require("./routes/auth");
 
 app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello, welcome to ProCircle BE");
 });
+app.use("/api/v1/auth", authRoutes);
 
 const PORT = process.env.APP_PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server started successfuly at http://localhost:${PORT}`);
+  console.log(`Server started successfully at http://localhost:${PORT}`);
 });
