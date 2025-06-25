@@ -8,7 +8,7 @@ const generateToken = (payload) => {
   });
 };
 
-const signup = async (req, res, next) => {
+const signup = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -62,4 +62,41 @@ const signup = async (req, res, next) => {
   }
 };
 
-module.exports = { signup };
+const signin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and Password are required" });
+    }
+
+    const user = await User.findOne({ where: { email } });
+    
+    if (!user) {
+        return res.status(401).json({ message: "Invalid email or password" });
+    }
+    
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    const token = generateToken({ id: user.id, email: user.email });
+    const result = user.toJSON();
+    delete result.password;
+    delete result.deletedAt;
+    result.token = token;
+
+    return res.status(200).json({
+      status: "Success",
+      message: "Login successful",
+      data: result,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = { signup, signin };
