@@ -1,5 +1,6 @@
 const { Goal, User } = require("../models");
 const { Op } = require("sequelize");
+const GOAL_STATUS = require("../constants/goalStatus");
 
 // Helper function to get current week boundaries
 const getWeekBoundaries = (date = new Date()) => {
@@ -17,6 +18,15 @@ const getWeekBoundaries = (date = new Date()) => {
   return { weekStart, weekEnd };
 };
 
+// Reusable validation helpers
+function isValidGoalsArray(goals) {
+  return Array.isArray(goals) && goals.length > 0
+}
+
+function areAllGoalsNonEmptyStrings(goals) {
+  return goals.every(goal => typeof goal === 'string' && goal.trim() !== '')
+}
+
 // Create goal
 const createGoal = async (req, res) => {
   try {
@@ -24,14 +34,14 @@ const createGoal = async (req, res) => {
     const userId = req.user.id; // Assuming you have auth middleware that sets req.user
 
     // Validate goals array
-    if (!goals || !Array.isArray(goals) || goals.length === 0) {
+    if (!isValidGoalsArray(goals)) {
       return res.status(400).json({
         message: "Goals must be a non-empty array"
       });
     }
 
     // Validate each goal is a non-empty string
-    if (goals.some(goal => typeof goal !== 'string' || goal.trim() === '')) {
+    if (!areAllGoalsNonEmptyStrings(goals)) {
       return res.status(400).json({
         message: "All goals must be non-empty strings"
       });
@@ -60,7 +70,7 @@ const createGoal = async (req, res) => {
       goals: goals.map(goal => goal.trim()),
       week_start: weekStart,
       week_end: weekEnd,
-      status: 'pending'
+      status: GOAL_STATUS.PENDING
     });
 
     return res.status(201).json({
@@ -85,14 +95,14 @@ const updateGoal = async (req, res) => {
     const userId = req.user.id;
 
     // Validate goals array
-    if (!goals || !Array.isArray(goals) || goals.length === 0) {
+    if (!isValidGoalsArray(goals)) {
       return res.status(400).json({
         message: "Goals must be a non-empty array"
       });
     }
 
     // Validate each goal is a non-empty string
-    if (goals.some(goal => typeof goal !== 'string' || goal.trim() === '')) {
+    if (!areAllGoalsNonEmptyStrings(goals)) {
       return res.status(400).json({
         message: "All goals must be non-empty strings"
       });
@@ -236,7 +246,7 @@ const markGoalsCompleted = async (req, res) => {
     }
 
     // Check if goal can be marked as completed
-    if (goal.status === 'completed') {
+    if (goal.status === GOAL_STATUS.COMPLETED) {
       return res.status(400).json({
         message: "Goals are already marked as completed"
       });
@@ -244,7 +254,7 @@ const markGoalsCompleted = async (req, res) => {
 
     // Update status to completed
     await goal.update({
-      status: 'completed'
+      status: GOAL_STATUS.COMPLETED
     });
 
     return res.status(200).json({
