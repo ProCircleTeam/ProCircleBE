@@ -90,10 +90,5 @@ http://localhost:5050/api/v1/goals/pair-goals
 
 ---
 
-### ✅ Success Criteria
 
-- `status` updates to `in_progress`
-- `pairedWith` is set to the matched user’s ID
-
----
 
