@@ -97,11 +97,3 @@ http://localhost:5050/api/v1/goals/pair-goals
 
 ---
 
-## 📌 Next Steps (Optional Enhancements)
-
-- Automate weekly pairing using `node-cron`
-- Add `POST /goals` endpoint for frontend goal creation
-- Add route to mark goals as `completed`
-- Implement notifications for matched users
-
-
