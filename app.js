@@ -7,15 +7,19 @@ const app = express();
 const db = require("./models")
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user")
+//Goal Routes
+const goalRoutes = require("./routes/goals"); 
 
 app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello, welcome to ProCircle BE");
 });
+
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/goals", goalRoutes); 
 
-const PORT = process.env.APP_PORT || 5000;
+const PORT = process.env.APP_PORT || 5050;
 app.listen(PORT, () => {
   console.log(`Server started successfully at http://localhost:${PORT}`);
 });
