@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const GOAL_STATUS = require("../constants/goalStatus");
 
 module.exports = (sequelize, DataTypes) => {
   class Goal extends Model {
@@ -60,9 +61,9 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       status: {
-        type: DataTypes.ENUM('pending', 'in_progress', 'completed'),
+        type: DataTypes.ENUM(Object.values(GOAL_STATUS)),
         allowNull: false,
-        defaultValue: 'pending'
+        defaultValue: GOAL_STATUS.PENDING
       },
       week_start: {
         type: DataTypes.DATE,
