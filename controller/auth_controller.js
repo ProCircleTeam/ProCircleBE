@@ -1,6 +1,8 @@
 const { User } = require("../models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const { Op } = require("sequelize");
+const e = require("express");
 
 const generateToken = (payload) => {
   return jwt.sign(payload, process.env.JWT_SECRET, {
@@ -10,11 +12,11 @@ const generateToken = (payload) => {
 
 const signup = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
+    const { email, password, username } = req.body;
+    if (!email || !password || !username) {
       return res
         .status(400)
-        .json({ message: "Both email and password are required" });
+        .json({ message: "Username Email and Password are required" });
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -26,17 +28,34 @@ const signup = async (req, res) => {
     if (password.length < 6) {
       return res
         .status(400)
-        .json({ message: "Password length must be greater" });
+        .json({ message: "Password length must be greater than 5" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    if (username.length < 2) {
+      return res
+        .status(400)
+        .json({ message: "Username length must be greater than 2" });
+    }
 
-    const existingUser = await User.findOne({ where: { email } });
+    const existingUser = await User.findOne({
+      where: {
+        [Op.or]: [{ email }, { username }],
+      },
+    });
+
     if (existingUser)
-      return res.status(400).json({ message: "User already exist" });
+      return res
+        .status(400)
+        .json({ message: "Email or username already in use" });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    console.log("Email ====> ", email);
+    console.log("Password ====> ", password);
+    console.log("Username ====> ", username);
 
     const newUser = await User.create({
       email,
+      username,
       password: hashedPassword,
     });
 
@@ -47,7 +66,8 @@ const signup = async (req, res) => {
       delete result.password;
       delete result.deletedAt;
       result.token = generateToken({
-        id: result,
+        id: result.id,
+        email: result.email,
       });
 
       return res.status(201).json({
@@ -64,19 +84,23 @@ const signup = async (req, res) => {
 
 const signin = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
+    const { identifier, password } = req.body;
+    if (!identifier || !password) {
       return res
         .status(400)
         .json({ message: "Email and Password are required" });
     }
 
-    const user = await User.findOne({ where: { email } });
-    
+    const user = await User.findOne({
+      where: {
+        [Op.or]: [{ email: identifier }, { username: identifier }],
+      },
+    });
+
     if (!user) {
-        return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({ message: "Invalid login credentials" });
     }
-    
+
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
       return res.status(401).json({ message: "Invalid email or password" });

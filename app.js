@@ -6,12 +6,14 @@ const app = express();
 
 const db = require("./models")
 const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/user")
 
 app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello, welcome to ProCircle BE");
 });
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/user", userRoutes);
 
 const PORT = process.env.APP_PORT || 5000;
 app.listen(PORT, () => {
