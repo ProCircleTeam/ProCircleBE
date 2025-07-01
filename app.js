@@ -6,8 +6,10 @@ const app = express();
 
 const db = require("./models")
 const authRoutes = require("./routes/auth");
+
 const userRoutes = require("./routes/user");
 const goalRoutes = require("./routes/goal");
+const userRoutes = require("./routes/user")
 
 
 app.use(express.json());
