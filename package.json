@@ -6,7 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "create-db-user": "node scripts/dbUserSetup.js",
+    "migrate": "sequelize db:migrate",
+    "db:setup": "npm run create-db-user && npm run create:db && npm run migrate",
+    "create:db": "sequelize db:create"
+
   },
   "keywords": [],
   "author": "",
