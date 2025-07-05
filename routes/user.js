@@ -3,6 +3,6 @@ const { getUserById, getUsersAndTheirPairedPartners } = require("../controller/u
 const {authenticateToken, checkIfUserIsAdmin} = require("../middleware/auth")
 
 router.route("/:id").get(getUserById);
-router.route("/users/users-paired").get(authenticateToken, checkIfUserIsAdmin, getUsersAndTheirPairedPartners)
+router.route("/users/partners").get(authenticateToken, checkIfUserIsAdmin, getUsersAndTheirPairedPartners)
 
 module.exports = router;
