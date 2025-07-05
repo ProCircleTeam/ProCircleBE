@@ -88,7 +88,7 @@ const signin = async (req, res) => {
     if (!identifier || !password) {
       return res
         .status(400)
-        .json({ message: "Email and Password are required" });
+        .json({ message: "identifier and password are required" });
     }
 
     const user = await User.findOne({

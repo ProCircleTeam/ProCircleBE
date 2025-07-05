@@ -11,6 +11,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'user_id',
         as: 'user'
       });
+
+      Goal.belongsTo(models.User, {
+        foreignKey: 'paired_with',
+        as: 'partner'
+      });
+
     }
 
     // Helper method to get week boundaries
@@ -58,6 +64,14 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error('All goals must be non-empty strings');
             }
           }
+        }
+      },
+      paired_with: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id'
         }
       },
       status: {
