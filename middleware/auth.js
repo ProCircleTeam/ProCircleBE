@@ -31,6 +31,7 @@ const authenticateToken = async (req, res, next) => {
       id: user.id,
       email: user.email,
       username: user.username,
+      type: user.type,
     };
 
     next();
@@ -53,4 +54,13 @@ const authenticateToken = async (req, res, next) => {
   }
 };
 
-module.exports = { authenticateToken };
+const checkIfUserIsAdmin = async (req, res, next) => {
+  if (req.user.type.toUpperCase() === "ADMIN") {
+    return next();
+  }
+  return res.status(403).json({
+    message: "Only admins can access this endpoint",
+  });
+};
+
+module.exports = { authenticateToken, checkIfUserIsAdmin };
