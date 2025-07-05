@@ -68,7 +68,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       paired_with: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'Users',
           key: 'id'

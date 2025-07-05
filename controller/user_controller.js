@@ -44,7 +44,7 @@ const getUsersAndTheirPairedPartners = async (req, res) => {
       endDate = formatDateString(req.query.endDate);
     }
 
-    if (req.query.status && !Object.values(GOAL_STATUS).includes(req.query.status)) {
+    if (req.query.status && !Object.values(GOAL_STATUS).includes(req.query.status.toLowerCase())) {
       return res.status(400).json({
         status: 'error',
         message: `The value of status must be either any of this values: ${Object.values(GOAL_STATUS).join(", ")}`
