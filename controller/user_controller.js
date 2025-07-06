@@ -1,8 +1,9 @@
 const GOAL_STATUS = require("../constants/goalStatus");
-const { User } = require("../models");
+const { User, Sequelize } = require("../models");
 const {
   fetchUsersAndPairedPartners,
-} = require("../services/fetchUsersAlongPartnersPaired");
+} = require("../services/users/fetchUsersAlongPartnersPaired");
+const updateProfileService = require("../services/users/updateProfile");
 const { formatDateString } = require("../utils/dateParser");
 
 const getUserById = async (req, res) => {
@@ -44,11 +45,16 @@ const getUsersAndTheirPairedPartners = async (req, res) => {
       endDate = formatDateString(req.query.endDate);
     }
 
-    if (req.query.status && !Object.values(GOAL_STATUS).includes(req.query.status.toLowerCase())) {
+    if (
+      req.query.status &&
+      !Object.values(GOAL_STATUS).includes(req.query.status.toLowerCase())
+    ) {
       return res.status(400).json({
-        status: 'error',
-        message: `The value of status must be either any of this values: ${Object.values(GOAL_STATUS).join(", ")}`
-      })
+        status: "error",
+        message: `The value of status must be either any of this values: ${Object.values(
+          GOAL_STATUS
+        ).join(", ")}`,
+      });
     }
 
     const queryRes = await fetchUsersAndPairedPartners({
@@ -80,8 +86,6 @@ const getUsersAndTheirPairedPartners = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log('ERRR ', error);
-    
     return res.status(500).json({
       status: "error",
       error,
@@ -89,4 +93,46 @@ const getUsersAndTheirPairedPartners = async (req, res) => {
   }
 };
 
-module.exports = { getUserById, getUsersAndTheirPairedPartners };
+const updateUserProfile = async (req, res) => {
+  try {
+    const { email, username, phone } = req.body;
+    const result = await updateProfileService(req.user.id, { email, username, phone });
+    
+    if (result === "NOT_FOUND") {
+      return res.status(404).json({
+        status: "error",
+        message: "User not found",
+      });
+    }
+
+    const updatedRow = result[1][0];
+    return res.status(200).json({
+      status: "success",
+      data: {
+        username: updatedRow.username,
+        email: updatedRow.email,
+        phone: updatedRow.phone_number,
+        id: updatedRow.id,
+      },
+    });
+  } catch (error) {
+    console.log(error.message, 900, error)
+    if (error instanceof Sequelize.ValidationError) {
+      return res.status(400).json({
+        status: "error",
+        error: error.message,
+      });
+
+    }
+    return res.status(500).json({
+      status: "error",
+      error,
+    });
+  }
+};
+
+module.exports = {
+  getUserById,
+  getUsersAndTheirPairedPartners,
+  updateUserProfile,
+};
