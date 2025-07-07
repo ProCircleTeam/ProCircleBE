@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { User } = require("../models");
+const { ADMIN } = require("../constants/userType");
 
 const authenticateToken = async (req, res, next) => {
   try {
@@ -55,7 +56,7 @@ const authenticateToken = async (req, res, next) => {
 };
 
 const checkIfUserIsAdmin = async (req, res, next) => {
-  if (req.user.type.toUpperCase() === "ADMIN") {
+  if (req.user.type === ADMIN) {
     return next();
   }
   return res.status(403).json({

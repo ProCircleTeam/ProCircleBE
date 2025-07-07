@@ -1,4 +1,4 @@
-const { Sequelize, Goal, User } = require("../models");
+const { Sequelize, Goal, User } = require("../../models");
 const { Op } = Sequelize;
 
 /**
