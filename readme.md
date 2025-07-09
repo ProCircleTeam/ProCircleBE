@@ -16,6 +16,8 @@ ProCircleBE is the backend for the ProCircle application, built with Node.js, Ex
   - `PUT /api/v1/goal/:id` - Update a pending goal set
   - `GET /api/v1/goal` - Get all user goals (with pagination)
   - `GET /api/v1/goal/:id` - Get a single goal by ID
+  -  GET /api/v1/goal/by-date - Get user goals by date (returns goals for the week containing the specified date)
+
   - `PATCH /api/v1/goal/:id/complete` - Mark a goal as completed
 
 ## Setup
