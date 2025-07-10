@@ -4,7 +4,8 @@ const {
   updateGoal,
   getUserGoals,
   getGoalById,
-  markGoalsCompleted
+  markGoalsCompleted,
+  getUserGoalsByDate
 } = require("../controller/goal_controller");
 
 const { authenticateToken } = require("../middleware/auth");
@@ -23,5 +24,8 @@ router.route("/:id").put( authenticateToken, updateGoal);
 
 // Mark goals as completed
 router.route("/:id/complete").patch( authenticateToken,  markGoalsCompleted);
+
+// getting goals by date
+router.get('/by-date', getUserGoalsByDate);
 
 module.exports = router;

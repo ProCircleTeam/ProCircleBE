@@ -271,10 +271,84 @@ const markGoalsCompleted = async (req, res) => {
   }
 };
 
+const getUserGoalsByDate = async (req, res) => {
+  try {
+    const { date } = req.query; // Expected format: YYYY-MM-DD or any valid date string
+    const userId = req.user.id;
+
+    if (!date) {
+      return res.status(400).json({
+        message: "Date parameter is required"
+      });
+    }
+
+    const inputDate = new Date(date);
+    if (isNaN(inputDate.getTime())) {
+      return res.status(400).json({
+        message: "Invalid date format. Please provide a valid date"
+      });
+    }
+
+    const { weekStart, weekEnd } = getWeekBoundaries(inputDate);
+
+    const goal = await Goal.findOne({
+      where: {
+        user_id: userId,
+        week_start: weekStart,
+        week_end: weekEnd
+      },
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['id', 'username', 'email'] 
+        },
+        {
+          model: User,
+          as: 'partner',
+          attributes: ['id', 'username', 'email'],
+          required: false 
+        }
+      ]
+    });
+
+    if (!goal) {
+      return res.status(404).json({
+        message: "No goals found for the week containing the specified date",
+        data: {
+          requestedDate: date,
+          weekStart: weekStart.toISOString(),
+          weekEnd: weekEnd.toISOString()
+        }
+      });
+    }
+
+    return res.status(200).json({
+      status: "success",
+      message: "Goals retrieved successfully",
+      data: {
+        goal,
+        weekInfo: {
+          requestedDate: date,
+          weekStart: weekStart.toISOString(),
+          weekEnd: weekEnd.toISOString()
+        }
+      }
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      message: "Server error"
+    });
+  }
+};
+
+
 module.exports = {
   createGoal,
   updateGoal,
   getUserGoals,
   getGoalById,
-  markGoalsCompleted
+  markGoalsCompleted,
+  getUserGoalsByDate 
 };
