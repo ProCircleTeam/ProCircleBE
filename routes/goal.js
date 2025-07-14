@@ -5,10 +5,11 @@ const {
   getUserGoals,
   getGoalById,
   markGoalsCompleted,
-  getUserGoalsByDate
+  getUserGoalsByDate,
+  pairGoals
 } = require("../controller/goal_controller");
 
-const { authenticateToken } = require("../middleware/auth");
+const { authenticateToken, checkIfUserIsAdmin } = require("../middleware/auth");
 
 // Create goal
 router.route("/").post( authenticateToken,  createGoal);
@@ -28,5 +29,9 @@ router.route("/:id").put( authenticateToken, updateGoal);
 // Mark goals as completed
 router.route("/:id/complete").patch( authenticateToken,  markGoalsCompleted);
 
+// Pair Goals
+router
+  .route("/pair/user")
+  .get(authenticateToken, checkIfUserIsAdmin, pairGoals);
 
 module.exports = router;

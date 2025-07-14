@@ -2,8 +2,8 @@ const GOAL_STATUS = require("../constants/goalStatus");
 const { NOT_FOUND, WRONG_CREDENTIALS } = require("../constants/responseCodes");
 const { User, Sequelize } = require("../models");
 const {
-  fetchUsersAndPairedPartners,
-} = require("../services/users/fetchUsersAlongPartnersPaired");
+  fetchGoalsService,
+} = require("../services/goals/");
 const updateProfileService = require("../services/users/updateProfile");
 const updateUserPassword = require("../services/users/updateUserPassword");
 const { formatDateString } = require("../utils/dateParser");
@@ -59,13 +59,14 @@ const getUsersAndTheirPairedPartners = async (req, res) => {
       });
     }
 
-    const queryRes = await fetchUsersAndPairedPartners({
+    const queryRes = await fetchGoalsService({
       page,
       limit,
       filter: {
         status: req.query.status,
         startDate,
         endDate,
+        show_paired_partners: true
       },
     });
     const offset = limit * (page - 1);
