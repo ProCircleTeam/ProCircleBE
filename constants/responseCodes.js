@@ -9,6 +9,8 @@ const RES_CODES = {
   NOT_FOUND: "NOT_FOUND",
   WRONG_CREDENTIALS: "WRONG_CREDENTIALS",
   NO_GOALS_CREATED: "NO GOALS",
+  OK: "OK",
+  MATCHING_FAILED: "MATCHING_FAILED"
 };
 
 // Freeze the object to prevent modifications

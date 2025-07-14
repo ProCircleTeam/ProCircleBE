@@ -1,5 +1,4 @@
-const { Goal, User } = require("../models");
-const { Op } = require("sequelize");
+const { Goal } = require("../models");
 const GOAL_STATUS = require("../constants/goalStatus");
 const { pairGoalsService } = require("../services/goals/");
 const RES_CODES = require("../constants/responseCodes");
@@ -264,6 +263,12 @@ const pairGoals = async (req, res) => {
       return res.status(200).json({
         status: "success",
         message: "No goals were created by users this week!",
+      });
+
+    if (result === RES_CODES.MATCHING_FAILED)
+      return res.status(424).json({
+        status: "error",
+        message: "The LLM model is having some glitches, try again",
       });
 
     // send mail to user & partner

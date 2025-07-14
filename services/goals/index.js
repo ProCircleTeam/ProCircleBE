@@ -1,10 +1,10 @@
 const { Sequelize, Goal, User } = require("../../models");
 const { Op } = Sequelize;
 const GOAL_STATUS = require("../../constants/goalStatus");
-const { NOT_FOUND } = require("../../constants/responseCodes");
 const { post } = require("axios");
 const getWeekBoundaries = require("../../utils/getWeekBoundaries");
 const RES_CODES = require("../../constants/responseCodes");
+const { emailQueue, parseEmailJobs } = require("../../utils/emailUtil");
 
 /**
  *
@@ -87,30 +87,39 @@ const fetchGoalsService = async ({ page, limit, filter }) => {
  * @returns {Promise<any>}
  */
 const pairGoalsService = async ({ date }) => {
-  const goalsOfTheWeek = await fetchGoalsService({
-    filter: {
-      status: GOAL_STATUS.PENDING,
-      date,
-    },
-  });
+  try {
+    const goalsOfTheWeek = await fetchGoalsService({
+      filter: {
+        status: GOAL_STATUS.PENDING,
+        date,
+      },
+    });
 
-  //   Parse Goals of the week for LLM to process
-  const modelPayload = {
-    users: goalsOfTheWeek.map((item) => ({
-      id: item.user.id,
-      name: item.user.username,
-      goal: item.goals[0],
-    })),
-  };
+    //   Parse Goals of the week for LLM to process
+    const llmModelPayload = {
+      users: goalsOfTheWeek.map((item) => ({
+        id: item.user.id,
+        name: item.user.username,
+        goal: item.goals[0],
+        email: item.user.email,
+      })),
+    };
 
-  if (modelPayload.users.length) {
-    const response = await post(
-      "https://goal-matcher-api.onrender.com/match-goals",
-      { users: modelPayload.users }
-    );
-    return response;
-  } else {
-    return RES_CODES.NO_GOALS_CREATED;
+    if (llmModelPayload.users.length) {
+      const response = await post(
+        "https://goal-matcher-api.onrender.com/match-goals",
+        { users: llmModelPayload.users }
+      );
+      const { pairs } = response;
+      const emailJobs = parseEmailJobs(pairs);
+      await emailQueue.addBulk(emailJobs);
+      return RES_CODES.OK;
+    } else {
+      return RES_CODES.NO_GOALS_CREATED;
+    }
+  } catch (error) {
+    console.error("API call to the LLM model was not successful");
+    return RES_CODES.MATCHING_FAILED;
   }
 };
 
