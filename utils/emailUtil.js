@@ -19,12 +19,11 @@ const parseEmailJobs = (pairs) => {
   for (const [userA, userB] of pairs) {
     // Email to userA about userB
     jobs.push({
-      name: `email: ${userA.email}`,
       data: {
         to: userA.email,
         subject: `Your Accountability Partner: ${userB.name}`,
         html: `
-          <p>Hi ${userA.username},</p>
+          <p>Hi ${userA.name},</p>
           <p>Your partner ${userB.name} has the goal:</p>
           <blockquote>${userB.goal}</blockquote>
           <p>Wishing you both success!</p>
@@ -34,12 +33,11 @@ const parseEmailJobs = (pairs) => {
 
     // Email to userB about userA
     jobs.push({
-      name: `email: ${userB.email}`,
       data: {
         to: userB.email,
         subject: `Your Accountability Partner: ${userA.name}`,
         html: `
-          <p>Hi ${userB.username},</p>
+          <p>Hi ${userB.name},</p>
           <p>Your partner ${userA.name} has the goal:</p>
           <blockquote>${userA.goal}</blockquote>
           <p>Stay focused and good luck!</p>

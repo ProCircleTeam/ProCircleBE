@@ -110,15 +110,17 @@ const pairGoalsService = async ({ date }) => {
         "https://goal-matcher-api.onrender.com/match-goals",
         { users: llmModelPayload.users }
       );
-      const { pairs } = response;
+      const { pairs } = response.data;
       const emailJobs = parseEmailJobs(pairs);
-      await emailQueue.addBulk(emailJobs);
+      const jobs = await emailQueue.addBulk(emailJobs);
+      console.log('📨 Queued jobs:', jobs.map(j => j.id));
+
       return RES_CODES.OK;
     } else {
       return RES_CODES.NO_GOALS_CREATED;
     }
   } catch (error) {
-    console.error("API call to the LLM model was not successful");
+    console.error("API call to the LLM model was not successful", error);
     return RES_CODES.MATCHING_FAILED;
   }
 };

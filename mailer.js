@@ -12,6 +12,18 @@ const transporter = nodemailer.createTransport({
 
 console.log("<<<<<<<< Email worker is running >>>>>>>>> ");
 
+emailQueue.on("active", (job) => {
+  console.log(`🚚 Processing ${job.name}`);
+});
+
+emailQueue.on("completed", (job) => {
+  console.log(`>>>>> Completed ${job.name}`);
+});
+
+emailQueue.on("failed", (job, err) => {
+  console.error(`XXXXX Failed ${job.name}: ${err.message}`);
+});
+
 emailQueue.process(10, async (job) => {
   try {
     console.log(`Attempt #${job.attemptsMade + 1} for ${job.name}`);
@@ -26,7 +38,7 @@ emailQueue.process(10, async (job) => {
 
     console.log(`Email sent to ${to}`);
   } catch (error) {
-    console.error(`Failed to send to ${job.data.to}:`, err.message);
+    console.error(`Failed to send to ${job.data.to}:`, error.message);
     throw error;
   }
 });

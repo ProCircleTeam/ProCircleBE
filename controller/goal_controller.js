@@ -277,7 +277,6 @@ const pairGoals = async (req, res) => {
       message: "Users have been successfully matched based on their goals",
     });
   } catch (error) {
-    console.error("Mark goals completed error:", error);
     return res.status(500).json({
       message: "Server error",
     });
