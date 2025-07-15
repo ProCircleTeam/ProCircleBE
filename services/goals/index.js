@@ -1,10 +1,9 @@
-const { Sequelize, Goal, User } = require("../../models");
+const { Sequelize, Goal, User, sequelize } = require("../../models");
 const { Op } = Sequelize;
 const GOAL_STATUS = require("../../constants/goalStatus");
 const { post } = require("axios");
 const getWeekBoundaries = require("../../utils/getWeekBoundaries");
 const RES_CODES = require("../../constants/responseCodes");
-const { emailQueue, parseEmailJobs } = require("../../utils/emailUtil");
 
 /**
  *
@@ -87,6 +86,7 @@ const fetchGoalsService = async ({ page, limit, filter }) => {
  * @returns {Promise<any>}
  */
 const pairGoalsService = async ({ date }) => {
+  let t;
   try {
     const goalsOfTheWeek = await fetchGoalsService({
       filter: {
@@ -95,7 +95,7 @@ const pairGoalsService = async ({ date }) => {
       },
     });
 
-    //   Parse Goals of the week for LLM to process
+    // Parse Goals of the week for LLM to process
     const llmModelPayload = {
       users: goalsOfTheWeek.map((item) => ({
         id: item.user.id,
@@ -108,19 +108,45 @@ const pairGoalsService = async ({ date }) => {
     if (llmModelPayload.users.length) {
       const response = await post(
         "https://goal-matcher-api.onrender.com/match-goals",
-        { users: llmModelPayload.users }
+        {
+          users: llmModelPayload.users,
+        }
       );
+      t = await sequelize.transaction();
       const { pairs } = response.data;
-      const emailJobs = parseEmailJobs(pairs);
-      const jobs = await emailQueue.addBulk(emailJobs);
-      console.log('📨 Queued jobs:', jobs.map(j => j.id));
+      const queryArray = [];
+      const { weekStart } = getWeekBoundaries(date);
 
+      for (let pair of pairs) {
+        pair.forEach((item) => {
+          queryArray.push(
+            Goal.update(
+              {
+                status: GOAL_STATUS.IN_PROGRESS,
+              },
+              {
+                where: {
+                  user_id: item.id,
+                  week_start: weekStart,
+                },
+                transaction: t,
+              }
+            )
+          );
+        });
+      }
+      await Promise.all(queryArray);
+      // Implement Push notifications here
+      await t.commit();
       return RES_CODES.OK;
     } else {
       return RES_CODES.NO_GOALS_CREATED;
     }
   } catch (error) {
     console.error("API call to the LLM model was not successful", error);
+    if (t) {
+      await t.rollback();
+    }
     return RES_CODES.MATCHING_FAILED;
   }
 };
