@@ -118,11 +118,13 @@ const pairGoalsService = async ({ date }) => {
       const { weekStart } = getWeekBoundaries(date);
 
       for (let pair of pairs) {
-        pair.forEach((item) => {
+        pair.forEach((item, index) => {
+          // This logic assumes that goal pairing happens between only 2 users
           queryArray.push(
             Goal.update(
               {
                 status: GOAL_STATUS.IN_PROGRESS,
+                paired_with: index === 0 ? pair[1].id : pair[0].id,
               },
               {
                 where: {
