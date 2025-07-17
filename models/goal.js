@@ -80,11 +80,11 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: GOAL_STATUS.PENDING
       },
       week_start: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false
       },
       week_end: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false
       }
     },
