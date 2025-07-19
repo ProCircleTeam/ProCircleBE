@@ -2,7 +2,6 @@ const { User } = require("../models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { Op } = require("sequelize");
-const e = require("express");
 
 const generateToken = (payload) => {
   return jwt.sign(payload, process.env.JWT_SECRET, {
@@ -98,6 +97,7 @@ const signin = async (req, res) => {
       where: {
         [Op.or]: [{ email: identifier }, { username: identifier }],
       },
+      attributes: ['username', 'email', 'first_name', 'last_name', 'password', 'id']
     });
 
     if (!user) {

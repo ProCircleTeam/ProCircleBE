@@ -3,11 +3,11 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.addColumn("Goals", "paired_with", {
+    await queryInterface.addColumn("Users", "timezone_id", {
       type: Sequelize.INTEGER,
       allowNull: true,
       references: {
-        model: "Users",
+        model: "Timezones",
         key: "id"
       },
       onDelete: 'SET NULL',
@@ -16,6 +16,6 @@ module.exports = {
   },
 
   async down(queryInterface, _) {
-    await queryInterface.removeColumn("Goals", "paired_with")
+    await queryInterface.removeColumn("Users", "timezone_id")
   },
 };
