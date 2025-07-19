@@ -108,9 +108,7 @@ const pairGoalsService = async ({ date }) => {
     if (llmModelPayload.users.length) {
       const response = await post(
         "https://goal-matcher-api.onrender.com/match-goals",
-        {
-          users: llmModelPayload.users,
-        }
+        llmModelPayload
       );
       t = await sequelize.transaction();
       const { pairs } = response.data;
