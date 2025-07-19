@@ -9,6 +9,8 @@
     "dev": "nodemon app.js",
     "create-db-user": "node scripts/dbUserSetup.js",
     "migrate": "sequelize db:migrate",
+    "seed": "sequelize db:seed:all",
+    "undo:migrate": "sequelize db:migrate:undo",
     "db:setup": "npm run create-db-user && npm run create:db && npm run migrate",
     "create:db": "sequelize db:create"
   },

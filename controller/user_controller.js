@@ -1,9 +1,7 @@
 const GOAL_STATUS = require("../constants/goalStatus");
 const { NOT_FOUND, WRONG_CREDENTIALS } = require("../constants/responseCodes");
 const { User, Sequelize } = require("../models");
-const {
-  fetchGoalsService,
-} = require("../services/goals/");
+const { fetchGoalsService } = require("../services/goals/");
 const updateProfileService = require("../services/users/updateProfile");
 const updateUserPassword = require("../services/users/updateUserPassword");
 const { formatDateString } = require("../utils/dateParser");
@@ -66,7 +64,7 @@ const getUsersAndTheirPairedPartners = async (req, res) => {
         status: req.query.status,
         startDate,
         endDate,
-        show_paired_partners: true
+        show_paired_partners: true,
       },
     });
     const offset = limit * (page - 1);
@@ -97,12 +95,37 @@ const getUsersAndTheirPairedPartners = async (req, res) => {
 };
 
 const updateUserProfile = async (req, res) => {
+  /**
+   * rest ==> 
+    * username: string,
+    * email: string,
+    * phone: string,
+    * firstName: string,
+    * lastName: string,
+    * profilePhoto: string,
+    * bio: string,
+    * jobTitle: string,
+    * yearsOfExperience: string,
+    * longTermGoal: string,
+    * preferredAccountabilityPartnerTrait: string,
+    * availabilityDays: Array<string>,
+    * timeZone: string,
+    * funFact: string,
+    * careerSummary: string,
+    * industrySectorId: string,
+    * addAreaOfInterests: Array<string>,
+    * removeAreaOfInterests: Array<string>,
+  */
   try {
-    const { email, username, phone } = req.body;
+    const {
+      addAreaOfInterests = [],
+      removeAreaOfInterests = [],
+      ...rest
+    } = req.body;
     const result = await updateProfileService(req.user.id, {
-      email,
-      username,
-      phone,
+      addAreaOfInterests,
+      removeAreaOfInterests,
+      ...rest,
     });
 
     if (result === NOT_FOUND) {
@@ -111,7 +134,7 @@ const updateUserProfile = async (req, res) => {
         message: "User not found",
       });
     }
-
+    
     const updatedRow = result[1][0];
     return res.status(200).json({
       status: "success",
@@ -123,6 +146,8 @@ const updateUserProfile = async (req, res) => {
       },
     });
   } catch (error) {
+    console.log(90, error);
+
     if (error instanceof Sequelize.ValidationError) {
       return res.status(400).json({
         status: "error",
@@ -162,13 +187,14 @@ const changePassword = async (req, res) => {
     if (result === WRONG_CREDENTIALS) {
       return res.status(401).json({
         status: "error",
-        message: "you have to enter your old password correctly to update your password"
+        message:
+          "you have to enter your old password correctly to update your password",
       });
     }
 
     return res.status(200).json({
       status: "success",
-      message: "Password successfully updated"
+      message: "Password successfully updated",
     });
   } catch (error) {
     return res.status(500).json({
