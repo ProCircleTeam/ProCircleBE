@@ -1,0 +1,1012 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "ProCircle API",
+        "version": "1.0.0",
+        "description": "API documentation for ProCircle services"
+    },
+    "servers": [
+        {
+            "url": null
+        }
+    ],
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "User authentication"
+        },
+        {
+            "name": "User",
+            "description": "User management and profile operations"
+        },
+        {
+            "name": "Goal",
+            "description": "Operations that allows client manage goal resources"
+        }
+    ],
+    "paths": {
+        "/api/v1/user/{id}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Retrieve user by ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Unique identifier of the user"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "status": "success",
+                                    "data": {
+                                        "id": 9,
+                                        "email": "user@email.com",
+                                        "username": "username"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "Cannot find user with id 89"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/user/users/partners": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "List partner users (Admin only)",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter partners by status"
+                    },
+                    {
+                        "name": "startDate",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "start date query parameter"
+                    },
+                    {
+                        "name": "endDate",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "end date query parameter"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Maximum number of results to return"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "The page number to retrieve (1-based index)"
+                    }
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "status": "success",
+                                    "data": {
+                                        "result": [
+                                            {
+                                                "id": 54,
+                                                "goals": [
+                                                    "Sleep 8 hours",
+                                                    "Exercise daily"
+                                                ],
+                                                "status": "completed",
+                                                "week_start": "2025-04-26T00:47:29.402Z",
+                                                "week_end": "2025-04-29T00:47:29.402Z",
+                                                "createdAt": "2025-07-04T01:57:09.085Z",
+                                                "user": {
+                                                    "id": 43,
+                                                    "email": "john.brown43@example.com",
+                                                    "phone_number": "(923) 599-3857",
+                                                    "username": "johnbrown43"
+                                                },
+                                                "partner": {
+                                                    "id": 15,
+                                                    "email": "karen.lee15@example.com",
+                                                    "phone_number": "(602) 261-7613",
+                                                    "username": "karenlee15"
+                                                }
+                                            },
+                                            {
+                                                "id": 59,
+                                                "goals": [
+                                                    "Sleep 8 hours",
+                                                    "Eat healthy"
+                                                ],
+                                                "status": "completed",
+                                                "week_start": "2025-07-03T18:36:18.487Z",
+                                                "week_end": "2025-07-03T18:36:18.487Z",
+                                                "createdAt": "2025-07-04T01:57:09.085Z",
+                                                "user": {
+                                                    "id": 50,
+                                                    "email": "john.miller50@example.com",
+                                                    "phone_number": "(494) 976-5858",
+                                                    "username": "johnmiller50"
+                                                },
+                                                "partner": {
+                                                    "id": 16,
+                                                    "email": "karen.anderson16@example.com",
+                                                    "phone_number": "(322) 984-7696",
+                                                    "username": "karenanderson16"
+                                                }
+                                            },
+                                            {
+                                                "id": 60,
+                                                "goals": [
+                                                    "Sleep 8 hours",
+                                                    "Meditate"
+                                                ],
+                                                "status": "completed",
+                                                "week_start": "2025-04-06T15:54:54.806Z",
+                                                "week_end": "2025-04-09T15:54:54.806Z",
+                                                "createdAt": "2025-07-04T01:57:09.085Z",
+                                                "user": {
+                                                    "id": 49,
+                                                    "email": "john.smith49@example.com",
+                                                    "phone_number": "(258) 683-8840",
+                                                    "username": "johnsmith49"
+                                                },
+                                                "partner": {
+                                                    "id": 26,
+                                                    "email": "karen.moore26@example.com",
+                                                    "phone_number": "(675) 271-7499",
+                                                    "username": "karenmoore26"
+                                                }
+                                            }
+                                        ],
+                                        "meta": {
+                                            "limit": 10,
+                                            "pages": 11,
+                                            "currentPage": 2,
+                                            "nextPage": 3,
+                                            "prevPage": 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "Invalid access token"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "Only admins can access this endpoint"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "Server error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/user/profile/update": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update user profile",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "username": "JohnDoe",
+                                "email": "john@example.com",
+                                "phone": "1234567890"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Profile updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "status": "success",
+                                    "data": {
+                                        "username": "updated_username",
+                                        "email": "updated@email.com",
+                                        "phone": "+3494895958588",
+                                        "id": "5"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "status": "success",
+                                    "error": "Fill in all required fields in the right format"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "Invalid access token"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "status": "error",
+                                    "message": "User not found"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "status": "error",
+                                    "error": "Server error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/user/change/password": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Change user password",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "currentPassword": {
+                                        "type": "string",
+                                        "format": "password"
+                                    },
+                                    "newPassword": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "required": [
+                                    "currentPassword",
+                                    "newPassword"
+                                ]
+                            },
+                            "example": {
+                                "currentPassword": "oldPass123",
+                                "newPassword": "newPass456"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password changed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "status": "success",
+                                    "message": "Password successfully updated"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "status": "success",
+                                    "message": "currentPassword and newPassword is required"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "Invalid access token"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "status": "success",
+                                    "message": "you have to enter your old password correctly to update your password"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "status": "error",
+                                    "message": "Server error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/signup": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Signup a new user",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    },
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    }
+                                },
+                                "required": [
+                                    "password",
+                                    "username",
+                                    "email"
+                                ]
+                            },
+                            "example": {
+                                "password": "passpassword123",
+                                "username": "nature666",
+                                "email": "john@example.com"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "status": "Success",
+                                    "message": "user created successfully",
+                                    "data": {
+                                        "username": "nature666",
+                                        "email": "karen.brown3@example.com+3",
+                                        "first_name": null,
+                                        "last_name": null,
+                                        "id": 3,
+                                        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJrYXJlbi5icm93bjNAZXhhbXBsZS5jb20rMyIsImlhdCI6MTc1MjkzMzc2MywiZXhwIjoxNzUzNTM4NTYzfQ.GoFeXfQ2h_nOpvfJODCcuj8RXNJI3_ONBWdfmFAexy8"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Enter required fields",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "Email, username and password are required."
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Email or username already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "Email or username already in use"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "Server error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/signin": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Signin an existing user",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "identity": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "required": [
+                                    "identity",
+                                    "password"
+                                ]
+                            },
+                            "example": {
+                                "identity": "nature666",
+                                "password": "passpassword123"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "status": "Success",
+                                    "message": "Login successful",
+                                    "data": {
+                                        "username": "nature666",
+                                        "email": "karen.brown3@example.com+3",
+                                        "first_name": null,
+                                        "last_name": null,
+                                        "id": 3,
+                                        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJrYXJlbi5icm93bjNAZXhhbXBsZS5jb20rMyIsImlhdCI6MTc1MjkzMzc2MywiZXhwIjoxNzUzNTM4NTYzfQ.GoFeXfQ2h_nOpvfJODCcuj8RXNJI3_ONBWdfmFAexy8"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "identifier and password are required. The value of the identifier can either be your username or your email",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "identifier and password are required. The value of the identifier can either be your username or your email"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid email or password",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "invalid email or password"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "Server error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/goal": {
+            "post": {
+                "tags": [
+                    "Goal"
+                ],
+                "summary": "Creates a goal",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "goals": {
+                                        "type": "array"
+                                    }
+                                },
+                                "required": [
+                                    "goals"
+                                ]
+                            },
+                            "example": {
+                                "goals": [
+                                    "Goal I",
+                                    "Goal II",
+                                    "Goal III"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "status": "success",
+                                    "message": "Goals created successfully",
+                                    "data": {
+                                        "id": 307,
+                                        "user_id": 3,
+                                        "goals": [
+                                            "Goal I",
+                                            "Goal II",
+                                            "Goal III"
+                                        ],
+                                        "week_start": "2025-07-13T00:00:00.000Z",
+                                        "week_end": "2025-07-18T00:00:00.000Z",
+                                        "status": "pending",
+                                        "updatedAt": "2025-07-15T05:35:25.862Z",
+                                        "createdAt": "2025-07-15T05:35:25.862Z",
+                                        "paired_with": null
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "wrong payload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "Goals must be an array of non-empty strings"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "Invalid access token"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "Server error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "Bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

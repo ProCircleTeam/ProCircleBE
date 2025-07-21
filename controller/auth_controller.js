@@ -45,7 +45,7 @@ const signup = async (req, res) => {
 
     if (existingUser)
       return res
-        .status(400)
+        .status(409)
         .json({ message: "Email or username already in use" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
