@@ -1,6 +1,11 @@
 const { Op } = require("sequelize");
 const { NOT_FOUND } = require("../../constants/responseCodes");
-const { User, UserAreaOfInterest, sequelize } = require("../../models");
+const {
+  User,
+  UserAreaOfInterest,
+  AreaOfInterest,
+  sequelize,
+} = require("../../models");
 
 /**
  *
@@ -18,7 +23,6 @@ const { User, UserAreaOfInterest, sequelize } = require("../../models");
  * @returns {Promise<any>}
  */
 const updateUserPersonalInfo = async (userId, data) => {
-  
   const userInfo = await User.findByPk(userId);
   if (userInfo) {
     const updatedFields = {
@@ -262,9 +266,19 @@ const fetchProfileCompletionStatus = async (userId) => {
   return {
     personalInfoComplete: Boolean(personalInfoData),
     professionalInfoComplete: Boolean(professionalInfoData),
-    goalsInfoComplete: Boolean(goalsInfoData) && Boolean(areaOfInterestsInfoData),
+    goalsInfoComplete:
+      Boolean(goalsInfoData) && Boolean(areaOfInterestsInfoData),
     engagementInfoComplete: Boolean(engagementInfoData),
   };
+};
+
+/**
+ * @description - Checks what sections of the profile is fully updated
+ * @param {number} userId - user that wants to update profile
+ * @returns {Promise<any>} - return Promise
+ */
+const fetchAreaOfInterest = async () => {
+  return AreaOfInterest.findAll({ raw: true });
 };
 
 module.exports = {
@@ -273,4 +287,5 @@ module.exports = {
   updateUserProfessionalInfo,
   updateUserEngagementInfo,
   updateUserGoalInfo,
+  fetchAreaOfInterest,
 };

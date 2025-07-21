@@ -8,7 +8,8 @@ const {
   updateUserProfessionalInfo,
   updateUserPersonalInfo,
   updateUserGoalInfo,
-  searchTimeZoneByName
+  searchTimeZoneByName,
+  getAreaOfInterests,
 } = require("../controller/user_controller");
 const { authenticateToken, checkIfUserIsAdmin } = require("../middleware/auth");
 const upload = require("../middleware/upload");
@@ -17,18 +18,21 @@ router.route("/:id").get(getUserById);
 router
   .route("/profile/status")
   .get(authenticateToken, getProfileCompletionStatus);
-router
-  .route("/search/timezone")
-  .get(searchTimeZoneByName);
+router.route("/search/timezone").get(searchTimeZoneByName);
 router
   .route("/users/partners")
   .get(authenticateToken, checkIfUserIsAdmin, getUsersAndTheirPairedPartners);
 router
   .route("/profile/personal-info/update")
-  .put(authenticateToken, upload.single("profilePhoto"), updateUserPersonalInfo);
+  .put(
+    authenticateToken,
+    upload.single("profilePhoto"),
+    updateUserPersonalInfo
+  );
 router
   .route("/profile/engagement-info/update")
   .put(authenticateToken, updateUserEngagementInfo);
+router.route("/fetch/area-of-interests").get(authenticateToken, getAreaOfInterests);
 router
   .route("/profile/professional-info/update")
   .put(authenticateToken, updateUserProfessionalInfo);

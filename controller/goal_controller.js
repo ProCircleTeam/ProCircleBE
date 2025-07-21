@@ -1,4 +1,4 @@
-const { Goal } = require("../models");
+const { Goal, User } = require("../models");
 const GOAL_STATUS = require("../constants/goalStatus");
 const {
   pairGoalsService,
@@ -346,8 +346,8 @@ const pairGoals = async (req, res) => {
     if (result === RES_CODES.NO_GOALS_CREATED)
       return apiResponse({
         res,
-        status: ResponseStatusEnum.SUCCESS,
-        statusCode: 200,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 404,
         message: "No goals were created by users this week!",
       });
 

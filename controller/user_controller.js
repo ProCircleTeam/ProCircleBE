@@ -15,6 +15,7 @@ const {
   updateUserGoalInfo: updateUserGoalInfoService,
   updateUserPersonalInfo: updateUserPersonalInfoService,
   updateUserProfessionalInfo: updateUserProfessionalInfoService,
+  fetchAreaOfInterest,
 } = require("../services/users/updateProfile");
 const updateUserPassword = require("../services/users/updateUserPassword");
 const { formatDateString } = require("../utils/dateParser");
@@ -58,7 +59,7 @@ const getUserById = async (req, res) => {
       res,
       status: ResponseStatusEnum.SUCCESS,
       statusCode: 200,
-      message: "User fetched successfuly",
+      message: "User fetched successfully",
       data: result,
     });
   } catch (e) {
@@ -69,6 +70,26 @@ const getUserById = async (req, res) => {
       status: ResponseStatusEnum.FAIL,
       statusCode: 500,
       message: "Server error",
+    });
+  }
+};
+
+const getAreaOfInterests = async (_, res) => {
+  try {
+    const response = await fetchAreaOfInterest();
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.SUCCESS,
+      statusCode: 200,
+      message: "Area of interests fetched successfully",
+      data: response,
+    });
+  } catch (e) {
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 500,
+      message: `An error occured: ${e}`,
     });
   }
 };
@@ -166,6 +187,9 @@ const updateUserPersonalInfo = async (req, res) => {
         username: updatedRow.username,
         email: updatedRow.email,
         phone: updatedRow.phone_number,
+        firstName: updatedRow.first_name,
+        lastName: updatedRow.last_name,
+        profilePhoto: updatedRow.profile_photo,
         id: updatedRow.id,
       },
     });
@@ -453,4 +477,5 @@ module.exports = {
   updateUserPersonalInfo,
   updateUserGoalInfo,
   searchTimeZoneByName,
+  getAreaOfInterests,
 };
