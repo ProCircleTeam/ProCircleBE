@@ -28,7 +28,7 @@ const getUserById = async (req, res) => {
     });
   } catch (e) {
     console.error(e);
-    return res.status(500).json({});
+    return res.status(500).json({message: "Server error"});
   }
 };
 
@@ -160,7 +160,7 @@ const changePassword = async (req, res) => {
     );
 
     if (result === WRONG_CREDENTIALS) {
-      return res.status(401).json({
+      return res.status(403).json({
         status: "error",
         message: "you have to enter your old password correctly to update your password"
       });

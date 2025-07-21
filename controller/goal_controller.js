@@ -22,14 +22,14 @@ const createGoal = async (req, res) => {
     // Validate goals array
     if (!isValidGoalsArray(goals)) {
       return res.status(400).json({
-        message: "Goals must be a non-empty array",
+        message: "Goals must be an array of non-empty strings",
       });
     }
 
     // Validate each goal is a non-empty string
     if (!areAllGoalsNonEmptyStrings(goals)) {
       return res.status(400).json({
-        message: "All goals must be non-empty strings",
+        message: "Goals must be an array of non-empty strings",
       });
     }
 
