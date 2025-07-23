@@ -9,6 +9,8 @@
     "dev": "nodemon app.js",
     "create-db-user": "node scripts/dbUserSetup.js",
     "migrate": "sequelize db:migrate",
+    "seed": "sequelize db:seed:all",
+    "undo:migrate": "sequelize db:migrate:undo",
     "db:setup": "npm run create-db-user && npm run create:db && npm run migrate",
     "create:db": "sequelize db:create"
   },
@@ -22,6 +24,9 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "moment-timezone": "^0.6.0",
+    "multer": "^2.0.2",
+    "multer-storage-cloudinary": "^4.0.0",
     "pg": "^8.16.2",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.7"
