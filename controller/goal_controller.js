@@ -1,6 +1,9 @@
 const { Goal } = require("../models");
 const GOAL_STATUS = require("../constants/goalStatus");
-const { pairGoalsService } = require("../services/goals/");
+const {
+  pairGoalsService,
+  fetchIndustrySectors,
+} = require("../services/goals/");
 const RES_CODES = require("../constants/responseCodes");
 const getWeekBoundaries = require("../utils/getWeekBoundaries");
 const { apiResponse, ResponseStatusEnum } = require("../utils/apiResponse");
@@ -214,6 +217,16 @@ const getUserGoals = async (req, res) => {
       statusCode: 500,
       message: "Server error",
     });
+  }
+};
+
+// Get industry sectors
+const getIndustrySectors = async (req, res) => {
+  try {
+    const result = await fetchIndustrySectors();
+    return res.status(200).json({ success: true, data: result });
+  } catch (error) {
+    return res.status(500).json({ success: false, error });
   }
 };
 
@@ -445,4 +458,5 @@ module.exports = {
   markGoalsCompleted,
   getUserGoalsByDate,
   pairGoals,
+  getIndustrySectors,
 };
