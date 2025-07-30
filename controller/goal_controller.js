@@ -223,10 +223,21 @@ const getUserGoals = async (req, res) => {
 // Get industry sectors
 const getIndustrySectors = async (req, res) => {
   try {
-    const result = await fetchIndustrySectors();
-    return res.status(200).json({ success: true, data: result });
+    const data = await fetchIndustrySectors();
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.SUCCESS,
+      statusCode: 200,
+      message: "Industry sectors fetched successfully",
+      data,
+    });
   } catch (error) {
-    return res.status(500).json({ success: false, error });
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 500,
+      message: "Server error",
+    });
   }
 };
 
