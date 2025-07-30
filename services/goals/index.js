@@ -1,4 +1,10 @@
-const { Sequelize, Goal, User, sequelize } = require("../../models");
+const {
+  Sequelize,
+  Goal,
+  User,
+  Industry_Sector,
+  sequelize,
+} = require("../../models");
 const { Op } = Sequelize;
 const GOAL_STATUS = require("../../constants/goalStatus");
 const { post } = require("axios");
@@ -151,4 +157,16 @@ const pairGoalsService = async ({ date }) => {
   }
 };
 
-module.exports = { fetchGoalsService, pairGoalsService };
+/**
+ *
+ * @description - Fetch Industry sector
+ * @async
+ * @function fetchIndustrySectors
+ * @returns {Promise<any>}
+ */
+
+const fetchIndustrySectors = async () => {
+  return Industry_Sector.findAll({ raw: true });
+};
+
+module.exports = { fetchGoalsService, pairGoalsService, fetchIndustrySectors };

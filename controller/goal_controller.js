@@ -1,6 +1,9 @@
 const { Goal } = require("../models");
 const GOAL_STATUS = require("../constants/goalStatus");
-const { pairGoalsService } = require("../services/goals/");
+const {
+  pairGoalsService,
+  fetchIndustrySectors,
+} = require("../services/goals/");
 const RES_CODES = require("../constants/responseCodes");
 const getWeekBoundaries = require("../utils/getWeekBoundaries");
 const { apiResponse, ResponseStatusEnum } = require("../utils/apiResponse");
@@ -208,6 +211,27 @@ const getUserGoals = async (req, res) => {
     });
   } catch (error) {
     console.error("Get user goals error:", error);
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 500,
+      message: "Server error",
+    });
+  }
+};
+
+// Get industry sectors
+const getIndustrySectors = async (req, res) => {
+  try {
+    const data = await fetchIndustrySectors();
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.SUCCESS,
+      statusCode: 200,
+      message: "Industry sectors fetched successfully",
+      data,
+    });
+  } catch (error) {
     return apiResponse({
       res,
       status: ResponseStatusEnum.FAIL,
@@ -445,4 +469,5 @@ module.exports = {
   markGoalsCompleted,
   getUserGoalsByDate,
   pairGoals,
+  getIndustrySectors,
 };

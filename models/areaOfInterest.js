@@ -6,9 +6,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       AreaOfInterest.belongsToMany(models.User, {
         through: models.UserAreaOfInterest,
-        foreignKey: 'area_of_Interest_id',
-        otherKey: 'user_id',
-        as: 'users',
+        foreignKey: "area_of_Interest_id",
+        otherKey: "user_id",
+        as: "users",
       });
     }
   }
@@ -28,7 +28,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      tableName: "Area_of_Interests"
+      tableName: "Area_of_Interests",
+      timestamps: false,
     }
   );
 
