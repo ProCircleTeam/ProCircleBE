@@ -1,6 +1,12 @@
 const GOAL_STATUS = require("../constants/goalStatus");
 const { NOT_FOUND, WRONG_CREDENTIALS } = require("../constants/responseCodes");
-const { User, Sequelize } = require("../models");
+const {
+  User,
+  Industry_Sector,
+  AreaOfInterest,
+  Sequelize,
+  Timezone,
+} = require("../models");
 const { fetchGoalsService } = require("../services/goals/");
 const queryTimeZoneByName = require("../services/users/searchTimezone");
 const {
@@ -17,7 +23,26 @@ const { apiResponse, ResponseStatusEnum } = require("../utils/apiResponse");
 const getUserById = async (req, res) => {
   const { id } = req.params;
   try {
-    const foundUser = await User.findByPk(id);
+    const foundUser = await User.findByPk(id, {
+      attributes: {
+        exclude: ["password", "createdAt", "updatedAt", "timezone_id"],
+      },
+      include: [
+        {
+          model: Industry_Sector,
+          as: "industry_sector",
+        },
+        {
+          model: AreaOfInterest,
+          as: "areaOfInterests",
+          through: { attributes: [] },
+        },
+        {
+          model: Timezone,
+          as: "timezone",
+        },
+      ],
+    });
     if (!foundUser) {
       return apiResponse({
         res,
@@ -28,8 +53,6 @@ const getUserById = async (req, res) => {
     }
 
     const result = foundUser.toJSON();
-    delete result.password;
-    delete result.deletedAt;
 
     return apiResponse({
       res,
