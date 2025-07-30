@@ -12,13 +12,17 @@ const {
 } = require("../services/users/updateProfile");
 const updateUserPassword = require("../services/users/updateUserPassword");
 const { formatDateString } = require("../utils/dateParser");
+const { apiResponse, ResponseStatusEnum } = require("../utils/apiResponse");
 
 const getUserById = async (req, res) => {
   const { id } = req.params;
   try {
     const foundUser = await User.findByPk(id);
     if (!foundUser) {
-      return res.status(404).json({
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 404,
         message: `Cannot find the user with id ${id}`,
       });
     }
@@ -27,13 +31,22 @@ const getUserById = async (req, res) => {
     delete result.password;
     delete result.deletedAt;
 
-    return res.status(200).json({
-      status: "Success",
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.SUCCESS,
+      statusCode: 200,
+      message: "User fetched successfuly",
       data: result,
     });
   } catch (e) {
     console.error(e);
-    return res.status(500).json({});
+
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 500,
+      message: "Server error",
+    });
   }
 };
 
@@ -56,8 +69,10 @@ const getUsersAndTheirPairedPartners = async (req, res) => {
       req.query.status &&
       !Object.values(GOAL_STATUS).includes(req.query.status.toLowerCase())
     ) {
-      return res.status(400).json({
-        status: "error",
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
         message: `The value of status must be either any of this values: ${Object.values(
           GOAL_STATUS
         ).join(", ")}`,
@@ -80,23 +95,19 @@ const getUsersAndTheirPairedPartners = async (req, res) => {
     const currentPage = Math.floor(offset / limit) + 1;
     const nextPage = currentPage === pages ? null : currentPage + 1;
     const prevPage = currentPage === 1 ? null : currentPage - 1;
-    return res.status(200).json({
-      status: "success",
-      data: {
-        result: data,
-        meta: {
-          limit,
-          pages,
-          currentPage,
-          nextPage,
-          prevPage,
-        },
-      },
+
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.SUCCESS,
+      statusCode: 200,
+      message: "User partners fetched successfully",
     });
   } catch (error) {
-    return res.status(500).json({
-      status: "error",
-      error,
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 500,
+      message: "Server error",
     });
   }
 };
@@ -114,15 +125,20 @@ const updateUserPersonalInfo = async (req, res) => {
     });
 
     if (result === NOT_FOUND) {
-      return res.status(404).json({
-        status: "error",
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 404,
         message: "User not found",
       });
     }
 
     const updatedRow = result[1][0];
-    return res.status(200).json({
-      status: "success",
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.SUCCESS,
+      statusCode: 200,
+      message: "Personal info updated successfully",
       data: {
         username: updatedRow.username,
         email: updatedRow.email,
@@ -132,14 +148,19 @@ const updateUserPersonalInfo = async (req, res) => {
     });
   } catch (error) {
     if (error instanceof Sequelize.ValidationError) {
-      return res.status(400).json({
-        status: "error",
-        error: error.message,
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
+        message: error.message,
       });
     }
-    return res.status(500).json({
-      status: "error",
-      error,
+
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 500,
+      message: error.message,
     });
   }
 };
@@ -156,15 +177,21 @@ const updateUserProfessionalInfo = async (req, res) => {
     });
 
     if (result === NOT_FOUND) {
-      return res.status(404).json({
-        status: "error",
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 404,
         message: "User not found",
       });
     }
 
     const updatedRow = result[1][0];
-    return res.status(200).json({
-      status: "success",
+
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.SUCCESS,
+      statusCode: 200,
+      message: "Professional info updated successfully",
       data: {
         careerSummary: updatedRow.career_summary,
         industrySectorId: updatedRow.industry_sector_id,
@@ -174,14 +201,19 @@ const updateUserProfessionalInfo = async (req, res) => {
     });
   } catch (error) {
     if (error instanceof Sequelize.ValidationError) {
-      return res.status(400).json({
-        status: "error",
-        error: error.message,
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
+        message: error.message,
       });
     }
-    return res.status(500).json({
-      status: "error",
-      error,
+
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 500,
+      message: "Server error",
     });
   }
 };
@@ -202,15 +234,21 @@ const updateUserGoalInfo = async (req, res) => {
     });
 
     if (result === NOT_FOUND) {
-      return res.status(404).json({
-        status: "error",
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 404,
         message: "User not found",
       });
     }
 
     const updatedRow = result[0][1][0];
-    return res.status(200).json({
-      status: "success",
+
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.SUCCESS,
+      statusCode: 200,
+      message: "Goals and Interest update successfully",
       data: {
         longTermGoal: updatedRow.long_term_goal,
         preferredAccountabilityPartnerTrait:
@@ -221,14 +259,19 @@ const updateUserGoalInfo = async (req, res) => {
     });
   } catch (error) {
     if (error instanceof Sequelize.ValidationError) {
-      return res.status(400).json({
-        status: "error",
-        error: error.message,
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
+        message: error.message,
       });
     }
-    return res.status(500).json({
-      status: "error",
-      error,
+
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 500,
+      message: error,
     });
   }
 };
@@ -243,15 +286,21 @@ const updateUserEngagementInfo = async (req, res) => {
     });
 
     if (result === NOT_FOUND) {
-      return res.status(404).json({
-        status: "error",
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 404,
         message: "User not found",
       });
     }
 
     const updatedRow = result[1][0];
-    return res.status(200).json({
-      status: "success",
+
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.SUCCESS,
+      statusCode: 200,
+      message: "Engagement updated successfully",
       data: {
         availabilityDays: updatedRow.availability_days,
         funFact: updatedRow.fun_fact,
@@ -260,14 +309,19 @@ const updateUserEngagementInfo = async (req, res) => {
     });
   } catch (error) {
     if (error instanceof Sequelize.ValidationError) {
-      return res.status(400).json({
-        status: "error",
-        error: error.message,
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
+        message: error.message,
       });
     }
-    return res.status(500).json({
-      status: "error",
-      error,
+
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 500,
+      message: error,
     });
   }
 };
@@ -275,14 +329,19 @@ const updateUserEngagementInfo = async (req, res) => {
 const getProfileCompletionStatus = async (req, res) => {
   try {
     const result = await fetchProfileCompletionStatus(req.user.id);
-    return res.status(200).json({
-      status: "success",
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.SUCCESS,
+      statusCode: 200,
+      message: "Fetched profile status successfully",
       data: result,
     });
   } catch (error) {
-    return res.status(500).json({
-      status: "error",
-      error,
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 500,
+      message: error,
     });
   }
 };
@@ -290,15 +349,19 @@ const getProfileCompletionStatus = async (req, res) => {
 const searchTimeZoneByName = async (req, res) => {
   try {
     const result = await queryTimeZoneByName(req.query.tzName);
-    return res.status(200).json({
-      status: "success",
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.SUCCESS,
+      statusCode: 200,
       message: "Query results",
       data: result,
     });
   } catch (error) {
-    return res.status(500).json({
-      status: "error",
-      error,
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 500,
+      message: error,
     });
   }
 };
@@ -308,16 +371,21 @@ const changePassword = async (req, res) => {
     const { currentPassword, newPassword } = req.body;
 
     if (!currentPassword || !newPassword) {
-      return res.status(400).json({
-        status: "error",
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
         message: "currentPassword & newPassword are required fields",
       });
     }
 
     if (newPassword.length < 6) {
-      return res
-        .status(400)
-        .json({ message: "Password length must be greater than 5" });
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
+        message: "Password length must be greater than 5",
+      });
     }
 
     const result = await updateUserPassword(
@@ -327,21 +395,27 @@ const changePassword = async (req, res) => {
     );
 
     if (result === WRONG_CREDENTIALS) {
-      return res.status(401).json({
-        status: "error",
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 401,
         message:
           "you have to enter your old password correctly to update your password",
       });
     }
 
-    return res.status(200).json({
-      status: "success",
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.SUCCESS,
+      statusCode: 200,
       message: "Password successfully updated",
     });
   } catch (error) {
-    return res.status(500).json({
-      status: "error",
-      error,
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 500,
+      message: error,
     });
   }
 };

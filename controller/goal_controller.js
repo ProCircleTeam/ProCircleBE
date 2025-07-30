@@ -3,6 +3,7 @@ const GOAL_STATUS = require("../constants/goalStatus");
 const { pairGoalsService } = require("../services/goals/");
 const RES_CODES = require("../constants/responseCodes");
 const getWeekBoundaries = require("../utils/getWeekBoundaries");
+const { apiResponse, ResponseStatusEnum } = require("../utils/apiResponse");
 
 // Reusable validation helpers
 function isValidGoalsArray(goals) {
@@ -21,14 +22,20 @@ const createGoal = async (req, res) => {
 
     // Validate goals array
     if (!isValidGoalsArray(goals)) {
-      return res.status(400).json({
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
         message: "Goals must be a non-empty array",
       });
     }
 
     // Validate each goal is a non-empty string
     if (!areAllGoalsNonEmptyStrings(goals)) {
-      return res.status(400).json({
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
         message: "All goals must be non-empty strings",
       });
     }
@@ -45,7 +52,10 @@ const createGoal = async (req, res) => {
     });
 
     if (existingGoal) {
-      return res.status(400).json({
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
         message:
           "You already have goals set for this week. You can update them if they are still pending.",
       });
@@ -59,15 +69,20 @@ const createGoal = async (req, res) => {
       week_end: weekEnd,
       status: GOAL_STATUS.PENDING,
     });
-
-    return res.status(201).json({
-      status: "success",
-      message: "Goals created successfully",
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.SUCCESS,
       data: newGoal,
+      statusCode: 200,
+      message: "Goals created successfully",
     });
   } catch (error) {
     console.error("Create goal error:", error);
-    return res.status(500).json({
+
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 500,
       message: "Server error",
     });
   }
@@ -82,14 +97,20 @@ const updateGoal = async (req, res) => {
 
     // Validate goals array
     if (!isValidGoalsArray(goals)) {
-      return res.status(400).json({
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
         message: "Goals must be a non-empty array",
       });
     }
 
     // Validate each goal is a non-empty string
     if (!areAllGoalsNonEmptyStrings(goals)) {
-      return res.status(400).json({
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
         message: "All goals must be non-empty strings",
       });
     }
@@ -103,14 +124,20 @@ const updateGoal = async (req, res) => {
     });
 
     if (!goal) {
-      return res.status(404).json({
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 404,
         message: "Goal not found",
       });
     }
 
     // Check if goal can be updated (only pending goals)
     if (goal.status !== "pending") {
-      return res.status(400).json({
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
         message: "Cannot update goals that are in progress or completed",
       });
     }
@@ -120,14 +147,20 @@ const updateGoal = async (req, res) => {
       goals: goals.map((goal) => goal.trim()),
     });
 
-    return res.status(200).json({
-      status: "success",
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.SUCCESS,
+      statusCode: 200,
       message: "Goals updated successfully",
       data: goal,
     });
   } catch (error) {
     console.error("Update goal error:", error);
-    return res.status(500).json({
+
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 500,
       message: "Server error",
     });
   }
@@ -155,23 +188,30 @@ const getUserGoals = async (req, res) => {
     });
 
     const totalPages = Math.ceil(totalGoals / limit);
-
-    return res.status(200).json({
-      status: "success",
-      data: {
-        goals,
-        pagination: {
-          currentPage: page,
-          totalPages,
-          totalGoals,
-          hasNextPage: page < totalPages,
-          hasPrevPage: page > 1,
-        },
+    var data = {
+      goals,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalGoals,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1,
       },
+    };
+
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.SUCCESS,
+      statusCode: 200,
+      message: "Goals Fetched successfully",
+      data,
     });
   } catch (error) {
     console.error("Get user goals error:", error);
-    return res.status(500).json({
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 500,
       message: "Server error",
     });
   }
@@ -191,18 +231,28 @@ const getGoalById = async (req, res) => {
     });
 
     if (!goal) {
-      return res.status(404).json({
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 404,
         message: "Goal not found",
       });
     }
 
-    return res.status(200).json({
-      status: "success",
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.SUCCESS,
+      statusCode: 200,
+      message: "Goal fetched successfully",
       data: goal,
     });
   } catch (error) {
     console.error("Get goal by ID error:", error);
-    return res.status(500).json({
+
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 500,
       message: "Server error",
     });
   }
@@ -223,14 +273,20 @@ const markGoalsCompleted = async (req, res) => {
     });
 
     if (!goal) {
-      return res.status(404).json({
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 404,
         message: "Goal not found",
       });
     }
 
     // Check if goal can be marked as completed
     if (goal.status === GOAL_STATUS.COMPLETED) {
-      return res.status(400).json({
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
         message: "Goals are already marked as completed",
       });
     }
@@ -239,15 +295,19 @@ const markGoalsCompleted = async (req, res) => {
     await goal.update({
       status: GOAL_STATUS.COMPLETED,
     });
-
-    return res.status(200).json({
-      status: "success",
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.SUCCESS,
+      statusCode: 200,
       message: "Goals marked as completed successfully",
       data: goal,
     });
   } catch (error) {
     console.error("Mark goals completed error:", error);
-    return res.status(500).json({
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 500,
       message: "Server error",
     });
   }
@@ -260,24 +320,33 @@ const pairGoals = async (req, res) => {
     const result = await pairGoalsService({ date });
 
     if (result === RES_CODES.NO_GOALS_CREATED)
-      return res.status(200).json({
-        status: "success",
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.SUCCESS,
+        statusCode: 200,
         message: "No goals were created by users this week!",
       });
 
     if (result === RES_CODES.MATCHING_FAILED)
-      return res.status(424).json({
-        status: "error",
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 424,
         message: "The LLM model is having some glitches, try again",
       });
 
     // send mail to user & partner
-    return res.status(200).json({
-      status: "success",
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.SUCCESS,
+      statusCode: 200,
       message: "Users have been successfully matched based on their goals",
     });
   } catch (error) {
-    return res.status(500).json({
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 500,
       message: "Server error",
     });
   }
@@ -289,14 +358,20 @@ const getUserGoalsByDate = async (req, res) => {
     const userId = req.user.id;
 
     if (!date) {
-      return res.status(400).json({
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
         message: "Date parameter is required",
       });
     }
 
     const inputDate = new Date(date);
     if (isNaN(inputDate.getTime())) {
-      return res.status(400).json({
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
         message: "Invalid date format. Please provide a valid date",
       });
     }
@@ -325,7 +400,10 @@ const getUserGoalsByDate = async (req, res) => {
     });
 
     if (!goal) {
-      return res.status(404).json({
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 404,
         message: "No goals found for the week containing the specified date",
         data: {
           requestedDate: date,
@@ -335,8 +413,10 @@ const getUserGoalsByDate = async (req, res) => {
       });
     }
 
-    return res.status(200).json({
-      status: "success",
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.SUCCESS,
+      statusCode: 200,
       message: "Goals retrieved successfully",
       data: {
         goal,
@@ -348,7 +428,10 @@ const getUserGoalsByDate = async (req, res) => {
       },
     });
   } catch (error) {
-    return res.status(500).json({
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 500,
       message: "Server error",
     });
   }
