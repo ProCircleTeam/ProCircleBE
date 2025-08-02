@@ -1,0 +1,5589 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "ProCircle API",
+    "version": "1.0.0",
+    "description": "API documentation for ProCircle services"
+  },
+  "servers": [
+    {
+      "url": null
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "User authentication"
+    },
+    {
+      "name": "User",
+      "description": "User management and profile operations"
+    },
+    {
+      "name": "Goal",
+      "description": "Operations that allows client manage goal resources"
+    }
+  ],
+  "paths": {
+    "/api/v1/user/{id}": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Retrieve user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "User fetched successfully",
+                  "data": {
+                    "id": 3,
+                    "email": "karen.brown3@example.com+3",
+                    "type": "user",
+                    "phone_number": "58075419",
+                    "username": "nature_nwamama",
+                    "first_name": "Nature",
+                    "last_name": "Okoye",
+                    "profile_photo": "https://res.cloudinary.com/naturn/image/upload/v1753200435/procircle_profile_photos/vjqghijd3ycx9o9uzrpk.png",
+                    "bio": "I am a full-stack engineer",
+                    "job_title": "Senior Sound Engineer",
+                    "years_of_experience": 9,
+                    "long_term_goal": "To be a philantropist and a mentor to millions of men around the planet",
+                    "preferred_accountability_partner_trait": "Serious minded and Goal getter",
+                    "availability_days": [
+                      "MON - 9AM",
+                      "TUE - 10PM",
+                      "SUN - 11PM"
+                    ],
+                    "fun_fact": "I love singing and dancing",
+                    "career_summary": "Excellent coder",
+                    "industry_sector_id": 3,
+                    "industry_sector": {
+                      "id": 3,
+                      "name": "Education"
+                    },
+                    "areaOfInterests": [
+                      {
+                        "id": 8,
+                        "name": "Music"
+                      },
+                      {
+                        "id": 9,
+                        "name": "Travel"
+                      },
+                      {
+                        "id": 7,
+                        "name": "Education"
+                      }
+                    ],
+                    "timezone": {
+                      "id": 32,
+                      "name": "Africa/Lagos",
+                      "abbreviation": "WAT"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Cannot find user with id 89",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/fetch/area-of-interests": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Fetch all area of interests",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "Area of interests fetched successfully",
+                  "data": [
+                    {
+                      "id": 1,
+                      "name": "Technology"
+                    },
+                    {
+                      "id": 2,
+                      "name": "Health & Wellness"
+                    },
+                    {
+                      "id": 3,
+                      "name": "Fitness"
+                    },
+                    {
+                      "id": 4,
+                      "name": "Personal Finance"
+                    },
+                    {
+                      "id": 5,
+                      "name": "Entrepreneurship"
+                    },
+                    {
+                      "id": 6,
+                      "name": "Career Development"
+                    },
+                    {
+                      "id": 7,
+                      "name": "Education"
+                    },
+                    {
+                      "id": 8,
+                      "name": "Music"
+                    },
+                    {
+                      "id": 9,
+                      "name": "Travel"
+                    },
+                    {
+                      "id": 10,
+                      "name": "Gaming"
+                    },
+                    {
+                      "id": 11,
+                      "name": "Reading"
+                    },
+                    {
+                      "id": 12,
+                      "name": "Cooking"
+                    },
+                    {
+                      "id": 13,
+                      "name": "Mental Health"
+                    },
+                    {
+                      "id": 14,
+                      "name": "Productivity"
+                    },
+                    {
+                      "id": 15,
+                      "name": "Art & Design"
+                    },
+                    {
+                      "id": 16,
+                      "name": "Volunteering"
+                    },
+                    {
+                      "id": 17,
+                      "name": "Sustainability"
+                    },
+                    {
+                      "id": 18,
+                      "name": "Photography"
+                    },
+                    {
+                      "id": 19,
+                      "name": "Public Speaking"
+                    },
+                    {
+                      "id": 20,
+                      "name": "Meditation & Mindfulness"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "An Error occured: Error details",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/users/partners": {
+      "get": {
+        "tags": ["User"],
+        "summary": "List partner users (Admin only)",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter partners by status"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "filter query by goals that were created after startDate value"
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "filter query by goals that were created within the week of date value"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "filter query by goals that were created before endDate value"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Maximum number of results to return"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The page number to retrieve (1-based index)"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "User partners fetched successfully",
+                  "data": {
+                    "result": [
+                      {
+                        "id": 54,
+                        "goals": ["Sleep 8 hours", "Exercise daily"],
+                        "status": "completed",
+                        "week_start": "2025-04-26T00:47:29.402Z",
+                        "week_end": "2025-04-29T00:47:29.402Z",
+                        "createdAt": "2025-07-04T01:57:09.085Z",
+                        "user": {
+                          "id": 43,
+                          "email": "john.brown43@example.com",
+                          "phone_number": "(923) 599-3857",
+                          "username": "johnbrown43"
+                        },
+                        "partner": {
+                          "id": 15,
+                          "email": "karen.lee15@example.com",
+                          "phone_number": "(602) 261-7613",
+                          "username": "karenlee15"
+                        }
+                      },
+                      {
+                        "id": 59,
+                        "goals": ["Sleep 8 hours", "Eat healthy"],
+                        "status": "completed",
+                        "week_start": "2025-07-03T18:36:18.487Z",
+                        "week_end": "2025-07-03T18:36:18.487Z",
+                        "createdAt": "2025-07-04T01:57:09.085Z",
+                        "user": {
+                          "id": 50,
+                          "email": "john.miller50@example.com",
+                          "phone_number": "(494) 976-5858",
+                          "username": "johnmiller50"
+                        },
+                        "partner": {
+                          "id": 16,
+                          "email": "karen.anderson16@example.com",
+                          "phone_number": "(322) 984-7696",
+                          "username": "karenanderson16"
+                        }
+                      },
+                      {
+                        "id": 60,
+                        "goals": ["Sleep 8 hours", "Meditate"],
+                        "status": "completed",
+                        "week_start": "2025-04-06T15:54:54.806Z",
+                        "week_end": "2025-04-09T15:54:54.806Z",
+                        "createdAt": "2025-07-04T01:57:09.085Z",
+                        "user": {
+                          "id": 49,
+                          "email": "john.smith49@example.com",
+                          "phone_number": "(258) 683-8840",
+                          "username": "johnsmith49"
+                        },
+                        "partner": {
+                          "id": 26,
+                          "email": "karen.moore26@example.com",
+                          "phone_number": "(675) 271-7499",
+                          "username": "karenmoore26"
+                        }
+                      }
+                    ],
+                    "meta": {
+                      "limit": 10,
+                      "pages": 11,
+                      "currentPage": 2,
+                      "nextPage": 3,
+                      "prevPage": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Invalid access token",
+                  "data": null
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Only admins can access this endpoint",
+                  "data": null
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Server error",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/profile/status": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Fetch the status of a user's profile",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "Fetched profile status successfully",
+                  "data": {
+                    "personalInfoComplete": true,
+                    "professionalInfoComplete": true,
+                    "goalsInfoComplete": true,
+                    "engagementInfoComplete": true
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Invalid access token",
+                  "data": null
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Server error",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/search/timezone": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Fetch all timezones on the system",
+        "parameters": [
+          {
+            "name": "tzName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter timezones by either name or abbreviation. All timezones on the system is fetched if called without query param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "Query results",
+                  "data": {
+                    "status": "success",
+                    "message": "Query results",
+                    "data": [
+                      {
+                        "id": 1,
+                        "name": "Africa/Abidjan",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 2,
+                        "name": "Africa/Accra",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 3,
+                        "name": "Africa/Addis_Ababa",
+                        "abbreviation": "EAT"
+                      },
+                      {
+                        "id": 4,
+                        "name": "Africa/Algiers",
+                        "abbreviation": "CET"
+                      },
+                      {
+                        "id": 5,
+                        "name": "Africa/Asmara",
+                        "abbreviation": "EAT"
+                      },
+                      {
+                        "id": 6,
+                        "name": "Africa/Asmera",
+                        "abbreviation": "EAT"
+                      },
+                      {
+                        "id": 7,
+                        "name": "Africa/Bamako",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 8,
+                        "name": "Africa/Bangui",
+                        "abbreviation": "WAT"
+                      },
+                      {
+                        "id": 9,
+                        "name": "Africa/Banjul",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 10,
+                        "name": "Africa/Bissau",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 11,
+                        "name": "Africa/Blantyre",
+                        "abbreviation": "CAT"
+                      },
+                      {
+                        "id": 12,
+                        "name": "Africa/Brazzaville",
+                        "abbreviation": "WAT"
+                      },
+                      {
+                        "id": 13,
+                        "name": "Africa/Bujumbura",
+                        "abbreviation": "CAT"
+                      },
+                      {
+                        "id": 14,
+                        "name": "Africa/Cairo",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 15,
+                        "name": "Africa/Casablanca",
+                        "abbreviation": "+01"
+                      },
+                      {
+                        "id": 16,
+                        "name": "Africa/Ceuta",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 17,
+                        "name": "Africa/Conakry",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 18,
+                        "name": "Africa/Dakar",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 19,
+                        "name": "Africa/Dar_es_Salaam",
+                        "abbreviation": "EAT"
+                      },
+                      {
+                        "id": 20,
+                        "name": "Africa/Djibouti",
+                        "abbreviation": "EAT"
+                      },
+                      {
+                        "id": 21,
+                        "name": "Africa/Douala",
+                        "abbreviation": "WAT"
+                      },
+                      {
+                        "id": 22,
+                        "name": "Africa/El_Aaiun",
+                        "abbreviation": "+01"
+                      },
+                      {
+                        "id": 23,
+                        "name": "Africa/Freetown",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 24,
+                        "name": "Africa/Gaborone",
+                        "abbreviation": "CAT"
+                      },
+                      {
+                        "id": 25,
+                        "name": "Africa/Harare",
+                        "abbreviation": "CAT"
+                      },
+                      {
+                        "id": 26,
+                        "name": "Africa/Johannesburg",
+                        "abbreviation": "SAST"
+                      },
+                      {
+                        "id": 27,
+                        "name": "Africa/Juba",
+                        "abbreviation": "CAT"
+                      },
+                      {
+                        "id": 28,
+                        "name": "Africa/Kampala",
+                        "abbreviation": "EAT"
+                      },
+                      {
+                        "id": 29,
+                        "name": "Africa/Khartoum",
+                        "abbreviation": "CAT"
+                      },
+                      {
+                        "id": 30,
+                        "name": "Africa/Kigali",
+                        "abbreviation": "CAT"
+                      },
+                      {
+                        "id": 31,
+                        "name": "Africa/Kinshasa",
+                        "abbreviation": "WAT"
+                      },
+                      {
+                        "id": 32,
+                        "name": "Africa/Lagos",
+                        "abbreviation": "WAT"
+                      },
+                      {
+                        "id": 33,
+                        "name": "Africa/Libreville",
+                        "abbreviation": "WAT"
+                      },
+                      {
+                        "id": 34,
+                        "name": "Africa/Lome",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 35,
+                        "name": "Africa/Luanda",
+                        "abbreviation": "WAT"
+                      },
+                      {
+                        "id": 36,
+                        "name": "Africa/Lubumbashi",
+                        "abbreviation": "CAT"
+                      },
+                      {
+                        "id": 37,
+                        "name": "Africa/Lusaka",
+                        "abbreviation": "CAT"
+                      },
+                      {
+                        "id": 38,
+                        "name": "Africa/Malabo",
+                        "abbreviation": "WAT"
+                      },
+                      {
+                        "id": 39,
+                        "name": "Africa/Maputo",
+                        "abbreviation": "CAT"
+                      },
+                      {
+                        "id": 40,
+                        "name": "Africa/Maseru",
+                        "abbreviation": "SAST"
+                      },
+                      {
+                        "id": 41,
+                        "name": "Africa/Mbabane",
+                        "abbreviation": "SAST"
+                      },
+                      {
+                        "id": 42,
+                        "name": "Africa/Mogadishu",
+                        "abbreviation": "EAT"
+                      },
+                      {
+                        "id": 43,
+                        "name": "Africa/Monrovia",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 44,
+                        "name": "Africa/Nairobi",
+                        "abbreviation": "EAT"
+                      },
+                      {
+                        "id": 45,
+                        "name": "Africa/Ndjamena",
+                        "abbreviation": "WAT"
+                      },
+                      {
+                        "id": 46,
+                        "name": "Africa/Niamey",
+                        "abbreviation": "WAT"
+                      },
+                      {
+                        "id": 47,
+                        "name": "Africa/Nouakchott",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 48,
+                        "name": "Africa/Ouagadougou",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 49,
+                        "name": "Africa/Porto-Novo",
+                        "abbreviation": "WAT"
+                      },
+                      {
+                        "id": 50,
+                        "name": "Africa/Sao_Tome",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 51,
+                        "name": "Africa/Timbuktu",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 52,
+                        "name": "Africa/Tripoli",
+                        "abbreviation": "EET"
+                      },
+                      {
+                        "id": 53,
+                        "name": "Africa/Tunis",
+                        "abbreviation": "CET"
+                      },
+                      {
+                        "id": 54,
+                        "name": "Africa/Windhoek",
+                        "abbreviation": "CAT"
+                      },
+                      {
+                        "id": 55,
+                        "name": "America/Adak",
+                        "abbreviation": "HDT"
+                      },
+                      {
+                        "id": 56,
+                        "name": "America/Anchorage",
+                        "abbreviation": "AKDT"
+                      },
+                      {
+                        "id": 57,
+                        "name": "America/Anguilla",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 58,
+                        "name": "America/Antigua",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 59,
+                        "name": "America/Araguaina",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 60,
+                        "name": "America/Argentina/Buenos_Aires",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 61,
+                        "name": "America/Argentina/Catamarca",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 62,
+                        "name": "America/Argentina/ComodRivadavia",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 63,
+                        "name": "America/Argentina/Cordoba",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 64,
+                        "name": "America/Argentina/Jujuy",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 65,
+                        "name": "America/Argentina/La_Rioja",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 66,
+                        "name": "America/Argentina/Mendoza",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 67,
+                        "name": "America/Argentina/Rio_Gallegos",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 68,
+                        "name": "America/Argentina/Salta",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 69,
+                        "name": "America/Argentina/San_Juan",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 70,
+                        "name": "America/Argentina/San_Luis",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 71,
+                        "name": "America/Argentina/Tucuman",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 72,
+                        "name": "America/Argentina/Ushuaia",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 73,
+                        "name": "America/Aruba",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 74,
+                        "name": "America/Asuncion",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 75,
+                        "name": "America/Atikokan",
+                        "abbreviation": "EST"
+                      },
+                      {
+                        "id": 76,
+                        "name": "America/Atka",
+                        "abbreviation": "HDT"
+                      },
+                      {
+                        "id": 77,
+                        "name": "America/Bahia",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 78,
+                        "name": "America/Bahia_Banderas",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 79,
+                        "name": "America/Barbados",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 80,
+                        "name": "America/Belem",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 81,
+                        "name": "America/Belize",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 82,
+                        "name": "America/Blanc-Sablon",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 83,
+                        "name": "America/Boa_Vista",
+                        "abbreviation": "-04"
+                      },
+                      {
+                        "id": 84,
+                        "name": "America/Bogota",
+                        "abbreviation": "-05"
+                      },
+                      {
+                        "id": 85,
+                        "name": "America/Boise",
+                        "abbreviation": "MDT"
+                      },
+                      {
+                        "id": 86,
+                        "name": "America/Buenos_Aires",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 87,
+                        "name": "America/Cambridge_Bay",
+                        "abbreviation": "MDT"
+                      },
+                      {
+                        "id": 88,
+                        "name": "America/Campo_Grande",
+                        "abbreviation": "-04"
+                      },
+                      {
+                        "id": 89,
+                        "name": "America/Cancun",
+                        "abbreviation": "EST"
+                      },
+                      {
+                        "id": 90,
+                        "name": "America/Caracas",
+                        "abbreviation": "-04"
+                      },
+                      {
+                        "id": 91,
+                        "name": "America/Catamarca",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 92,
+                        "name": "America/Cayenne",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 93,
+                        "name": "America/Cayman",
+                        "abbreviation": "EST"
+                      },
+                      {
+                        "id": 94,
+                        "name": "America/Chicago",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 95,
+                        "name": "America/Chihuahua",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 96,
+                        "name": "America/Ciudad_Juarez",
+                        "abbreviation": "MDT"
+                      },
+                      {
+                        "id": 97,
+                        "name": "America/Coral_Harbour",
+                        "abbreviation": "EST"
+                      },
+                      {
+                        "id": 98,
+                        "name": "America/Cordoba",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 99,
+                        "name": "America/Costa_Rica",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 100,
+                        "name": "America/Coyhaique",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 101,
+                        "name": "America/Creston",
+                        "abbreviation": "MST"
+                      },
+                      {
+                        "id": 102,
+                        "name": "America/Cuiaba",
+                        "abbreviation": "-04"
+                      },
+                      {
+                        "id": 103,
+                        "name": "America/Curacao",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 104,
+                        "name": "America/Danmarkshavn",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 105,
+                        "name": "America/Dawson",
+                        "abbreviation": "MST"
+                      },
+                      {
+                        "id": 106,
+                        "name": "America/Dawson_Creek",
+                        "abbreviation": "MST"
+                      },
+                      {
+                        "id": 107,
+                        "name": "America/Denver",
+                        "abbreviation": "MDT"
+                      },
+                      {
+                        "id": 108,
+                        "name": "America/Detroit",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 109,
+                        "name": "America/Dominica",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 110,
+                        "name": "America/Edmonton",
+                        "abbreviation": "MDT"
+                      },
+                      {
+                        "id": 111,
+                        "name": "America/Eirunepe",
+                        "abbreviation": "-05"
+                      },
+                      {
+                        "id": 112,
+                        "name": "America/El_Salvador",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 113,
+                        "name": "America/Ensenada",
+                        "abbreviation": "PDT"
+                      },
+                      {
+                        "id": 114,
+                        "name": "America/Fort_Nelson",
+                        "abbreviation": "MST"
+                      },
+                      {
+                        "id": 115,
+                        "name": "America/Fort_Wayne",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 116,
+                        "name": "America/Fortaleza",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 117,
+                        "name": "America/Glace_Bay",
+                        "abbreviation": "ADT"
+                      },
+                      {
+                        "id": 118,
+                        "name": "America/Godthab",
+                        "abbreviation": "-01"
+                      },
+                      {
+                        "id": 119,
+                        "name": "America/Goose_Bay",
+                        "abbreviation": "ADT"
+                      },
+                      {
+                        "id": 120,
+                        "name": "America/Grand_Turk",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 121,
+                        "name": "America/Grenada",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 122,
+                        "name": "America/Guadeloupe",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 123,
+                        "name": "America/Guatemala",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 124,
+                        "name": "America/Guayaquil",
+                        "abbreviation": "-05"
+                      },
+                      {
+                        "id": 125,
+                        "name": "America/Guyana",
+                        "abbreviation": "-04"
+                      },
+                      {
+                        "id": 126,
+                        "name": "America/Halifax",
+                        "abbreviation": "ADT"
+                      },
+                      {
+                        "id": 127,
+                        "name": "America/Havana",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 128,
+                        "name": "America/Hermosillo",
+                        "abbreviation": "MST"
+                      },
+                      {
+                        "id": 129,
+                        "name": "America/Indiana/Indianapolis",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 130,
+                        "name": "America/Indiana/Knox",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 131,
+                        "name": "America/Indiana/Marengo",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 132,
+                        "name": "America/Indiana/Petersburg",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 133,
+                        "name": "America/Indiana/Tell_City",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 134,
+                        "name": "America/Indiana/Vevay",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 135,
+                        "name": "America/Indiana/Vincennes",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 136,
+                        "name": "America/Indiana/Winamac",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 137,
+                        "name": "America/Indianapolis",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 138,
+                        "name": "America/Inuvik",
+                        "abbreviation": "MDT"
+                      },
+                      {
+                        "id": 139,
+                        "name": "America/Iqaluit",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 140,
+                        "name": "America/Jamaica",
+                        "abbreviation": "EST"
+                      },
+                      {
+                        "id": 141,
+                        "name": "America/Jujuy",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 142,
+                        "name": "America/Juneau",
+                        "abbreviation": "AKDT"
+                      },
+                      {
+                        "id": 143,
+                        "name": "America/Kentucky/Louisville",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 144,
+                        "name": "America/Kentucky/Monticello",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 145,
+                        "name": "America/Knox_IN",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 146,
+                        "name": "America/Kralendijk",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 147,
+                        "name": "America/La_Paz",
+                        "abbreviation": "-04"
+                      },
+                      {
+                        "id": 148,
+                        "name": "America/Lima",
+                        "abbreviation": "-05"
+                      },
+                      {
+                        "id": 149,
+                        "name": "America/Los_Angeles",
+                        "abbreviation": "PDT"
+                      },
+                      {
+                        "id": 150,
+                        "name": "America/Louisville",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 151,
+                        "name": "America/Lower_Princes",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 152,
+                        "name": "America/Maceio",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 153,
+                        "name": "America/Managua",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 154,
+                        "name": "America/Manaus",
+                        "abbreviation": "-04"
+                      },
+                      {
+                        "id": 155,
+                        "name": "America/Marigot",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 156,
+                        "name": "America/Martinique",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 157,
+                        "name": "America/Matamoros",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 158,
+                        "name": "America/Mazatlan",
+                        "abbreviation": "MST"
+                      },
+                      {
+                        "id": 159,
+                        "name": "America/Mendoza",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 160,
+                        "name": "America/Menominee",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 161,
+                        "name": "America/Merida",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 162,
+                        "name": "America/Metlakatla",
+                        "abbreviation": "AKDT"
+                      },
+                      {
+                        "id": 163,
+                        "name": "America/Mexico_City",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 164,
+                        "name": "America/Miquelon",
+                        "abbreviation": "-02"
+                      },
+                      {
+                        "id": 165,
+                        "name": "America/Moncton",
+                        "abbreviation": "ADT"
+                      },
+                      {
+                        "id": 166,
+                        "name": "America/Monterrey",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 167,
+                        "name": "America/Montevideo",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 168,
+                        "name": "America/Montreal",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 169,
+                        "name": "America/Montserrat",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 170,
+                        "name": "America/Nassau",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 171,
+                        "name": "America/New_York",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 172,
+                        "name": "America/Nipigon",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 173,
+                        "name": "America/Nome",
+                        "abbreviation": "AKDT"
+                      },
+                      {
+                        "id": 174,
+                        "name": "America/Noronha",
+                        "abbreviation": "-02"
+                      },
+                      {
+                        "id": 175,
+                        "name": "America/North_Dakota/Beulah",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 176,
+                        "name": "America/North_Dakota/Center",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 177,
+                        "name": "America/North_Dakota/New_Salem",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 178,
+                        "name": "America/Nuuk",
+                        "abbreviation": "-01"
+                      },
+                      {
+                        "id": 179,
+                        "name": "America/Ojinaga",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 180,
+                        "name": "America/Panama",
+                        "abbreviation": "EST"
+                      },
+                      {
+                        "id": 181,
+                        "name": "America/Pangnirtung",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 182,
+                        "name": "America/Paramaribo",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 183,
+                        "name": "America/Phoenix",
+                        "abbreviation": "MST"
+                      },
+                      {
+                        "id": 184,
+                        "name": "America/Port-au-Prince",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 185,
+                        "name": "America/Port_of_Spain",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 186,
+                        "name": "America/Porto_Acre",
+                        "abbreviation": "-05"
+                      },
+                      {
+                        "id": 187,
+                        "name": "America/Porto_Velho",
+                        "abbreviation": "-04"
+                      },
+                      {
+                        "id": 188,
+                        "name": "America/Puerto_Rico",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 189,
+                        "name": "America/Punta_Arenas",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 190,
+                        "name": "America/Rainy_River",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 191,
+                        "name": "America/Rankin_Inlet",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 192,
+                        "name": "America/Recife",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 193,
+                        "name": "America/Regina",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 194,
+                        "name": "America/Resolute",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 195,
+                        "name": "America/Rio_Branco",
+                        "abbreviation": "-05"
+                      },
+                      {
+                        "id": 196,
+                        "name": "America/Rosario",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 197,
+                        "name": "America/Santa_Isabel",
+                        "abbreviation": "PDT"
+                      },
+                      {
+                        "id": 198,
+                        "name": "America/Santarem",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 199,
+                        "name": "America/Santiago",
+                        "abbreviation": "-04"
+                      },
+                      {
+                        "id": 200,
+                        "name": "America/Santo_Domingo",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 201,
+                        "name": "America/Sao_Paulo",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 202,
+                        "name": "America/Scoresbysund",
+                        "abbreviation": "-01"
+                      },
+                      {
+                        "id": 203,
+                        "name": "America/Shiprock",
+                        "abbreviation": "MDT"
+                      },
+                      {
+                        "id": 204,
+                        "name": "America/Sitka",
+                        "abbreviation": "AKDT"
+                      },
+                      {
+                        "id": 205,
+                        "name": "America/St_Barthelemy",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 206,
+                        "name": "America/St_Johns",
+                        "abbreviation": "NDT"
+                      },
+                      {
+                        "id": 207,
+                        "name": "America/St_Kitts",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 208,
+                        "name": "America/St_Lucia",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 209,
+                        "name": "America/St_Thomas",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 210,
+                        "name": "America/St_Vincent",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 211,
+                        "name": "America/Swift_Current",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 212,
+                        "name": "America/Tegucigalpa",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 213,
+                        "name": "America/Thule",
+                        "abbreviation": "ADT"
+                      },
+                      {
+                        "id": 214,
+                        "name": "America/Thunder_Bay",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 215,
+                        "name": "America/Tijuana",
+                        "abbreviation": "PDT"
+                      },
+                      {
+                        "id": 216,
+                        "name": "America/Toronto",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 217,
+                        "name": "America/Tortola",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 218,
+                        "name": "America/Vancouver",
+                        "abbreviation": "PDT"
+                      },
+                      {
+                        "id": 219,
+                        "name": "America/Virgin",
+                        "abbreviation": "AST"
+                      },
+                      {
+                        "id": 220,
+                        "name": "America/Whitehorse",
+                        "abbreviation": "MST"
+                      },
+                      {
+                        "id": 221,
+                        "name": "America/Winnipeg",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 222,
+                        "name": "America/Yakutat",
+                        "abbreviation": "AKDT"
+                      },
+                      {
+                        "id": 223,
+                        "name": "America/Yellowknife",
+                        "abbreviation": "MDT"
+                      },
+                      {
+                        "id": 224,
+                        "name": "Antarctica/Casey",
+                        "abbreviation": "+08"
+                      },
+                      {
+                        "id": 225,
+                        "name": "Antarctica/Davis",
+                        "abbreviation": "+07"
+                      },
+                      {
+                        "id": 226,
+                        "name": "Antarctica/DumontDUrville",
+                        "abbreviation": "+10"
+                      },
+                      {
+                        "id": 227,
+                        "name": "Antarctica/Macquarie",
+                        "abbreviation": "AEST"
+                      },
+                      {
+                        "id": 228,
+                        "name": "Antarctica/Mawson",
+                        "abbreviation": "+05"
+                      },
+                      {
+                        "id": 229,
+                        "name": "Antarctica/McMurdo",
+                        "abbreviation": "NZST"
+                      },
+                      {
+                        "id": 230,
+                        "name": "Antarctica/Palmer",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 231,
+                        "name": "Antarctica/Rothera",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 232,
+                        "name": "Antarctica/South_Pole",
+                        "abbreviation": "NZST"
+                      },
+                      {
+                        "id": 233,
+                        "name": "Antarctica/Syowa",
+                        "abbreviation": "+03"
+                      },
+                      {
+                        "id": 234,
+                        "name": "Antarctica/Troll",
+                        "abbreviation": "+02"
+                      },
+                      {
+                        "id": 235,
+                        "name": "Antarctica/Vostok",
+                        "abbreviation": "+05"
+                      },
+                      {
+                        "id": 236,
+                        "name": "Arctic/Longyearbyen",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 237,
+                        "name": "Asia/Aden",
+                        "abbreviation": "+03"
+                      },
+                      {
+                        "id": 238,
+                        "name": "Asia/Almaty",
+                        "abbreviation": "+05"
+                      },
+                      {
+                        "id": 239,
+                        "name": "Asia/Amman",
+                        "abbreviation": "+03"
+                      },
+                      {
+                        "id": 240,
+                        "name": "Asia/Anadyr",
+                        "abbreviation": "+12"
+                      },
+                      {
+                        "id": 241,
+                        "name": "Asia/Aqtau",
+                        "abbreviation": "+05"
+                      },
+                      {
+                        "id": 242,
+                        "name": "Asia/Aqtobe",
+                        "abbreviation": "+05"
+                      },
+                      {
+                        "id": 243,
+                        "name": "Asia/Ashgabat",
+                        "abbreviation": "+05"
+                      },
+                      {
+                        "id": 244,
+                        "name": "Asia/Ashkhabad",
+                        "abbreviation": "+05"
+                      },
+                      {
+                        "id": 245,
+                        "name": "Asia/Atyrau",
+                        "abbreviation": "+05"
+                      },
+                      {
+                        "id": 246,
+                        "name": "Asia/Baghdad",
+                        "abbreviation": "+03"
+                      },
+                      {
+                        "id": 247,
+                        "name": "Asia/Bahrain",
+                        "abbreviation": "+03"
+                      },
+                      {
+                        "id": 248,
+                        "name": "Asia/Baku",
+                        "abbreviation": "+04"
+                      },
+                      {
+                        "id": 249,
+                        "name": "Asia/Bangkok",
+                        "abbreviation": "+07"
+                      },
+                      {
+                        "id": 250,
+                        "name": "Asia/Barnaul",
+                        "abbreviation": "+07"
+                      },
+                      {
+                        "id": 251,
+                        "name": "Asia/Beirut",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 252,
+                        "name": "Asia/Bishkek",
+                        "abbreviation": "+06"
+                      },
+                      {
+                        "id": 253,
+                        "name": "Asia/Brunei",
+                        "abbreviation": "+08"
+                      },
+                      {
+                        "id": 254,
+                        "name": "Asia/Calcutta",
+                        "abbreviation": "IST"
+                      },
+                      {
+                        "id": 255,
+                        "name": "Asia/Chita",
+                        "abbreviation": "+09"
+                      },
+                      {
+                        "id": 256,
+                        "name": "Asia/Choibalsan",
+                        "abbreviation": "+08"
+                      },
+                      {
+                        "id": 257,
+                        "name": "Asia/Chongqing",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 258,
+                        "name": "Asia/Chungking",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 259,
+                        "name": "Asia/Colombo",
+                        "abbreviation": "+0530"
+                      },
+                      {
+                        "id": 260,
+                        "name": "Asia/Dacca",
+                        "abbreviation": "+06"
+                      },
+                      {
+                        "id": 261,
+                        "name": "Asia/Damascus",
+                        "abbreviation": "+03"
+                      },
+                      {
+                        "id": 262,
+                        "name": "Asia/Dhaka",
+                        "abbreviation": "+06"
+                      },
+                      {
+                        "id": 263,
+                        "name": "Asia/Dili",
+                        "abbreviation": "+09"
+                      },
+                      {
+                        "id": 264,
+                        "name": "Asia/Dubai",
+                        "abbreviation": "+04"
+                      },
+                      {
+                        "id": 265,
+                        "name": "Asia/Dushanbe",
+                        "abbreviation": "+05"
+                      },
+                      {
+                        "id": 266,
+                        "name": "Asia/Famagusta",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 267,
+                        "name": "Asia/Gaza",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 268,
+                        "name": "Asia/Harbin",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 269,
+                        "name": "Asia/Hebron",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 270,
+                        "name": "Asia/Ho_Chi_Minh",
+                        "abbreviation": "+07"
+                      },
+                      {
+                        "id": 271,
+                        "name": "Asia/Hong_Kong",
+                        "abbreviation": "HKT"
+                      },
+                      {
+                        "id": 272,
+                        "name": "Asia/Hovd",
+                        "abbreviation": "+07"
+                      },
+                      {
+                        "id": 273,
+                        "name": "Asia/Irkutsk",
+                        "abbreviation": "+08"
+                      },
+                      {
+                        "id": 274,
+                        "name": "Asia/Istanbul",
+                        "abbreviation": "+03"
+                      },
+                      {
+                        "id": 275,
+                        "name": "Asia/Jakarta",
+                        "abbreviation": "WIB"
+                      },
+                      {
+                        "id": 276,
+                        "name": "Asia/Jayapura",
+                        "abbreviation": "WIT"
+                      },
+                      {
+                        "id": 277,
+                        "name": "Asia/Jerusalem",
+                        "abbreviation": "IDT"
+                      },
+                      {
+                        "id": 278,
+                        "name": "Asia/Kabul",
+                        "abbreviation": "+0430"
+                      },
+                      {
+                        "id": 279,
+                        "name": "Asia/Kamchatka",
+                        "abbreviation": "+12"
+                      },
+                      {
+                        "id": 280,
+                        "name": "Asia/Karachi",
+                        "abbreviation": "PKT"
+                      },
+                      {
+                        "id": 281,
+                        "name": "Asia/Kashgar",
+                        "abbreviation": "+06"
+                      },
+                      {
+                        "id": 282,
+                        "name": "Asia/Kathmandu",
+                        "abbreviation": "+0545"
+                      },
+                      {
+                        "id": 283,
+                        "name": "Asia/Katmandu",
+                        "abbreviation": "+0545"
+                      },
+                      {
+                        "id": 284,
+                        "name": "Asia/Khandyga",
+                        "abbreviation": "+09"
+                      },
+                      {
+                        "id": 285,
+                        "name": "Asia/Kolkata",
+                        "abbreviation": "IST"
+                      },
+                      {
+                        "id": 286,
+                        "name": "Asia/Krasnoyarsk",
+                        "abbreviation": "+07"
+                      },
+                      {
+                        "id": 287,
+                        "name": "Asia/Kuala_Lumpur",
+                        "abbreviation": "+08"
+                      },
+                      {
+                        "id": 288,
+                        "name": "Asia/Kuching",
+                        "abbreviation": "+08"
+                      },
+                      {
+                        "id": 289,
+                        "name": "Asia/Kuwait",
+                        "abbreviation": "+03"
+                      },
+                      {
+                        "id": 290,
+                        "name": "Asia/Macao",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 291,
+                        "name": "Asia/Macau",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 292,
+                        "name": "Asia/Magadan",
+                        "abbreviation": "+11"
+                      },
+                      {
+                        "id": 293,
+                        "name": "Asia/Makassar",
+                        "abbreviation": "WITA"
+                      },
+                      {
+                        "id": 294,
+                        "name": "Asia/Manila",
+                        "abbreviation": "PST"
+                      },
+                      {
+                        "id": 295,
+                        "name": "Asia/Muscat",
+                        "abbreviation": "+04"
+                      },
+                      {
+                        "id": 296,
+                        "name": "Asia/Nicosia",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 297,
+                        "name": "Asia/Novokuznetsk",
+                        "abbreviation": "+07"
+                      },
+                      {
+                        "id": 298,
+                        "name": "Asia/Novosibirsk",
+                        "abbreviation": "+07"
+                      },
+                      {
+                        "id": 299,
+                        "name": "Asia/Omsk",
+                        "abbreviation": "+06"
+                      },
+                      {
+                        "id": 300,
+                        "name": "Asia/Oral",
+                        "abbreviation": "+05"
+                      },
+                      {
+                        "id": 301,
+                        "name": "Asia/Phnom_Penh",
+                        "abbreviation": "+07"
+                      },
+                      {
+                        "id": 302,
+                        "name": "Asia/Pontianak",
+                        "abbreviation": "WIB"
+                      },
+                      {
+                        "id": 303,
+                        "name": "Asia/Pyongyang",
+                        "abbreviation": "KST"
+                      },
+                      {
+                        "id": 304,
+                        "name": "Asia/Qatar",
+                        "abbreviation": "+03"
+                      },
+                      {
+                        "id": 305,
+                        "name": "Asia/Qostanay",
+                        "abbreviation": "+05"
+                      },
+                      {
+                        "id": 306,
+                        "name": "Asia/Qyzylorda",
+                        "abbreviation": "+05"
+                      },
+                      {
+                        "id": 307,
+                        "name": "Asia/Rangoon",
+                        "abbreviation": "+0630"
+                      },
+                      {
+                        "id": 308,
+                        "name": "Asia/Riyadh",
+                        "abbreviation": "+03"
+                      },
+                      {
+                        "id": 309,
+                        "name": "Asia/Saigon",
+                        "abbreviation": "+07"
+                      },
+                      {
+                        "id": 310,
+                        "name": "Asia/Sakhalin",
+                        "abbreviation": "+11"
+                      },
+                      {
+                        "id": 311,
+                        "name": "Asia/Samarkand",
+                        "abbreviation": "+05"
+                      },
+                      {
+                        "id": 312,
+                        "name": "Asia/Seoul",
+                        "abbreviation": "KST"
+                      },
+                      {
+                        "id": 313,
+                        "name": "Asia/Shanghai",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 314,
+                        "name": "Asia/Singapore",
+                        "abbreviation": "+08"
+                      },
+                      {
+                        "id": 315,
+                        "name": "Asia/Srednekolymsk",
+                        "abbreviation": "+11"
+                      },
+                      {
+                        "id": 316,
+                        "name": "Asia/Taipei",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 317,
+                        "name": "Asia/Tashkent",
+                        "abbreviation": "+05"
+                      },
+                      {
+                        "id": 318,
+                        "name": "Asia/Tbilisi",
+                        "abbreviation": "+04"
+                      },
+                      {
+                        "id": 319,
+                        "name": "Asia/Tehran",
+                        "abbreviation": "+0330"
+                      },
+                      {
+                        "id": 320,
+                        "name": "Asia/Tel_Aviv",
+                        "abbreviation": "IDT"
+                      },
+                      {
+                        "id": 321,
+                        "name": "Asia/Thimbu",
+                        "abbreviation": "+06"
+                      },
+                      {
+                        "id": 322,
+                        "name": "Asia/Thimphu",
+                        "abbreviation": "+06"
+                      },
+                      {
+                        "id": 323,
+                        "name": "Asia/Tokyo",
+                        "abbreviation": "JST"
+                      },
+                      {
+                        "id": 324,
+                        "name": "Asia/Tomsk",
+                        "abbreviation": "+07"
+                      },
+                      {
+                        "id": 325,
+                        "name": "Asia/Ujung_Pandang",
+                        "abbreviation": "WITA"
+                      },
+                      {
+                        "id": 326,
+                        "name": "Asia/Ulaanbaatar",
+                        "abbreviation": "+08"
+                      },
+                      {
+                        "id": 327,
+                        "name": "Asia/Ulan_Bator",
+                        "abbreviation": "+08"
+                      },
+                      {
+                        "id": 328,
+                        "name": "Asia/Urumqi",
+                        "abbreviation": "+06"
+                      },
+                      {
+                        "id": 329,
+                        "name": "Asia/Ust-Nera",
+                        "abbreviation": "+10"
+                      },
+                      {
+                        "id": 330,
+                        "name": "Asia/Vientiane",
+                        "abbreviation": "+07"
+                      },
+                      {
+                        "id": 331,
+                        "name": "Asia/Vladivostok",
+                        "abbreviation": "+10"
+                      },
+                      {
+                        "id": 332,
+                        "name": "Asia/Yakutsk",
+                        "abbreviation": "+09"
+                      },
+                      {
+                        "id": 333,
+                        "name": "Asia/Yangon",
+                        "abbreviation": "+0630"
+                      },
+                      {
+                        "id": 334,
+                        "name": "Asia/Yekaterinburg",
+                        "abbreviation": "+05"
+                      },
+                      {
+                        "id": 335,
+                        "name": "Asia/Yerevan",
+                        "abbreviation": "+04"
+                      },
+                      {
+                        "id": 336,
+                        "name": "Atlantic/Azores",
+                        "abbreviation": "+00"
+                      },
+                      {
+                        "id": 337,
+                        "name": "Atlantic/Bermuda",
+                        "abbreviation": "ADT"
+                      },
+                      {
+                        "id": 338,
+                        "name": "Atlantic/Canary",
+                        "abbreviation": "WEST"
+                      },
+                      {
+                        "id": 339,
+                        "name": "Atlantic/Cape_Verde",
+                        "abbreviation": "-01"
+                      },
+                      {
+                        "id": 340,
+                        "name": "Atlantic/Faeroe",
+                        "abbreviation": "WEST"
+                      },
+                      {
+                        "id": 341,
+                        "name": "Atlantic/Faroe",
+                        "abbreviation": "WEST"
+                      },
+                      {
+                        "id": 342,
+                        "name": "Atlantic/Jan_Mayen",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 343,
+                        "name": "Atlantic/Madeira",
+                        "abbreviation": "WEST"
+                      },
+                      {
+                        "id": 344,
+                        "name": "Atlantic/Reykjavik",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 345,
+                        "name": "Atlantic/South_Georgia",
+                        "abbreviation": "-02"
+                      },
+                      {
+                        "id": 346,
+                        "name": "Atlantic/St_Helena",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 347,
+                        "name": "Atlantic/Stanley",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 348,
+                        "name": "Australia/ACT",
+                        "abbreviation": "AEST"
+                      },
+                      {
+                        "id": 349,
+                        "name": "Australia/Adelaide",
+                        "abbreviation": "ACST"
+                      },
+                      {
+                        "id": 350,
+                        "name": "Australia/Brisbane",
+                        "abbreviation": "AEST"
+                      },
+                      {
+                        "id": 351,
+                        "name": "Australia/Broken_Hill",
+                        "abbreviation": "ACST"
+                      },
+                      {
+                        "id": 352,
+                        "name": "Australia/Canberra",
+                        "abbreviation": "AEST"
+                      },
+                      {
+                        "id": 353,
+                        "name": "Australia/Currie",
+                        "abbreviation": "AEST"
+                      },
+                      {
+                        "id": 354,
+                        "name": "Australia/Darwin",
+                        "abbreviation": "ACST"
+                      },
+                      {
+                        "id": 355,
+                        "name": "Australia/Eucla",
+                        "abbreviation": "+0845"
+                      },
+                      {
+                        "id": 356,
+                        "name": "Australia/Hobart",
+                        "abbreviation": "AEST"
+                      },
+                      {
+                        "id": 357,
+                        "name": "Australia/LHI",
+                        "abbreviation": "+1030"
+                      },
+                      {
+                        "id": 358,
+                        "name": "Australia/Lindeman",
+                        "abbreviation": "AEST"
+                      },
+                      {
+                        "id": 359,
+                        "name": "Australia/Lord_Howe",
+                        "abbreviation": "+1030"
+                      },
+                      {
+                        "id": 360,
+                        "name": "Australia/Melbourne",
+                        "abbreviation": "AEST"
+                      },
+                      {
+                        "id": 361,
+                        "name": "Australia/NSW",
+                        "abbreviation": "AEST"
+                      },
+                      {
+                        "id": 362,
+                        "name": "Australia/North",
+                        "abbreviation": "ACST"
+                      },
+                      {
+                        "id": 363,
+                        "name": "Australia/Perth",
+                        "abbreviation": "AWST"
+                      },
+                      {
+                        "id": 364,
+                        "name": "Australia/Queensland",
+                        "abbreviation": "AEST"
+                      },
+                      {
+                        "id": 365,
+                        "name": "Australia/South",
+                        "abbreviation": "ACST"
+                      },
+                      {
+                        "id": 366,
+                        "name": "Australia/Sydney",
+                        "abbreviation": "AEST"
+                      },
+                      {
+                        "id": 367,
+                        "name": "Australia/Tasmania",
+                        "abbreviation": "AEST"
+                      },
+                      {
+                        "id": 368,
+                        "name": "Australia/Victoria",
+                        "abbreviation": "AEST"
+                      },
+                      {
+                        "id": 369,
+                        "name": "Australia/West",
+                        "abbreviation": "AWST"
+                      },
+                      {
+                        "id": 370,
+                        "name": "Australia/Yancowinna",
+                        "abbreviation": "ACST"
+                      },
+                      {
+                        "id": 371,
+                        "name": "Brazil/Acre",
+                        "abbreviation": "-05"
+                      },
+                      {
+                        "id": 372,
+                        "name": "Brazil/DeNoronha",
+                        "abbreviation": "-02"
+                      },
+                      {
+                        "id": 373,
+                        "name": "Brazil/East",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 374,
+                        "name": "Brazil/West",
+                        "abbreviation": "-04"
+                      },
+                      {
+                        "id": 375,
+                        "name": "CET",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 376,
+                        "name": "CST6CDT",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 377,
+                        "name": "Canada/Atlantic",
+                        "abbreviation": "ADT"
+                      },
+                      {
+                        "id": 378,
+                        "name": "Canada/Central",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 379,
+                        "name": "Canada/Eastern",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 380,
+                        "name": "Canada/Mountain",
+                        "abbreviation": "MDT"
+                      },
+                      {
+                        "id": 381,
+                        "name": "Canada/Newfoundland",
+                        "abbreviation": "NDT"
+                      },
+                      {
+                        "id": 382,
+                        "name": "Canada/Pacific",
+                        "abbreviation": "PDT"
+                      },
+                      {
+                        "id": 383,
+                        "name": "Canada/Saskatchewan",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 384,
+                        "name": "Canada/Yukon",
+                        "abbreviation": "MST"
+                      },
+                      {
+                        "id": 385,
+                        "name": "Chile/Continental",
+                        "abbreviation": "-04"
+                      },
+                      {
+                        "id": 386,
+                        "name": "Chile/EasterIsland",
+                        "abbreviation": "-06"
+                      },
+                      {
+                        "id": 387,
+                        "name": "Cuba",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 388,
+                        "name": "EET",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 389,
+                        "name": "EST",
+                        "abbreviation": "EST"
+                      },
+                      {
+                        "id": 390,
+                        "name": "EST5EDT",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 391,
+                        "name": "Egypt",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 392,
+                        "name": "Eire",
+                        "abbreviation": "IST"
+                      },
+                      {
+                        "id": 393,
+                        "name": "Etc/GMT",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 394,
+                        "name": "Etc/GMT+0",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 395,
+                        "name": "Etc/GMT+1",
+                        "abbreviation": "-01"
+                      },
+                      {
+                        "id": 396,
+                        "name": "Etc/GMT+10",
+                        "abbreviation": "-10"
+                      },
+                      {
+                        "id": 397,
+                        "name": "Etc/GMT+11",
+                        "abbreviation": "-11"
+                      },
+                      {
+                        "id": 398,
+                        "name": "Etc/GMT+12",
+                        "abbreviation": "-12"
+                      },
+                      {
+                        "id": 399,
+                        "name": "Etc/GMT+2",
+                        "abbreviation": "-02"
+                      },
+                      {
+                        "id": 400,
+                        "name": "Etc/GMT+3",
+                        "abbreviation": "-03"
+                      },
+                      {
+                        "id": 401,
+                        "name": "Etc/GMT+4",
+                        "abbreviation": "-04"
+                      },
+                      {
+                        "id": 402,
+                        "name": "Etc/GMT+5",
+                        "abbreviation": "-05"
+                      },
+                      {
+                        "id": 403,
+                        "name": "Etc/GMT+6",
+                        "abbreviation": "-06"
+                      },
+                      {
+                        "id": 404,
+                        "name": "Etc/GMT+7",
+                        "abbreviation": "-07"
+                      },
+                      {
+                        "id": 405,
+                        "name": "Etc/GMT+8",
+                        "abbreviation": "-08"
+                      },
+                      {
+                        "id": 406,
+                        "name": "Etc/GMT+9",
+                        "abbreviation": "-09"
+                      },
+                      {
+                        "id": 407,
+                        "name": "Etc/GMT-0",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 408,
+                        "name": "Etc/GMT-1",
+                        "abbreviation": "+01"
+                      },
+                      {
+                        "id": 409,
+                        "name": "Etc/GMT-10",
+                        "abbreviation": "+10"
+                      },
+                      {
+                        "id": 410,
+                        "name": "Etc/GMT-11",
+                        "abbreviation": "+11"
+                      },
+                      {
+                        "id": 411,
+                        "name": "Etc/GMT-12",
+                        "abbreviation": "+12"
+                      },
+                      {
+                        "id": 412,
+                        "name": "Etc/GMT-13",
+                        "abbreviation": "+13"
+                      },
+                      {
+                        "id": 413,
+                        "name": "Etc/GMT-14",
+                        "abbreviation": "+14"
+                      },
+                      {
+                        "id": 414,
+                        "name": "Etc/GMT-2",
+                        "abbreviation": "+02"
+                      },
+                      {
+                        "id": 415,
+                        "name": "Etc/GMT-3",
+                        "abbreviation": "+03"
+                      },
+                      {
+                        "id": 416,
+                        "name": "Etc/GMT-4",
+                        "abbreviation": "+04"
+                      },
+                      {
+                        "id": 417,
+                        "name": "Etc/GMT-5",
+                        "abbreviation": "+05"
+                      },
+                      {
+                        "id": 418,
+                        "name": "Etc/GMT-6",
+                        "abbreviation": "+06"
+                      },
+                      {
+                        "id": 419,
+                        "name": "Etc/GMT-7",
+                        "abbreviation": "+07"
+                      },
+                      {
+                        "id": 420,
+                        "name": "Etc/GMT-8",
+                        "abbreviation": "+08"
+                      },
+                      {
+                        "id": 421,
+                        "name": "Etc/GMT-9",
+                        "abbreviation": "+09"
+                      },
+                      {
+                        "id": 422,
+                        "name": "Etc/GMT0",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 423,
+                        "name": "Etc/Greenwich",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 424,
+                        "name": "Etc/UCT",
+                        "abbreviation": "UTC"
+                      },
+                      {
+                        "id": 425,
+                        "name": "Etc/UTC",
+                        "abbreviation": "UTC"
+                      },
+                      {
+                        "id": 426,
+                        "name": "Etc/Universal",
+                        "abbreviation": "UTC"
+                      },
+                      {
+                        "id": 427,
+                        "name": "Etc/Zulu",
+                        "abbreviation": "UTC"
+                      },
+                      {
+                        "id": 428,
+                        "name": "Europe/Amsterdam",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 429,
+                        "name": "Europe/Andorra",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 430,
+                        "name": "Europe/Astrakhan",
+                        "abbreviation": "+04"
+                      },
+                      {
+                        "id": 431,
+                        "name": "Europe/Athens",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 432,
+                        "name": "Europe/Belfast",
+                        "abbreviation": "BST"
+                      },
+                      {
+                        "id": 433,
+                        "name": "Europe/Belgrade",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 434,
+                        "name": "Europe/Berlin",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 435,
+                        "name": "Europe/Bratislava",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 436,
+                        "name": "Europe/Brussels",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 437,
+                        "name": "Europe/Bucharest",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 438,
+                        "name": "Europe/Budapest",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 439,
+                        "name": "Europe/Busingen",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 440,
+                        "name": "Europe/Chisinau",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 441,
+                        "name": "Europe/Copenhagen",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 442,
+                        "name": "Europe/Dublin",
+                        "abbreviation": "IST"
+                      },
+                      {
+                        "id": 443,
+                        "name": "Europe/Gibraltar",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 444,
+                        "name": "Europe/Guernsey",
+                        "abbreviation": "BST"
+                      },
+                      {
+                        "id": 445,
+                        "name": "Europe/Helsinki",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 446,
+                        "name": "Europe/Isle_of_Man",
+                        "abbreviation": "BST"
+                      },
+                      {
+                        "id": 447,
+                        "name": "Europe/Istanbul",
+                        "abbreviation": "+03"
+                      },
+                      {
+                        "id": 448,
+                        "name": "Europe/Jersey",
+                        "abbreviation": "BST"
+                      },
+                      {
+                        "id": 449,
+                        "name": "Europe/Kaliningrad",
+                        "abbreviation": "EET"
+                      },
+                      {
+                        "id": 450,
+                        "name": "Europe/Kiev",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 451,
+                        "name": "Europe/Kirov",
+                        "abbreviation": "MSK"
+                      },
+                      {
+                        "id": 452,
+                        "name": "Europe/Kyiv",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 453,
+                        "name": "Europe/Lisbon",
+                        "abbreviation": "WEST"
+                      },
+                      {
+                        "id": 454,
+                        "name": "Europe/Ljubljana",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 455,
+                        "name": "Europe/London",
+                        "abbreviation": "BST"
+                      },
+                      {
+                        "id": 456,
+                        "name": "Europe/Luxembourg",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 457,
+                        "name": "Europe/Madrid",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 458,
+                        "name": "Europe/Malta",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 459,
+                        "name": "Europe/Mariehamn",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 460,
+                        "name": "Europe/Minsk",
+                        "abbreviation": "+03"
+                      },
+                      {
+                        "id": 461,
+                        "name": "Europe/Monaco",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 462,
+                        "name": "Europe/Moscow",
+                        "abbreviation": "MSK"
+                      },
+                      {
+                        "id": 463,
+                        "name": "Europe/Nicosia",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 464,
+                        "name": "Europe/Oslo",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 465,
+                        "name": "Europe/Paris",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 466,
+                        "name": "Europe/Podgorica",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 467,
+                        "name": "Europe/Prague",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 468,
+                        "name": "Europe/Riga",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 469,
+                        "name": "Europe/Rome",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 470,
+                        "name": "Europe/Samara",
+                        "abbreviation": "+04"
+                      },
+                      {
+                        "id": 471,
+                        "name": "Europe/San_Marino",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 472,
+                        "name": "Europe/Sarajevo",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 473,
+                        "name": "Europe/Saratov",
+                        "abbreviation": "+04"
+                      },
+                      {
+                        "id": 474,
+                        "name": "Europe/Simferopol",
+                        "abbreviation": "MSK"
+                      },
+                      {
+                        "id": 475,
+                        "name": "Europe/Skopje",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 476,
+                        "name": "Europe/Sofia",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 477,
+                        "name": "Europe/Stockholm",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 478,
+                        "name": "Europe/Tallinn",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 479,
+                        "name": "Europe/Tirane",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 480,
+                        "name": "Europe/Tiraspol",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 481,
+                        "name": "Europe/Ulyanovsk",
+                        "abbreviation": "+04"
+                      },
+                      {
+                        "id": 482,
+                        "name": "Europe/Uzhgorod",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 483,
+                        "name": "Europe/Vaduz",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 484,
+                        "name": "Europe/Vatican",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 485,
+                        "name": "Europe/Vienna",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 486,
+                        "name": "Europe/Vilnius",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 487,
+                        "name": "Europe/Volgograd",
+                        "abbreviation": "MSK"
+                      },
+                      {
+                        "id": 488,
+                        "name": "Europe/Warsaw",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 489,
+                        "name": "Europe/Zagreb",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 490,
+                        "name": "Europe/Zaporozhye",
+                        "abbreviation": "EEST"
+                      },
+                      {
+                        "id": 491,
+                        "name": "Europe/Zurich",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 492,
+                        "name": "GB",
+                        "abbreviation": "BST"
+                      },
+                      {
+                        "id": 493,
+                        "name": "GB-Eire",
+                        "abbreviation": "BST"
+                      },
+                      {
+                        "id": 494,
+                        "name": "GMT",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 495,
+                        "name": "GMT+0",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 496,
+                        "name": "GMT-0",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 497,
+                        "name": "GMT0",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 498,
+                        "name": "Greenwich",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 499,
+                        "name": "HST",
+                        "abbreviation": "HST"
+                      },
+                      {
+                        "id": 500,
+                        "name": "Hongkong",
+                        "abbreviation": "HKT"
+                      },
+                      {
+                        "id": 501,
+                        "name": "Iceland",
+                        "abbreviation": "GMT"
+                      },
+                      {
+                        "id": 502,
+                        "name": "Indian/Antananarivo",
+                        "abbreviation": "EAT"
+                      },
+                      {
+                        "id": 503,
+                        "name": "Indian/Chagos",
+                        "abbreviation": "+06"
+                      },
+                      {
+                        "id": 504,
+                        "name": "Indian/Christmas",
+                        "abbreviation": "+07"
+                      },
+                      {
+                        "id": 505,
+                        "name": "Indian/Cocos",
+                        "abbreviation": "+0630"
+                      },
+                      {
+                        "id": 506,
+                        "name": "Indian/Comoro",
+                        "abbreviation": "EAT"
+                      },
+                      {
+                        "id": 507,
+                        "name": "Indian/Kerguelen",
+                        "abbreviation": "+05"
+                      },
+                      {
+                        "id": 508,
+                        "name": "Indian/Mahe",
+                        "abbreviation": "+04"
+                      },
+                      {
+                        "id": 509,
+                        "name": "Indian/Maldives",
+                        "abbreviation": "+05"
+                      },
+                      {
+                        "id": 510,
+                        "name": "Indian/Mauritius",
+                        "abbreviation": "+04"
+                      },
+                      {
+                        "id": 511,
+                        "name": "Indian/Mayotte",
+                        "abbreviation": "EAT"
+                      },
+                      {
+                        "id": 512,
+                        "name": "Indian/Reunion",
+                        "abbreviation": "+04"
+                      },
+                      {
+                        "id": 513,
+                        "name": "Iran",
+                        "abbreviation": "+0330"
+                      },
+                      {
+                        "id": 514,
+                        "name": "Israel",
+                        "abbreviation": "IDT"
+                      },
+                      {
+                        "id": 515,
+                        "name": "Jamaica",
+                        "abbreviation": "EST"
+                      },
+                      {
+                        "id": 516,
+                        "name": "Japan",
+                        "abbreviation": "JST"
+                      },
+                      {
+                        "id": 517,
+                        "name": "Kwajalein",
+                        "abbreviation": "+12"
+                      },
+                      {
+                        "id": 518,
+                        "name": "Libya",
+                        "abbreviation": "EET"
+                      },
+                      {
+                        "id": 519,
+                        "name": "MET",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 520,
+                        "name": "MST",
+                        "abbreviation": "MST"
+                      },
+                      {
+                        "id": 521,
+                        "name": "MST7MDT",
+                        "abbreviation": "MDT"
+                      },
+                      {
+                        "id": 522,
+                        "name": "Mexico/BajaNorte",
+                        "abbreviation": "PDT"
+                      },
+                      {
+                        "id": 523,
+                        "name": "Mexico/BajaSur",
+                        "abbreviation": "MST"
+                      },
+                      {
+                        "id": 524,
+                        "name": "Mexico/General",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 525,
+                        "name": "NZ",
+                        "abbreviation": "NZST"
+                      },
+                      {
+                        "id": 526,
+                        "name": "NZ-CHAT",
+                        "abbreviation": "+1245"
+                      },
+                      {
+                        "id": 527,
+                        "name": "Navajo",
+                        "abbreviation": "MDT"
+                      },
+                      {
+                        "id": 528,
+                        "name": "PRC",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 529,
+                        "name": "PST8PDT",
+                        "abbreviation": "PDT"
+                      },
+                      {
+                        "id": 530,
+                        "name": "Pacific/Apia",
+                        "abbreviation": "+13"
+                      },
+                      {
+                        "id": 531,
+                        "name": "Pacific/Auckland",
+                        "abbreviation": "NZST"
+                      },
+                      {
+                        "id": 532,
+                        "name": "Pacific/Bougainville",
+                        "abbreviation": "+11"
+                      },
+                      {
+                        "id": 533,
+                        "name": "Pacific/Chatham",
+                        "abbreviation": "+1245"
+                      },
+                      {
+                        "id": 534,
+                        "name": "Pacific/Chuuk",
+                        "abbreviation": "+10"
+                      },
+                      {
+                        "id": 535,
+                        "name": "Pacific/Easter",
+                        "abbreviation": "-06"
+                      },
+                      {
+                        "id": 536,
+                        "name": "Pacific/Efate",
+                        "abbreviation": "+11"
+                      },
+                      {
+                        "id": 537,
+                        "name": "Pacific/Enderbury",
+                        "abbreviation": "+13"
+                      },
+                      {
+                        "id": 538,
+                        "name": "Pacific/Fakaofo",
+                        "abbreviation": "+13"
+                      },
+                      {
+                        "id": 539,
+                        "name": "Pacific/Fiji",
+                        "abbreviation": "+12"
+                      },
+                      {
+                        "id": 540,
+                        "name": "Pacific/Funafuti",
+                        "abbreviation": "+12"
+                      },
+                      {
+                        "id": 541,
+                        "name": "Pacific/Galapagos",
+                        "abbreviation": "-06"
+                      },
+                      {
+                        "id": 542,
+                        "name": "Pacific/Gambier",
+                        "abbreviation": "-09"
+                      },
+                      {
+                        "id": 543,
+                        "name": "Pacific/Guadalcanal",
+                        "abbreviation": "+11"
+                      },
+                      {
+                        "id": 544,
+                        "name": "Pacific/Guam",
+                        "abbreviation": "ChST"
+                      },
+                      {
+                        "id": 545,
+                        "name": "Pacific/Honolulu",
+                        "abbreviation": "HST"
+                      },
+                      {
+                        "id": 546,
+                        "name": "Pacific/Johnston",
+                        "abbreviation": "HST"
+                      },
+                      {
+                        "id": 547,
+                        "name": "Pacific/Kanton",
+                        "abbreviation": "+13"
+                      },
+                      {
+                        "id": 548,
+                        "name": "Pacific/Kiritimati",
+                        "abbreviation": "+14"
+                      },
+                      {
+                        "id": 549,
+                        "name": "Pacific/Kosrae",
+                        "abbreviation": "+11"
+                      },
+                      {
+                        "id": 550,
+                        "name": "Pacific/Kwajalein",
+                        "abbreviation": "+12"
+                      },
+                      {
+                        "id": 551,
+                        "name": "Pacific/Majuro",
+                        "abbreviation": "+12"
+                      },
+                      {
+                        "id": 552,
+                        "name": "Pacific/Marquesas",
+                        "abbreviation": "-0930"
+                      },
+                      {
+                        "id": 553,
+                        "name": "Pacific/Midway",
+                        "abbreviation": "SST"
+                      },
+                      {
+                        "id": 554,
+                        "name": "Pacific/Nauru",
+                        "abbreviation": "+12"
+                      },
+                      {
+                        "id": 555,
+                        "name": "Pacific/Niue",
+                        "abbreviation": "-11"
+                      },
+                      {
+                        "id": 556,
+                        "name": "Pacific/Norfolk",
+                        "abbreviation": "+11"
+                      },
+                      {
+                        "id": 557,
+                        "name": "Pacific/Noumea",
+                        "abbreviation": "+11"
+                      },
+                      {
+                        "id": 558,
+                        "name": "Pacific/Pago_Pago",
+                        "abbreviation": "SST"
+                      },
+                      {
+                        "id": 559,
+                        "name": "Pacific/Palau",
+                        "abbreviation": "+09"
+                      },
+                      {
+                        "id": 560,
+                        "name": "Pacific/Pitcairn",
+                        "abbreviation": "-08"
+                      },
+                      {
+                        "id": 561,
+                        "name": "Pacific/Pohnpei",
+                        "abbreviation": "+11"
+                      },
+                      {
+                        "id": 562,
+                        "name": "Pacific/Ponape",
+                        "abbreviation": "+11"
+                      },
+                      {
+                        "id": 563,
+                        "name": "Pacific/Port_Moresby",
+                        "abbreviation": "+10"
+                      },
+                      {
+                        "id": 564,
+                        "name": "Pacific/Rarotonga",
+                        "abbreviation": "-10"
+                      },
+                      {
+                        "id": 565,
+                        "name": "Pacific/Saipan",
+                        "abbreviation": "ChST"
+                      },
+                      {
+                        "id": 566,
+                        "name": "Pacific/Samoa",
+                        "abbreviation": "SST"
+                      },
+                      {
+                        "id": 567,
+                        "name": "Pacific/Tahiti",
+                        "abbreviation": "-10"
+                      },
+                      {
+                        "id": 568,
+                        "name": "Pacific/Tarawa",
+                        "abbreviation": "+12"
+                      },
+                      {
+                        "id": 569,
+                        "name": "Pacific/Tongatapu",
+                        "abbreviation": "+13"
+                      },
+                      {
+                        "id": 570,
+                        "name": "Pacific/Truk",
+                        "abbreviation": "+10"
+                      },
+                      {
+                        "id": 571,
+                        "name": "Pacific/Wake",
+                        "abbreviation": "+12"
+                      },
+                      {
+                        "id": 572,
+                        "name": "Pacific/Wallis",
+                        "abbreviation": "+12"
+                      },
+                      {
+                        "id": 573,
+                        "name": "Pacific/Yap",
+                        "abbreviation": "+10"
+                      },
+                      {
+                        "id": 574,
+                        "name": "Poland",
+                        "abbreviation": "CEST"
+                      },
+                      {
+                        "id": 575,
+                        "name": "Portugal",
+                        "abbreviation": "WEST"
+                      },
+                      {
+                        "id": 576,
+                        "name": "ROC",
+                        "abbreviation": "CST"
+                      },
+                      {
+                        "id": 577,
+                        "name": "ROK",
+                        "abbreviation": "KST"
+                      },
+                      {
+                        "id": 578,
+                        "name": "Singapore",
+                        "abbreviation": "+08"
+                      },
+                      {
+                        "id": 579,
+                        "name": "Turkey",
+                        "abbreviation": "+03"
+                      },
+                      {
+                        "id": 580,
+                        "name": "UCT",
+                        "abbreviation": "UTC"
+                      },
+                      {
+                        "id": 581,
+                        "name": "US/Alaska",
+                        "abbreviation": "AKDT"
+                      },
+                      {
+                        "id": 582,
+                        "name": "US/Aleutian",
+                        "abbreviation": "HDT"
+                      },
+                      {
+                        "id": 583,
+                        "name": "US/Arizona",
+                        "abbreviation": "MST"
+                      },
+                      {
+                        "id": 584,
+                        "name": "US/Central",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 585,
+                        "name": "US/East-Indiana",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 586,
+                        "name": "US/Eastern",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 587,
+                        "name": "US/Hawaii",
+                        "abbreviation": "HST"
+                      },
+                      {
+                        "id": 588,
+                        "name": "US/Indiana-Starke",
+                        "abbreviation": "CDT"
+                      },
+                      {
+                        "id": 589,
+                        "name": "US/Michigan",
+                        "abbreviation": "EDT"
+                      },
+                      {
+                        "id": 590,
+                        "name": "US/Mountain",
+                        "abbreviation": "MDT"
+                      },
+                      {
+                        "id": 591,
+                        "name": "US/Pacific",
+                        "abbreviation": "PDT"
+                      },
+                      {
+                        "id": 592,
+                        "name": "US/Samoa",
+                        "abbreviation": "SST"
+                      },
+                      {
+                        "id": 593,
+                        "name": "UTC",
+                        "abbreviation": "UTC"
+                      },
+                      {
+                        "id": 594,
+                        "name": "Universal",
+                        "abbreviation": "UTC"
+                      },
+                      {
+                        "id": 595,
+                        "name": "W-SU",
+                        "abbreviation": "MSK"
+                      },
+                      {
+                        "id": 596,
+                        "name": "WET",
+                        "abbreviation": "WEST"
+                      },
+                      {
+                        "id": 597,
+                        "name": "Zulu",
+                        "abbreviation": "UTC"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Invalid access token",
+                  "data": null
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Server error",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/profile/personal-info/update": {
+      "put": {
+        "tags": ["User"],
+        "summary": "Update personal info section of the user profile",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "bio": {
+                    "type": "string"
+                  },
+                  "profilePhoto": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": [
+                  "username",
+                  "phone",
+                  "firstName",
+                  "lastName",
+                  "profilePhoto"
+                ]
+              },
+              "encoding": {
+                "profilePhoto": {
+                  "contentType": "image/*"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "Personal info updated successfully",
+                  "data": {
+                    "username": "nature_nwamama",
+                    "email": "karen.brown3@example.com+3",
+                    "phone": "58075419",
+                    "firstName": "Nature",
+                    "lastName": "Okoye",
+                    "profilePhoto": "https://res.cloudinary.com/naturn/image/upload/v1753860537/procircle_profile_photos/dvhlxvib3pubiostabvt.png",
+                    "id": 3
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Missing required fields",
+                  "data": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Invalid access token",
+                  "data": null
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Server error",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/profile/professional-info/update": {
+      "put": {
+        "tags": ["User"],
+        "summary": "Update professional info section of the user profile",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "careerSummary": {
+                    "type": "string"
+                  },
+                  "industrySectorId": {
+                    "type": "integer",
+                    "description": "The id of the industry sector that user selects"
+                  },
+                  "jobTitle": {
+                    "type": "string"
+                  },
+                  "yearsOfExperience": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "careerSummary",
+                  "industrySectorId",
+                  "jobTitle",
+                  "yearsOfExperience"
+                ]
+              },
+              "example": {
+                "careerSummary": "Excellent coder",
+                "industrySectorId": "3",
+                "jobTitle": "Senior Sound Engineer",
+                "yearsOfExperience": "9"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "Engagement updated successfully",
+                  "data": {
+                    "availabilityDays": [
+                      "MON - 9AM",
+                      "TUE - 10PM",
+                      "SUN - 11PM"
+                    ],
+                    "funFact": "I love singing and dancing",
+                    "timeZone": "32"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Missing required fields",
+                  "data": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Invalid access token",
+                  "data": null
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Server error",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/profile/engagement-info/update": {
+      "put": {
+        "tags": ["User"],
+        "summary": "Update availability, fun fact, and timezone for the user profile",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "availabilityDays": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": ["MON - 9AM", "TUE - 10PM", "SUN - 11PM"]
+                  },
+                  "funFact": {
+                    "type": "string",
+                    "example": "I love singing and dancing"
+                  },
+                  "timeZone": {
+                    "type": "string",
+                    "example": "32",
+                    "description": "Timezone ID"
+                  }
+                },
+                "required": ["availabilityDays", "funFact", "timeZone"]
+              },
+              "example": {
+                "availabilityDays": ["MON - 9AM", "TUE - 10PM", "SUN - 11PM"],
+                "funFact": "I love singing and dancing",
+                "timeZone": "32"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "Engagement updated successfully",
+                  "data": {
+                    "availabilityDays": [
+                      "MON - 9AM",
+                      "TUE - 10PM",
+                      "SUN - 11PM"
+                    ],
+                    "funFact": "I love singing and dancing",
+                    "timeZone": "32"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Missing required fields",
+                  "data": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Invalid access token",
+                  "data": null
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Server error",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/profile/goal-info/update": {
+      "put": {
+        "tags": ["User"],
+        "summary": "Update goal section of the user profile",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "addAreaOfInterests": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    },
+                    "example": [1, 2, 4],
+                    "description": "list of area of interest ids that user wants to add"
+                  },
+                  "longTermGoal": {
+                    "type": "string"
+                  },
+                  "preferredAccountabilityPartnerTrait": {
+                    "type": "string"
+                  },
+                  "removeAreaOfInterests": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    },
+                    "example": [1, 2, 4],
+                    "description": "list of area of interest ids that user wants to remove"
+                  }
+                },
+                "required": [
+                  "longTermGoal",
+                  "preferredAccountabilityPartnerTrait"
+                ]
+              },
+              "example": {
+                "longTermGoal": "To be a philantropist and a mentor to millions of men around the planet",
+                "preferredAccountabilityPartnerTrait": "Serious minded and Goal getter",
+                "addAreaOfInterests": [8, 9, 7]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "longTermGoal": "To be a philantropist and a mentor to millions of men around the planet",
+                    "preferredAccountabilityPartnerTrait": "Serious minded and Goal getter",
+                    "addedAreaOfInterests": [8, 9, 7],
+                    "removedAreaOfInterests": []
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Missing required fields",
+                  "data": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Invalid access token",
+                  "data": null
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Server error",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/api/v1/user/change/password": {
+      "put": {
+        "tags": ["User"],
+        "summary": "Change user password",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "currentPassword": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                },
+                "required": ["currentPassword", "newPassword"]
+              },
+              "example": {
+                "currentPassword": "oldPass123",
+                "newPassword": "newPass456"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password changed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "Password successfully updated",
+                  "data": null
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "currentPassword and newPassword is required",
+                  "data": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Invalid access token",
+                  "data": null
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "you have to enter your old password correctly to update your password",
+                  "data": null
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Server error",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/signup": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Signup a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  }
+                },
+                "required": ["password", "username", "email"]
+              },
+              "example": {
+                "password": "passpassword123",
+                "username": "nature666",
+                "email": "john@example.com"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "user created successfully",
+                  "data": {
+                    "username": "nature666",
+                    "email": "karen.brown3@example.com+3",
+                    "first_name": null,
+                    "last_name": null,
+                    "id": 3,
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJrYXJlbi5icm93bjNAZXhhbXBsZS5jb20rMyIsImlhdCI6MTc1MjkzMzc2MywiZXhwIjoxNzUzNTM4NTYzfQ.GoFeXfQ2h_nOpvfJODCcuj8RXNJI3_ONBWdfmFAexy8"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Enter required fields",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Username, Email and Password are required",
+                  "data": null
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Email or username already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Email or username already in use",
+                  "data": null
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Server error",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/signin": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Signin an existing user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "identity": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                },
+                "required": ["identity", "password"]
+              },
+              "example": {
+                "identity": "nature666",
+                "password": "passpassword123"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "Login successful",
+                  "data": {
+                    "username": "nature666",
+                    "email": "karen.brown3@example.com+3",
+                    "first_name": null,
+                    "last_name": null,
+                    "id": 3,
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJrYXJlbi5icm93bjNAZXhhbXBsZS5jb20rMyIsImlhdCI6MTc1MjkzMzc2MywiZXhwIjoxNzUzNTM4NTYzfQ.GoFeXfQ2h_nOpvfJODCcuj8RXNJI3_ONBWdfmFAexy8"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "identifier and password are required. The value of the identifier can either be your username or your email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "identifier and password are required. The value of the identifier can either be your username or your email",
+                  "data": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid email or password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "invalid email or password",
+                  "data": null
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Server error",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/goal": {
+      "post": {
+        "tags": ["Goal"],
+        "summary": "Creates a goal",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "goals": {
+                    "type": "array"
+                  }
+                },
+                "required": ["goals"]
+              },
+              "example": {
+                "goals": ["Goal I", "Goal II", "Goal III"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "Goals created successfully",
+                  "data": {
+                    "id": 307,
+                    "user_id": 3,
+                    "goals": ["Goal I", "Goal II", "Goal III"],
+                    "week_start": "2025-07-13T00:00:00.000Z",
+                    "week_end": "2025-07-18T00:00:00.000Z",
+                    "status": "pending",
+                    "updatedAt": "2025-07-15T05:35:25.862Z",
+                    "createdAt": "2025-07-15T05:35:25.862Z",
+                    "paired_with": null
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Goals must be an array of non-empty strings",
+                  "data": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Invalid access token",
+                  "data": null
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Server error",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Goal"],
+        "summary": "Fetches all user goals",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "Goals Fetched successfully",
+                  "data": {
+                    "goals": [
+                      {
+                        "id": 307,
+                        "user_id": 3,
+                        "goals": ["Start Prayer Session"],
+                        "paired_with": 4,
+                        "status": "in_progress",
+                        "week_start": "2025-07-13",
+                        "week_end": "2025-07-18",
+                        "createdAt": "2025-07-15T05:35:25.862Z",
+                        "updatedAt": "2025-07-16T11:17:49.703Z"
+                      },
+                      {
+                        "id": 306,
+                        "user_id": 3,
+                        "goals": ["Start Gym Session"],
+                        "paired_with": null,
+                        "status": "pending",
+                        "week_start": "2025-07-12",
+                        "week_end": "2025-07-18",
+                        "createdAt": "2025-07-13T20:49:07.710Z",
+                        "updatedAt": "2025-07-15T13:43:49.660Z"
+                      },
+                      {
+                        "id": 262,
+                        "user_id": 3,
+                        "goals": ["Exercise daily", "Write a journal"],
+                        "paired_with": null,
+                        "status": "pending",
+                        "week_start": "2025-07-06",
+                        "week_end": "2025-07-13",
+                        "createdAt": "2025-07-11T03:07:41.427Z",
+                        "updatedAt": "2025-07-15T13:43:49.660Z"
+                      }
+                    ],
+                    "pagination": {
+                      "currentPage": 1,
+                      "totalPages": 1,
+                      "totalGoals": 3,
+                      "hasNextPage": false,
+                      "hasPrevPage": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Invalid access token",
+                  "data": null
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Server error",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/goal/industry-sector": {
+      "get": {
+        "tags": ["Goal"],
+        "summary": "Fetches all industry sectors",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": [
+                    {
+                      "id": 1,
+                      "name": "Healthcare"
+                    },
+                    {
+                      "id": 2,
+                      "name": "Finance"
+                    },
+                    {
+                      "id": 3,
+                      "name": "Education"
+                    },
+                    {
+                      "id": 4,
+                      "name": "Technology"
+                    },
+                    {
+                      "id": 5,
+                      "name": "Construction"
+                    },
+                    {
+                      "id": 6,
+                      "name": "Agriculture"
+                    },
+                    {
+                      "id": 7,
+                      "name": "Retail"
+                    },
+                    {
+                      "id": 8,
+                      "name": "Transportation"
+                    },
+                    {
+                      "id": 9,
+                      "name": "Energy"
+                    },
+                    {
+                      "id": 10,
+                      "name": "Media & Entertainment"
+                    },
+                    {
+                      "id": 11,
+                      "name": "Others"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Invalid access token",
+                  "data": null
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Server error",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/goal/by-date": {
+      "get": {
+        "tags": ["Goal"],
+        "summary": "Fetches all user goals by specific date",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Date in the format: YYYY-MM-DD"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "No goals found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "No goals found for the week containing the specified date",
+                  "data": {
+                    "requestedDate": "2025-11-11",
+                    "weekStart": "2025-11-08T23:00:00.000Z",
+                    "weekEnd": "2025-11-14T22:59:59.999Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Invalid access token",
+                  "data": null
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Server error",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/goal/{id}": {
+      "get": {
+        "tags": ["Goal"],
+        "summary": "Retrieve goal by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the goal"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "Goal fetched successfully",
+                  "data": {
+                    "id": 307,
+                    "user_id": 3,
+                    "goals": ["Start Prayer Session"],
+                    "paired_with": 4,
+                    "status": "pending",
+                    "week_start": "2025-07-26",
+                    "week_end": "2025-08-01",
+                    "createdAt": "2025-07-30T05:35:25.862Z",
+                    "updatedAt": "2025-07-31T11:17:49.703Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Goal not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Goal not found",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Goal"],
+        "summary": "Update Goal",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the user"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "goals": {
+                    "type": "array"
+                  }
+                },
+                "required": ["goals"]
+              },
+              "example": {
+                "goals": ["Updated Goal I", "Updated Goal II"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Goal updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "Goals updated successfully",
+                  "data": {
+                    "id": 307,
+                    "user_id": 3,
+                    "goals": ["Updated Goal I", "Updated Goal II"],
+                    "paired_with": 4,
+                    "status": "pending",
+                    "week_start": "2025-07-26",
+                    "week_end": "2025-08-01",
+                    "createdAt": "2025-07-30T05:35:25.862Z",
+                    "updatedAt": "2025-07-31T20:45:13.099Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Missing required fields",
+                  "data": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Invalid access token",
+                  "data": null
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Server error",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/goal/{id}/complete": {
+      "patch": {
+        "tags": ["Goal"],
+        "summary": "Mark goal as complete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the goal"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "Goals marked as completed successfully",
+                  "data": {
+                    "id": 307,
+                    "user_id": 3,
+                    "goals": ["Checkers"],
+                    "paired_with": 4,
+                    "status": "completed",
+                    "week_start": "2025-07-26",
+                    "week_end": "2025-08-01",
+                    "createdAt": "2025-07-30T05:35:25.862Z",
+                    "updatedAt": "2025-07-31T20:50:25.302Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Goal not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Goal not found",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/goal/pair/user": {
+      "get": {
+        "tags": ["Goal"],
+        "summary": "Pair Goals to a partner (ADMIN ONLY)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "Users have been successfully matched based on their goals",
+                  "data": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Invalid access token",
+                  "data": null
+                }
+              }
+            }
+          },
+          "424": {
+            "description": "When LLM model is having some technical glitch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "The LLM model is having some glitches, try again",
+                  "data": null
+                }
+              }
+            }
+          },
+
+          "403": {
+            "description": "When a non-admin access the endpoint",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Only admins can access this endpoint",
+                  "data": null
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No Goals found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "No goals were created by users this week!",
+                  "data": null
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Server error",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

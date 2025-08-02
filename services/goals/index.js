@@ -19,7 +19,7 @@ const RES_CODES = require("../../constants/responseCodes");
  * @param {Object} params - The parameters for fetching users.
  * @param {number} [params.page ]- The current page number (1-based).
  * @param {number} [params.limit] - The number of results per page.
- * @param {{status: "in_progress" | "pending" | "completed", show_paired_partners: string, date: string, user_id: string}} [params.filter] - (Optional) filtering logic. \
+ * @param {{status: "in_progress" | "pending" | "completed", startDate: string, endDate: string, show_paired_partners: string, date: string, user_id: string}} [params.filter] - (Optional) filtering logic. \
  * You can filter by the by the status of the goal.
  * The show_paired_partners query params just let the API know if it is to implemnent logic for fetching users alongside their partners
  * made for admin alone.
@@ -42,6 +42,16 @@ const fetchGoalsService = async ({ page, limit, filter }) => {
   if (filter.user_id) {
     where.user_id = filter.user_id;
   }
+  if (filter.startDate || filter.endDate) {
+    where.createdAt = {};
+    if (filter.startDate) {
+      where.createdAt[Op.gte] = filter.startDate;
+    }
+    if (filter.endDate) {
+      where.createdAt[Op.lt] = filter.endDate;
+    }
+  }
+  
   // If show_psired_partners query param is passed, it fetches all goals that are paired
   // alongside paired partner details (Admin only)
   if (filter.show_paired_partners) {

@@ -14,7 +14,6 @@ const signup = async (req, res) => {
   try {
     const { email, password, username } = req.body;
     if (!email || !password || !username) {
-
       return apiResponse({
         res,
         status: ResponseStatusEnum.FAIL,
@@ -35,21 +34,21 @@ const signup = async (req, res) => {
     }
 
     if (password.length < 6) {
-        return apiResponse({
-          res,
-          status: ResponseStatusEnum.FAIL,
-          statusCode: 400,
-          message: "Password length must be greater than 5",
-        });
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
+        message: "Password length must be greater than 5",
+      });
     }
 
     if (username.length < 2) {
       return apiResponse({
-          res,
-          status: ResponseStatusEnum.FAIL,
-          statusCode: 400,
-          message: "Username length must be greater than 2",
-        });
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
+        message: "Username length must be greater than 2",
+      });
     }
 
     const existingUser = await User.findOne({
@@ -59,14 +58,14 @@ const signup = async (req, res) => {
     });
 
     if (existingUser)
-      return res
-        .status(400)
-        .json({ message: "Email or username already in use" });
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 409,
+        message: "Email or username already in use",
+      });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log("Email ====> ", email);
-    console.log("Password ====> ", password);
-    console.log("Username ====> ", username);
 
     const newUser = await User.create({
       email,
@@ -97,8 +96,6 @@ const signup = async (req, res) => {
         message: "user created successfully",
         data: result,
       });
-
-      
     }
   } catch (err) {
     console.error(err);
@@ -115,13 +112,13 @@ const signin = async (req, res) => {
   try {
     const { identifier, password } = req.body;
     if (!identifier || !password) {
-
       return apiResponse({
         res,
         status: ResponseStatusEnum.FAIL,
         statusCode: 400,
-        message: "identifier and password are required. The value of the identifier can either be your username or your email"
-      })
+        message:
+          "identifier and password are required. The value of the identifier can either be your username or your email",
+      });
     }
 
     const user = await User.findOne({
@@ -170,7 +167,6 @@ const signin = async (req, res) => {
       message: "Login successful",
       data: result,
     });
-    
   } catch (err) {
     console.error(err);
     return apiResponse({
