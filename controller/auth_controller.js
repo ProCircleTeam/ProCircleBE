@@ -94,6 +94,20 @@ const signup = async (req, res) => {
         email: result.email,
       });
 
+      result["phone_number"] = null;
+      result["first_name"] = null;
+      result["last_name"] = null;
+      result["profile_photo"] = null;
+      result["bio"] = null;
+      result["years_of_experience"] = null;
+      result["preferred_accountability_partner_trait"] = null;
+      result["fun_fact"] = null;
+      result["career_summary"] = null;
+      result["industry_sector_id"] = null;
+      result["industry_sector"] = null;
+      result["areaOfInterests"] = null;
+      result["timezone"] = null;
+
       return apiResponse({
         res,
         status: ResponseStatusEnum.SUCCESS,
@@ -101,6 +115,7 @@ const signup = async (req, res) => {
         message: "user created successfully",
         data: result,
       });
+
     }
   } catch (err) {
     console.error(err);
@@ -187,13 +202,6 @@ const signin = async (req, res) => {
         message: `Cannot find the user with id ${id}`,
       });
     }
-    // return apiResponse({
-    //   res,
-    //   status: ResponseStatusEnum.SUCCESS,
-    //   statusCode: 200,
-    //   message: "Login successful",
-    //   data: result,
-    // });
 
     const result = foundUser.toJSON();
     const token = generateToken({ id: user.id, email: user.email });
