@@ -1,4 +1,9 @@
-const { User } = require("../models");
+const {
+  User,
+  Industry_Sector,
+  AreaOfInterest,
+  Timezone,
+} = require("../models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { Op } = require("sequelize");
@@ -89,6 +94,20 @@ const signup = async (req, res) => {
         email: result.email,
       });
 
+      result["phone_number"] = null;
+      result["first_name"] = null;
+      result["last_name"] = null;
+      result["profile_photo"] = null;
+      result["bio"] = null;
+      result["years_of_experience"] = null;
+      result["preferred_accountability_partner_trait"] = null;
+      result["fun_fact"] = null;
+      result["career_summary"] = null;
+      result["industry_sector_id"] = null;
+      result["industry_sector"] = null;
+      result["areaOfInterests"] = null;
+      result["timezone"] = null;
+
       return apiResponse({
         res,
         status: ResponseStatusEnum.SUCCESS,
@@ -96,6 +115,7 @@ const signup = async (req, res) => {
         message: "user created successfully",
         data: result,
       });
+
     }
   } catch (err) {
     console.error(err);
@@ -154,20 +174,48 @@ const signin = async (req, res) => {
       });
     }
 
+    const foundUser = await User.findByPk(user.id, {
+      attributes: {
+        exclude: ["password", "createdAt", "updatedAt", "timezone_id"],
+      },
+      include: [
+        {
+          model: Industry_Sector,
+          as: "industry_sector",
+        },
+        {
+          model: AreaOfInterest,
+          as: "areaOfInterests",
+          through: { attributes: [] },
+        },
+        {
+          model: Timezone,
+          as: "timezone",
+        },
+      ],
+    });
+    if (!foundUser) {
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 404,
+        message: `Cannot find the user with id ${id}`,
+      });
+    }
+
+    const result = foundUser.toJSON();
     const token = generateToken({ id: user.id, email: user.email });
-    const result = user.toJSON();
-    delete result.password;
-    delete result.deletedAt;
     result.token = token;
 
     return apiResponse({
       res,
       status: ResponseStatusEnum.SUCCESS,
       statusCode: 200,
-      message: "Login successful",
+      message: "User fetched successfully",
       data: result,
     });
   } catch (err) {
+    console.error("Error starts here ====> ");
     console.error(err);
     return apiResponse({
       res,
