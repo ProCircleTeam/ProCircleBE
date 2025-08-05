@@ -45,7 +45,7 @@ const generic = async (req, res) => {
     status: ResponseStatusEnum.SUCCESS,
     statusCode: 200,
     message: "Code generated successfully",
-    data: {"otp": resetCode} ,
+    data: {},
   });
 };
 
