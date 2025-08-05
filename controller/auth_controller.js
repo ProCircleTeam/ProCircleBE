@@ -115,7 +115,6 @@ const signup = async (req, res) => {
         message: "user created successfully",
         data: result,
       });
-
     }
   } catch (err) {
     console.error(err);
@@ -225,5 +224,69 @@ const signin = async (req, res) => {
     });
   }
 };
+const passwordReset = async (req, res) => {
+  let error = "";
 
-module.exports = { signup, signin };
+  if (!req.body || !req.body.email || !req.body.password || !req.body.otp) {
+   
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 400,
+      message: `Email, Password and Otp code are required`,
+    });
+  }
+
+
+
+  const { email, password, otp } = req.body;
+
+  console.log(email);
+  console.log(password);
+  console.log(otp);
+  if (!email) {
+    error = "Email is required";
+  } else if (!password) {
+    error = "Password";
+  } else if (!otp) {
+    error = "OTP is required";
+  }
+  if (error)
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 400,
+      message: error,
+    });
+
+  const user = await User.findOne({ where: { email } });
+  if(!user ||
+    user.resetCode !== otp ||
+    user.resetCodeExpiration < new Date()) { 
+      
+      return apiResponse({
+    res,
+    status: ResponseStatusEnum.FAIL,
+    statusCode: 400,
+    message: `Invalid or expired code`,
+  });
+}
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  await user.update({
+    password: hashedPassword,
+    resetCode: null,
+    resetCodeExpiration: null,
+  });
+
+  return apiResponse({
+    res,
+    status: ResponseStatusEnum.SUCCESS,
+    statusCode: 200,
+    message: `Password reset successful`,
+    data: {},
+  }) 
+
+};
+
+module.exports = { signup, signin, passwordReset };
