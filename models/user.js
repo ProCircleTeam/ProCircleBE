@@ -115,6 +115,14 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
+      resetCode: {
+        type: DataTypes.STRING, 
+        allowNull: true,
+      },
+      resetCodeExpiration: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
     },
     {
       sequelize,

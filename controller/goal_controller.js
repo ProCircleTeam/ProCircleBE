@@ -21,8 +21,8 @@ function areAllGoalsNonEmptyStrings(goals) {
 const createGoal = async (req, res) => {
   try {
     const { goals } = req.body;
-    const userId = req.user.id; // Assuming you have auth middleware that sets req.user
-
+    const userId = req.user.id;
+    
     // Validate goals array
     if (!isValidGoalsArray(goals)) {
       return apiResponse({

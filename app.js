@@ -16,6 +16,7 @@ const db = require("./models")
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const goalRoutes = require("./routes/goal");
+const genericRoutes = require("./routes/generic");
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(express.json());
@@ -25,6 +26,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/goal", goalRoutes);
+app.use("/api/v1/generic", genericRoutes);
 
 
 app.listen(PORT, () => {
