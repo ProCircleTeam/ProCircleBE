@@ -7,6 +7,7 @@ const {
 const RES_CODES = require("../constants/responseCodes");
 const getWeekBoundaries = require("../utils/getWeekBoundaries");
 const { apiResponse, ResponseStatusEnum } = require("../utils/apiResponse");
+const { fetchProfileCompletionStatus } = require("../services/users/updateProfile"); // Import the function
 
 // Reusable validation helpers
 function isValidGoalsArray(goals) {
@@ -22,6 +23,22 @@ const createGoal = async (req, res) => {
   try {
     const { goals } = req.body;
     const userId = req.user.id;
+
+    const completionStatus = await fetchProfileCompletionStatus(userId);
+
+    if (
+      !completionStatus.professionalInfoComplete ||
+      !completionStatus.goalsInfoComplete ||
+      !completionStatus.engagementInfoComplete
+    ) {
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
+        message:
+          "Please complete your profile (professional info, goals info, and engagement info) before creating goals.",
+      });
+    }
     
     // Validate goals array
     if (!isValidGoalsArray(goals)) {
