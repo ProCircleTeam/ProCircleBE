@@ -7,7 +7,7 @@ const {
 const RES_CODES = require("../constants/responseCodes");
 const getWeekBoundaries = require("../utils/getWeekBoundaries");
 const { apiResponse, ResponseStatusEnum } = require("../utils/apiResponse");
-const { fetchProfileCompletionStatus } = require("../services/users/updateProfile"); // Import the function
+const { fetchProfileCompletionStatus } = require("../services/users/updateProfile"); 
 
 // Reusable validation helpers
 function isValidGoalsArray(goals) {
