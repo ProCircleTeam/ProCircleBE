@@ -29,7 +29,6 @@ const createGoal = async (req, res) => {
     if (
       !completionStatus.personalInfoComplete ||
       !completionStatus.professionalInfoComplete ||
-      !completionStatus.professionalInfoComplete ||
       !completionStatus.goalsInfoComplete ||
       !completionStatus.engagementInfoComplete
     ) {
