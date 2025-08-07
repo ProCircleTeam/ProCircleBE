@@ -27,6 +27,8 @@ const createGoal = async (req, res) => {
     const completionStatus = await fetchProfileCompletionStatus(userId);
 
     if (
+      !completionStatus.personalInfoComplete ||
+      !completionStatus.professionalInfoComplete ||
       !completionStatus.professionalInfoComplete ||
       !completionStatus.goalsInfoComplete ||
       !completionStatus.engagementInfoComplete
