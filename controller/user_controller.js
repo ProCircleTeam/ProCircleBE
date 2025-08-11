@@ -159,6 +159,15 @@ const getUsersAndTheirPairedPartners = async (req, res) => {
 const updateUserPersonalInfo = async (req, res) => {
   try {
     const { bio, firstName, lastName, phone, username } = req.body;
+    if (!bio && !firstName && !lastName && !phone && !username) {
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
+        message:
+          "The bio field, firstName field, lastName field, username field and phone field cannot be empty",
+      });
+    }
     const result = await updateUserPersonalInfoService(req.user.id, {
       bio,
       firstName,
@@ -216,6 +225,20 @@ const updateUserProfessionalInfo = async (req, res) => {
   try {
     const { careerSummary, industrySectorId, jobTitle, yearsOfExperience } =
       req.body;
+    if (
+      !careerSummary &&
+      !industrySectorId &&
+      !jobTitle &&
+      !yearsOfExperience
+    ) {
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
+        message:
+          "The careerSummary field, industrySectorId field, yearsOfExperience field and jobTitle field cannot be empty",
+      });
+    }
     const result = await updateUserProfessionalInfoService(req.user.id, {
       careerSummary,
       industrySectorId,
@@ -273,6 +296,15 @@ const updateUserGoalInfo = async (req, res) => {
       longTermGoal,
       preferredAccountabilityPartnerTrait,
     } = req.body;
+    if (!longTermGoal && !preferredAccountabilityPartnerTrait) {
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
+        message:
+          "The long term goal field and preferredAccountabilityPartnerTrait field cannot be empty",
+      });
+    }
     const result = await updateUserGoalInfoService(req.user.id, {
       addAreaOfInterests,
       removeAreaOfInterests,
@@ -326,6 +358,15 @@ const updateUserGoalInfo = async (req, res) => {
 const updateUserEngagementInfo = async (req, res) => {
   try {
     const { availabilityDays, funFact, timeZone } = req.body;
+    if (!availabilityDays && !funFact && !timeZone) {
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
+        message:
+          "The long term availabilityDays field, funFact field and timeZone field cannot be empty",
+      });
+    }
     const result = await updateUserEngagementInfoService(req.user.id, {
       availabilityDays,
       funFact,
