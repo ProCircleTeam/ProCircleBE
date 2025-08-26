@@ -4447,14 +4447,23 @@
                   "email": {
                     "type": "string",
                     "format": "email"
+                  },
+                  "agreeToTermsAndConditions": {
+                    "type": "boolean"
                   }
                 },
-                "required": ["password", "username", "email"]
+                "required": [
+                  "password",
+                  "username",
+                  "email",
+                  "agreeToTermsAndConditions"
+                ]
               },
               "example": {
                 "password": "passpassword123",
                 "username": "nature666",
-                "email": "john@example.com"
+                "email": "john@example.com",
+                "agreeToTermsAndConditions": true
               }
             }
           }
