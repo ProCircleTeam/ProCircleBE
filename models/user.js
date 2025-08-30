@@ -89,10 +89,10 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.TEXT,
 				allowNull: true,
 			},
-      terms_and_conditions_agreement: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-      },
+			terms_and_conditions_agreement: {
+				type: DataTypes.BOOLEAN,
+				defaultValue: false,
+			},
 			availability_days: {
 				type: DataTypes.ARRAY(DataTypes.TEXT),
 				allowNull: true,
