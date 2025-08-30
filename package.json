@@ -12,7 +12,10 @@
     "seed": "sequelize db:seed:all",
     "undo:migrate": "sequelize db:migrate:undo",
     "db:setup": "npm run create-db-user && npm run create:db && npm run migrate",
-    "create:db": "sequelize db:create"
+    "create:db": "sequelize db:create",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
@@ -35,7 +38,14 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "eslint": "^9.34.0",
+    "eslint-config-xo": "^0.49.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.5",
     "nodemon": "^3.1.10",
     "sequelize-cli": "^6.6.3"
+  },
+  "lint-staged": {
+    "*.{js,mjs}": "eslint --fix"
   }
 }
