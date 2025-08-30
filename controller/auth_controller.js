@@ -23,7 +23,7 @@ const signup = async (req, res) => {
         res,
         status: ResponseStatusEnum.FAIL,
         statusCode: 400,
-        message: "You must agree to the terms and conditions, check it out via https://google.com",
+        message: `You must agree to the terms and conditions, check it out via ${process.env.TERMS_AND_CONDITIONS_URL}`,
       });
 
     }
