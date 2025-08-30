@@ -1,5 +1,6 @@
-const { Sequelize, Goal, User } = require("../../models");
-const { Op } = Sequelize;
+/* eslint-disable camelcase */
+const {Sequelize, Goal, User} = require('../../models');
+const {Op} = Sequelize;
 
 /**
  *
@@ -14,46 +15,48 @@ const { Op } = Sequelize;
  * @returns {Promise<{ count: number, data: Array<Object> }>}
  */
 
-const fetchUsersAndPairedPartners = async ({ page, limit, filter }) => {
-  const where = { paired_with: { [Op.not]: null } };
-  if (filter.startDate) {
-    where.createdAt = {
-      ...where.createdAt,
-      [Op.gte]: filter.startDate,
-    };
-  }
-  if (filter.endDate) {
-    where.createdAt = {
-      ...where.createdAt,
-      [Op.lte]: filter.endDate,
-    };
-  }
-  if (filter.status) {
-    where.status = filter.status.toLowerCase();
-  }
+const fetchUsersAndPairedPartners = async ({page, limit, filter}) => {
+	const where = {paired_with: {[Op.not]: null}};
+	if (filter.startDate) {
+		where.createdAt = {
+			...where.createdAt,
+			[Op.gte]: filter.startDate,
+		};
+	}
 
-  const { count, rows } = await Goal.findAndCountAll({
-    where,
-    attributes: { exclude: ["user_id", "paired_with", "updatedAt"] },
-    include: [
-      {
-        model: User,
-        as: "user",
-        attributes: ["id", "email", "phone_number", "username"],
-      },
-      {
-        model: User,
-        as: "partner",
-        attributes: ["id", "email", "phone_number", "username"],
-      },
-    ],
-    limit,
-    offset: limit * (page - 1),
-  });
-  return {
-    count,
-    data: rows,
-  };
+	if (filter.endDate) {
+		where.createdAt = {
+			...where.createdAt,
+			[Op.lte]: filter.endDate,
+		};
+	}
+
+	if (filter.status) {
+		where.status = filter.status.toLowerCase();
+	}
+
+	const {count, rows} = await Goal.findAndCountAll({
+		where,
+		attributes: {exclude: ['user_id', 'paired_with', 'updatedAt']},
+		include: [
+			{
+				model: User,
+				as: 'user',
+				attributes: ['id', 'email', 'phone_number', 'username'],
+			},
+			{
+				model: User,
+				as: 'partner',
+				attributes: ['id', 'email', 'phone_number', 'username'],
+			},
+		],
+		limit,
+		offset: limit * (page - 1),
+	});
+	return {
+		count,
+		data: rows,
+	};
 };
 
-module.exports = { fetchUsersAndPairedPartners };
+module.exports = {fetchUsersAndPairedPartners};
