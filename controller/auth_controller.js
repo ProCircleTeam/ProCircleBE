@@ -17,7 +17,16 @@ const generateToken = (payload) => {
 
 const signup = async (req, res) => {
   try {
-    const { email, password, username } = req.body;
+    const { email, password, username, agreeToTermsAndConditions } = req.body;
+    if (!agreeToTermsAndConditions) {
+      return apiResponse({
+        res,
+        status: ResponseStatusEnum.FAIL,
+        statusCode: 400,
+        message: `You must agree to the terms and conditions, check it out via ${process.env.TERMS_AND_CONDITIONS_URL}`,
+      });
+
+    }
     if (!email || !password || !username) {
       return apiResponse({
         res,
@@ -76,6 +85,7 @@ const signup = async (req, res) => {
       email,
       username,
       password: hashedPassword,
+      terms_and_conditions_agreement: true
     });
 
     if (!newUser) {
@@ -228,7 +238,7 @@ const passwordReset = async (req, res) => {
   let error = "";
 
   if (!req.body || !req.body.email || !req.body.password || !req.body.otp) {
-   
+
     return apiResponse({
       res,
       status: ResponseStatusEnum.FAIL,
@@ -260,17 +270,17 @@ const passwordReset = async (req, res) => {
     });
 
   const user = await User.findOne({ where: { email } });
-  if(!user ||
+  if (!user ||
     user.resetCode !== otp ||
-    user.resetCodeExpiration < new Date()) { 
-      
-      return apiResponse({
-    res,
-    status: ResponseStatusEnum.FAIL,
-    statusCode: 400,
-    message: `Invalid or expired code`,
-  });
-}
+    user.resetCodeExpiration < new Date()) {
+
+    return apiResponse({
+      res,
+      status: ResponseStatusEnum.FAIL,
+      statusCode: 400,
+      message: `Invalid or expired code`,
+    });
+  }
 
   const hashedPassword = await bcrypt.hash(password, 10);
   await user.update({
@@ -285,7 +295,7 @@ const passwordReset = async (req, res) => {
     statusCode: 200,
     message: `Password reset successful`,
     data: {},
-  }) 
+  })
 
 };
 

@@ -116,13 +116,17 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       resetCode: {
-        type: DataTypes.STRING, 
+        type: DataTypes.STRING,
         allowNull: true,
       },
       resetCodeExpiration: {
         type: DataTypes.DATE,
         allowNull: true,
       },
+      terms_and_conditions_agreement: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+      }
     },
     {
       sequelize,
