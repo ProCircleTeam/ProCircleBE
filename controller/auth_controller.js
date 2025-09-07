@@ -7,8 +7,8 @@ const {
 } = require('../models');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { Op } = require('sequelize');
-const { apiResponse, ResponseStatusEnum } = require('../utils/apiResponse');
+const {Op} = require('sequelize');
+const {apiResponse, ResponseStatusEnum} = require('../utils/apiResponse');
 
 const generateToken = payload => jwt.sign(payload, process.env.JWT_SECRET, {
 	expiresIn: process.env.JWT_EXPIRES_IN,
@@ -17,7 +17,7 @@ const generateToken = payload => jwt.sign(payload, process.env.JWT_SECRET, {
 const signup = async (req, res) => {
 	try {
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		const { email, password, username, agreeToTermsAndConditions } = req.body;
+		const {email, password, username, agreeToTermsAndConditions} = req.body;
 		if (!agreeToTermsAndConditions) {
 			return apiResponse({
 				res,
@@ -25,14 +25,14 @@ const signup = async (req, res) => {
 				statusCode: 400,
 				message: `You must agree to the terms and conditions, check it out via ${process.env.TERMS_AND_CONDITIONS_URL}`,
 			});
-
 		}
+
 		if (!email || !password || !username) {
 			return apiResponse({
 				res,
 				status: ResponseStatusEnum.FAIL,
 				statusCode: 400,
-				message: "Username, Email and Password are required",
+				message: 'Username, Email and Password are required',
 			});
 		}
 
@@ -65,7 +65,7 @@ const signup = async (req, res) => {
 
 		const existingUser = await User.findOne({
 			where: {
-				[Op.or]: [{ email }, { username }],
+				[Op.or]: [{email}, {username}],
 			},
 		});
 
@@ -80,13 +80,20 @@ const signup = async (req, res) => {
 
 		const hashedPassword = await bcrypt.hash(password, 10);
 
-
 		const newUser = await User.create({
 			email,
 			username,
 			password: hashedPassword,
-			terms_and_conditions_agreement: true
 		});
+
+		if (!newUser) {
+			return apiResponse({
+				res,
+				status: ResponseStatusEnum.FAIL,
+				statusCode: 400,
+				message: 'failed to create user',
+			});
+		}
 
 		const result = newUser.toJSON();
 		delete result.password;
@@ -130,20 +137,20 @@ const signup = async (req, res) => {
 
 const signin = async (req, res) => {
 	try {
-		const { identifier, password } = req.body;
+		const {identifier, password} = req.body;
 		if (!identifier || !password) {
 			return apiResponse({
 				res,
 				status: ResponseStatusEnum.FAIL,
 				statusCode: 400,
 				message:
-					'identifier and password are required. The value of the identifier can either be your username or your email',
+          'identifier and password are required. The value of the identifier can either be your username or your email',
 			});
 		}
 
 		const user = await User.findOne({
 			where: {
-				[Op.or]: [{ email: identifier }, { username: identifier }],
+				[Op.or]: [{email: identifier}, {username: identifier}],
 			},
 			attributes: [
 				'username',
@@ -186,7 +193,7 @@ const signin = async (req, res) => {
 				{
 					model: AreaOfInterest,
 					as: 'areaOfInterests',
-					through: { attributes: [] },
+					through: {attributes: []},
 				},
 				{
 					model: Timezone,
@@ -204,7 +211,7 @@ const signin = async (req, res) => {
 		}
 
 		const result = foundUser.toJSON();
-		const token = generateToken({ id: user.id, email: user.email });
+		const token = generateToken({id: user.id, email: user.email});
 		result.token = token;
 
 		return apiResponse({
@@ -238,7 +245,7 @@ const passwordReset = async (req, res) => {
 		});
 	}
 
-	const { email, password, otp } = req.body;
+	const {email, password, otp} = req.body;
 
 	console.log(email);
 	console.log(password);
@@ -260,7 +267,7 @@ const passwordReset = async (req, res) => {
 		});
 	}
 
-	const user = await User.findOne({ where: { email } });
+	const user = await User.findOne({where: {email}});
 	if (!user
 		|| user.resetCode !== otp
 		|| user.resetCodeExpiration < new Date()) {
@@ -288,5 +295,4 @@ const passwordReset = async (req, res) => {
 	});
 };
 
-module.exports = { signup, signin, passwordReset }
-	;
+module.exports = {signup, signin, passwordReset};
