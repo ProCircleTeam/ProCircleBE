@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /**
  * Goal status enum constants
@@ -6,8 +6,8 @@
  * @enum {string}
  */
 const USER_TYPE = {
-  ADMIN: "admin",
-  USER: "user",
+	ADMIN: 'admin',
+	USER: 'user',
 };
 
 // Freeze the object to prevent modifications

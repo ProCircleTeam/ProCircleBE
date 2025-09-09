@@ -1,6 +1,6 @@
 const ResponseStatusEnum = Object.freeze({
-    SUCCESS: 'success',
-    FAIL: 'fail',
+	SUCCESS: 'success',
+	FAIL: 'fail',
 });
 
-module.exports = { ResponseStatusEnum }
+module.exports = {ResponseStatusEnum};
