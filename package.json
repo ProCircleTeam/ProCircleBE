@@ -15,7 +15,7 @@
     "create:db": "sequelize db:create",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "prepare": "husky"
+    "prepare": "is-ci || husky"
   },
   "keywords": [],
   "author": "",
