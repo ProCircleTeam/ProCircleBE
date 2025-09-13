@@ -15,8 +15,7 @@
     "db:setup": "npm run create-db-user && npm run create:db && npm run migrate",
     "create:db": "sequelize db:create",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "prepare": "is-ci || husky"
+    "lint:fix": "eslint . --fix"
   },
   "keywords": [],
   "author": "",
