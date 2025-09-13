@@ -14,7 +14,8 @@
     "db:setup": "npm run create-db-user && npm run create:db && npm run migrate",
     "create:db": "sequelize db:create",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "prepare": "if [ \"$NODE_ENV\" != \"production\" ]; then husky install; fi"
   },
   "keywords": [],
   "author": "",
