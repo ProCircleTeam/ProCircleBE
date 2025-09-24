@@ -82,6 +82,7 @@ const signup = async (req, res) => {
 			email,
 			username,
 			password: hashedPassword,
+			terms_and_conditions_agreement: true,
 		});
 
 		if (!newUser) {
