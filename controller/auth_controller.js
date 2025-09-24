@@ -1,18 +1,16 @@
 /* eslint-disable camelcase */
-const {
-	User,
-	IndustrySector,
-	AreaOfInterest,
-	Timezone,
-} = require('../models');
+
+const {User, IndustrySector, AreaOfInterest, Timezone} = require('../models');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const {Op} = require('sequelize');
 const {apiResponse, ResponseStatusEnum} = require('../utils/apiResponse');
+const {verifyGoogleIdToken} = require('../utils/google_id_token_verifier');
 
-const generateToken = payload => jwt.sign(payload, process.env.JWT_SECRET, {
-	expiresIn: process.env.JWT_EXPIRES_IN,
-});
+const generateToken = payload =>
+	jwt.sign(payload, process.env.JWT_SECRET, {
+		expiresIn: process.env.JWT_EXPIRES_IN,
+	});
 
 const signup = async (req, res) => {
 	try {
@@ -104,9 +102,6 @@ const signup = async (req, res) => {
 		});
 
 		result.phone_number = null;
-		result.first_name = null;
-		result.last_name = null;
-		result.profile_photo = null;
 		result.bio = null;
 		result.years_of_experience = null;
 		result.preferred_accountability_partner_trait = null;
@@ -268,9 +263,11 @@ const passwordReset = async (req, res) => {
 	}
 
 	const user = await User.findOne({where: {email}});
-	if (!user
+	if (
+		!user
 		|| user.resetCode !== otp
-		|| user.resetCodeExpiration < new Date()) {
+		|| user.resetCodeExpiration < new Date()
+	) {
 		return apiResponse({
 			res,
 			status: ResponseStatusEnum.FAIL,
@@ -295,4 +292,65 @@ const passwordReset = async (req, res) => {
 	});
 };
 
-module.exports = {signup, signin, passwordReset};
+const signInWithGoogle = async (req, res) => {
+	try {
+		const {idToken} = req.body;
+		const googleUser = await verifyGoogleIdToken(idToken);
+
+		const {email} = googleUser;
+		const username = googleUser.name.split(' ')[0];
+		const firstName = googleUser.name.split(' ')[0];
+		const lastName = googleUser.name.split(' ')[1] || '';
+		const profilePhoto = googleUser.picture;
+
+		// Check if user exists
+		let user = await User.findOne({where: {email}});
+
+		// If not, create one
+		user ||= await User.create({
+			email,
+			username,
+			first_name: firstName,
+			last_name: lastName,
+			profile_photo: profilePhoto,
+		});
+
+		if (!user) {
+			return apiResponse({
+				res,
+				status: ResponseStatusEnum.FAIL,
+				statusCode: 400,
+				message: 'failed to create user',
+			});
+		}
+
+		const result = user.toJSON();
+		delete result.password;
+		delete result.deletedAt;
+
+		result.token = generateToken({
+			id: result.id,
+			email: result.email,
+		});
+
+		return apiResponse({
+			res,
+			status: ResponseStatusEnum.SUCCESS,
+			statusCode: 200,
+			message: 'Google sign in successful',
+			data: result,
+		});
+	} catch (err) {
+		console.error('Google Sign-In error: ', err);
+		return apiResponse({
+			res,
+			status: ResponseStatusEnum.FAIL,
+			statusCode: 500,
+			message: 'Server error',
+		});
+	}
+};
+
+module.exports = {
+	signup, signin, passwordReset, signInWithGoogle,
+};
