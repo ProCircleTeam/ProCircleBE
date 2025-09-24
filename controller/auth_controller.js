@@ -303,8 +303,6 @@ const signInWithGoogle = async (req, res) => {
 		const lastName = googleUser.name.split(' ')[1] || '';
 		const profilePhoto = googleUser.picture;
 
-		console.log('Google user verified email ==============>', email);
-
 		// Check if user exists
 		let user = await User.findOne({where: {email}});
 
@@ -334,18 +332,6 @@ const signInWithGoogle = async (req, res) => {
 			id: result.id,
 			email: result.email,
 		});
-
-		// Set optional fields to null if not present
-		result.phone_number = null;
-		result.bio = null;
-		result.years_of_experience = null;
-		result.preferred_accountability_partner_trait = null;
-		result.fun_fact = null;
-		result.career_summary = null;
-		result.industry_sector_id = null;
-		result.industry_sector = null;
-		result.areaOfInterests = null;
-		result.timezone = null;
 
 		return apiResponse({
 			res,
