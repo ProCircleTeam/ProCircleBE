@@ -253,8 +253,8 @@ const updateUserProfessionalInfo = async (req, res) => {
 			},
 		});
 	} catch (error) {
+		console.log('Error updating proffessional info ==============================> ', error);
 		if (error instanceof Sequelize.ValidationError) {
-			console.log('Error updating proffessional info ==============================> ', error);
 			return apiResponse({
 				res,
 				status: ResponseStatusEnum.FAIL,
