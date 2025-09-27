@@ -25,6 +25,171 @@
     }
   ],
   "paths": {
+    "/api/v1/user/seed": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Seeds user with complete profile and creates goal for the seeded user for testing purposes",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  }
+                },
+                "required": ["email", "username"]
+              },
+              "example": {
+                "username": "nature_ex",
+                "email": "andrewinsoul@gmail.com",
+                "firstName": "Nature",
+                "lastName": "Okoye"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "response description when user data is successfully seeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "User data was successfully seeded",
+                  "data": {
+                    "userInfo": {
+                      "type": "user",
+                      "id": 68,
+                      "email": "drew.nature+68@outlook.com",
+                      "password": "$2b$10$jljBfRYeK.WdCtcjSJkUfeVbcp0Q8R/.0u9dpJSfwo2YJtuaxet7S",
+                      "username": "drew.nature+68",
+                      "phone_number": "+167940048868",
+                      "first_name": "Nature",
+                      "last_name": "Ex",
+                      "profile_photo": "https://img.icons8.com/ios-filled/150/000000/user-male-circle.png",
+                      "bio": "Creator of Nature AI",
+                      "terms_and_conditions_agreement": true,
+                      "job_title": "Engineer",
+                      "years_of_experience": 6,
+                      "career_summary": "Creator of popular AI platforms",
+                      "industry_sector_id": 4,
+                      "availability_days": [
+                        "MON - 9AM",
+                        "TUE - 10PM",
+                        "SUN - 11PM"
+                      ],
+                      "timezone_id": 8,
+                      "fun_fact": "I like playing board games",
+                      "long_term_goal": "To be a successful father and an accomplished engineer",
+                      "preferred_accountability_partner_trait": "Dedicated to Excellence, disciplined & punctual",
+                      "updatedAt": "2025-09-27T15:33:48.817Z",
+                      "createdAt": "2025-09-27T15:33:48.817Z",
+                      "resetCode": null,
+                      "resetCodeExpiration": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Missing required fields",
+                  "data": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Invalid access token",
+                  "data": null
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Server error",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/user/{id}": {
       "get": {
         "tags": ["User"],
@@ -4576,7 +4741,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "identity": {
+                  "identifier": {
                     "type": "string"
                   },
                   "password": {
@@ -4584,10 +4749,10 @@
                     "format": "password"
                   }
                 },
-                "required": ["identity", "password"]
+                "required": ["identifier", "password"]
               },
               "example": {
-                "identity": "nature666",
+                "identifier": "nature666",
                 "password": "passpassword123"
               }
             }

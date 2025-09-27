@@ -118,7 +118,7 @@ const pairGoalsService = async ({date}) => {
 
 		// Parse Goals of the week for LLM to process
 		const llmModelPayload = {
-			users: goalsOfTheWeek.map(item => ({
+			users: goalsOfTheWeek?.map(item => ({
 				id: item.user.id,
 				name: item.user.username,
 				goal: item.goals[0],
@@ -126,7 +126,7 @@ const pairGoalsService = async ({date}) => {
 			})),
 		};
 
-		if (llmModelPayload.users.length) {
+		if (llmModelPayload.users?.length) {
 			const response = await post(
 				'https://goal-matcher-api.onrender.com/match-goals',
 				llmModelPayload,
