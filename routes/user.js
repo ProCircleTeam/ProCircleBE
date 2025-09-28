@@ -11,11 +11,12 @@ const {
 	updateUserGoalInfo,
 	searchTimeZoneByName,
 	getAreaOfInterests,
+	populateUserData,
 } = require('../controller/user_controller');
 const {authenticateToken, checkIfUserIsAdmin} = require('../middleware/auth');
 const upload = require('../middleware/upload');
 
-router.route('/:id').get(getUserById);
+router.route('/seed').post(populateUserData);
 router
 	.route('/profile/status')
 	.get(authenticateToken, getProfileCompletionStatus);
@@ -40,6 +41,7 @@ router
 router
 	.route('/profile/goal-info/update')
 	.put(authenticateToken, updateUserGoalInfo);
+router.route('/:id').get(getUserById);
 router.route('/change/password').put(authenticateToken, changePassword);
 
 module.exports = router;

@@ -21,6 +21,8 @@ const {
 const updateUserPassword = require('../services/users/updateUserPassword');
 const {formatDateString} = require('../utils/dateParser');
 const {apiResponse, ResponseStatusEnum} = require('../utils/apiResponse');
+const {populateUserDataService} = require('../services/generic/populate_user');
+const {EnvEnum} = require('../constants/enums/environments');
 
 const getUserById = async (req, res) => {
 	const {id} = req.params;
@@ -474,6 +476,42 @@ const changePassword = async (req, res) => {
 	}
 };
 
+const populateUserData = async (req, res) => {
+	if (process.env.NODE_ENV === EnvEnum.PRODUCTION) {
+		return apiResponse({
+			res,
+			status: ResponseStatusEnum.SUCCESS,
+			statusCode: 200,
+			data: null,
+			message: 'You can not perform this operation on production',
+		});
+	}
+
+	try {
+		const {username, email, firstName, lastName} = req.body;
+
+		const userInfo = await populateUserDataService(username, email, firstName, lastName);
+
+		return apiResponse({
+			res,
+			status: ResponseStatusEnum.SUCCESS,
+			statusCode: 200,
+			data: {
+				userInfo,
+			},
+			message: 'User data was successfully seeded',
+		});
+	} catch (error) {
+		console.error('ERROR: >>>>>>> ', error);
+		return apiResponse({
+			res,
+			status: ResponseStatusEnum.FAIL,
+			statusCode: 500,
+			message: error,
+		});
+	}
+};
+
 module.exports = {
 	getUserById,
 	getUsersAndTheirPairedPartners,
@@ -485,4 +523,5 @@ module.exports = {
 	updateUserGoalInfo,
 	searchTimeZoneByName,
 	getAreaOfInterests,
+	populateUserData,
 };
