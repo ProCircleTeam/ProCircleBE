@@ -12,6 +12,7 @@ const {
 	searchTimeZoneByName,
 	getAreaOfInterests,
 	populateUserData,
+	registerFcmToken,
 } = require('../controller/user_controller');
 const {authenticateToken, checkIfUserIsAdmin} = require('../middleware/auth');
 const upload = require('../middleware/upload');
@@ -43,5 +44,6 @@ router
 	.put(authenticateToken, updateUserGoalInfo);
 router.route('/:id').get(getUserById);
 router.route('/change/password').put(authenticateToken, changePassword);
+router.route('/register-fcm-token').put(authenticateToken, registerFcmToken);
 
 module.exports = router;
