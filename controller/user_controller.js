@@ -546,7 +546,7 @@ const registerFcmToken = async (req, res) => {
 			});
 		}
 
-		user.fcmTokens = fcmToken;
+		user.fcmTokens = await fcmToken;
 		await user.save();
 
 		return apiResponse({
