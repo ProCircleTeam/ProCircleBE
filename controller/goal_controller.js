@@ -11,7 +11,7 @@ const {apiResponse, ResponseStatusEnum} = require('../utils/apiResponse');
 const {
 	fetchProfileCompletionStatus,
 } = require('../services/users/updateProfile');
-// Const NotificationService = require("../services/notification/notification.js");
+const notificationService = require('../services/notification/notification');
 
 // Reusable validation helpers
 function isValidGoalsArray(goals) {
@@ -173,12 +173,12 @@ const updateGoal = async (req, res) => {
 		});
 
 		// Example: after user completes a task
-		// await NotificationService.sendToUser(
-		//   user.id,
-		//   "Task Completed 🎉",
-		//   "Your task has been successfully marked as completed.",
-		//   { taskId: "123" } // optional data
-		// );
+		await notificationService.sendToUser(
+			userId,
+			'Task Completed 🎉',
+			'Your task has been successfully marked as completed.',
+			{taskId: '123'}, // Optional data
+		);
 
 		return apiResponse({
 			res,
