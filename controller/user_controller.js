@@ -21,7 +21,9 @@ const {
 const updateUserPassword = require('../services/users/updateUserPassword');
 const {formatDateString} = require('../utils/dateParser');
 const {apiResponse, ResponseStatusEnum} = require('../utils/apiResponse');
-const {populateUserDataService} = require('../services/generic/populate_user');
+const {
+	populateUserDataService,
+} = require('../services/generic/populate_user');
 const {EnvEnum} = require('../constants/enums/environments');
 
 const getUserById = async (req, res) => {
@@ -255,7 +257,10 @@ const updateUserProfessionalInfo = async (req, res) => {
 			},
 		});
 	} catch (error) {
-		console.log('Error updating proffessional info ==============================> ', error);
+		console.log(
+			'Error updating proffessional info ==============================> ',
+			error,
+		);
 		if (error instanceof Sequelize.ValidationError) {
 			return apiResponse({
 				res,
@@ -308,7 +313,7 @@ const updateUserGoalInfo = async (req, res) => {
 			data: {
 				longTermGoal: updatedRow.long_term_goal,
 				preferredAccountabilityPartnerTrait:
-					updatedRow.preferred_accountability_partner_trait,
+          updatedRow.preferred_accountability_partner_trait,
 				addedAreaOfInterests: addAreaOfInterests,
 				removedAreaOfInterests: removeAreaOfInterests,
 			},
@@ -456,7 +461,7 @@ const changePassword = async (req, res) => {
 				status: ResponseStatusEnum.FAIL,
 				statusCode: 401,
 				message:
-					'you have to enter your old password correctly to update your password',
+          'you have to enter your old password correctly to update your password',
 			});
 		}
 
@@ -490,7 +495,12 @@ const populateUserData = async (req, res) => {
 	try {
 		const {username, email, firstName, lastName} = req.body;
 
-		const userInfo = await populateUserDataService(username, email, firstName, lastName);
+		const userInfo = await populateUserDataService(
+			username,
+			email,
+			firstName,
+			lastName,
+		);
 
 		return apiResponse({
 			res,
@@ -512,6 +522,49 @@ const populateUserData = async (req, res) => {
 	}
 };
 
+const registerFcmToken = async (req, res) => {
+	try {
+		const userId = req.user.id;
+		const {fcmToken} = req.body;
+
+		if (!fcmToken) {
+			return apiResponse({
+				res,
+				status: ResponseStatusEnum.FAIL,
+				statusCode: 400,
+				message: 'fcmToken is required',
+			});
+		}
+
+		const user = await User.findByPk(userId);
+		if (!user) {
+			return apiResponse({
+				res,
+				status: ResponseStatusEnum.FAIL,
+				statusCode: 400,
+				message: 'User not found',
+			});
+		}
+
+		user.fcmTokens = fcmToken;
+		await user.save();
+
+		return apiResponse({
+			res,
+			status: ResponseStatusEnum.SUCCESS,
+			statusCode: 200,
+			message: 'FCM token registered successfully',
+		});
+	} catch (e) {
+		return apiResponse({
+			res,
+			status: ResponseStatusEnum.FAIL,
+			statusCode: 500,
+			message: e,
+		});
+	}
+};
+
 module.exports = {
 	getUserById,
 	getUsersAndTheirPairedPartners,
@@ -524,4 +577,5 @@ module.exports = {
 	searchTimeZoneByName,
 	getAreaOfInterests,
 	populateUserData,
+	registerFcmToken,
 };
