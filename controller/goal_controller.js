@@ -4,11 +4,14 @@ const GOAL_STATUS = require('../constants/goalStatus');
 const {
 	pairGoalsService,
 	fetchIndustrySectors,
-} = require('../services/goals/');
+} = require('../services/goals');
 const RES_CODES = require('../constants/responseCodes');
 const getWeekBoundaries = require('../utils/getWeekBoundaries');
 const {apiResponse, ResponseStatusEnum} = require('../utils/apiResponse');
-const {fetchProfileCompletionStatus} = require('../services/users/updateProfile');
+const {
+	fetchProfileCompletionStatus,
+} = require('../services/users/updateProfile');
+// Const NotificationService = require("../services/notification/notification.js");
 
 // Reusable validation helpers
 function isValidGoalsArray(goals) {
@@ -168,6 +171,14 @@ const updateGoal = async (req, res) => {
 		await goal.update({
 			goals: goals.map(goal => goal.trim()),
 		});
+
+		// Example: after user completes a task
+		// await NotificationService.sendToUser(
+		//   user.id,
+		//   "Task Completed 🎉",
+		//   "Your task has been successfully marked as completed.",
+		//   { taskId: "123" } // optional data
+		// );
 
 		return apiResponse({
 			res,
