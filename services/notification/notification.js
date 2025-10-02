@@ -1,14 +1,9 @@
-/* eslint-disable no-undef */
+
 const admin = require('firebase-admin');
-const path = require('path');
-const {createRequire} = require('module');
-const requireJSON = createRequire(require.main.filename);
 const db = require('../../models');
 
 const {User} = db;
-
-const serviceAccountPath = path.resolve(__dirname, '../../firebase_service_account/procircle-8a357-firebase-adminsdk-fbsvc-3cd254a04d.json');
-const serviceAccount = requireJSON(serviceAccountPath);
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
 if (!admin.apps.length) {
 	admin.initializeApp({
