@@ -94,6 +94,14 @@ const createGoal = async (req, res) => {
 			week_end: weekEnd,
 			status: GOAL_STATUS.PENDING,
 		});
+
+		await notificationService.sendToUser(
+			userId,
+			'Task Completed 🎉',
+			'Your task has been successfully marked as completed.',
+			{taskId: '123'},
+		);
+
 		return apiResponse({
 			res,
 			status: ResponseStatusEnum.SUCCESS,
@@ -175,9 +183,9 @@ const updateGoal = async (req, res) => {
 		// Example: after user completes a task
 		await notificationService.sendToUser(
 			userId,
-			'Task Completed 🎉',
+			'Goal Updated successfully 🎉',
 			'Your task has been successfully marked as completed.',
-			{taskId: '123'}, // Optional data
+			{taskId: '123'},
 		);
 
 		return apiResponse({
