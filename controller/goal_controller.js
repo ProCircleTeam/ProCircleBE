@@ -13,6 +13,8 @@ const {
 } = require('../services/users/updateProfile');
 const notificationService = require('../services/notification/notification');
 
+const goalPushNotificationMessage = 'We are super proud of you. Success starts from being intentional and we are poised to see you at the top ❤️🥰🥰';
+
 // Reusable validation helpers
 function isValidGoalsArray(goals) {
 	return Array.isArray(goals) && goals.length > 0;
@@ -97,8 +99,8 @@ const createGoal = async (req, res) => {
 
 		await notificationService.sendToUser(
 			userId,
-			'Task Completed 🎉',
-			'Your task has been successfully marked as completed.',
+			'Yeah.... Goal Created 🎉',
+			goalPushNotificationMessage,
 			{taskId: '123'},
 		);
 
@@ -184,7 +186,7 @@ const updateGoal = async (req, res) => {
 		await notificationService.sendToUser(
 			userId,
 			'Goal Updated successfully 🎉',
-			'Your task has been successfully marked as completed.',
+			goalPushNotificationMessage,
 			{taskId: '123'},
 		);
 
