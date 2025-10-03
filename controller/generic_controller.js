@@ -1,6 +1,8 @@
 const {User} = require('../models');
 const {sendMail} = require('../utils/mailer');
 const {apiResponse, ResponseStatusEnum} = require('../utils/apiResponse');
+const {EnvEnum} = require('../constants/enums/environments');
+const {clearDBDataService} = require('../services/generic/clearDB');
 
 const generic = async (req, res) => {
 	if (!req.body || !req.body.email) {
@@ -47,6 +49,39 @@ const generic = async (req, res) => {
 	});
 };
 
+const clearDBData = async (req, res) => {
+	if (process.env.NODE_ENV === EnvEnum.PRODUCTION) {
+		return apiResponse({
+			res,
+			status: ResponseStatusEnum.SUCCESS,
+			statusCode: 200,
+			data: null,
+			message: 'You can not perform this operation on production',
+		});
+	}
+
+	try {
+		await clearDBDataService();
+
+		return apiResponse({
+			res,
+			status: ResponseStatusEnum.SUCCESS,
+			statusCode: 200,
+			data: null,
+			message: 'DB successfully cleared',
+		});
+	} catch (error) {
+		console.error('ERROR: >>>>>>> ', error);
+		return apiResponse({
+			res,
+			status: ResponseStatusEnum.FAIL,
+			statusCode: 500,
+			message: error,
+		});
+	}
+};
+
 module.exports = {
 	generic,
+	clearDBData,
 };
