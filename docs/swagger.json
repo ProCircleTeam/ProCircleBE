@@ -22,6 +22,10 @@
     {
       "name": "Goal",
       "description": "Operations that allows client manage goal resources"
+    },
+    {
+      "name": "Generic",
+      "description": "Generic endpoints"
     }
   ],
   "paths": {
@@ -182,6 +186,57 @@
                 "example": {
                   "status": "fail",
                   "message": "Server error",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/generic/clear-db": {
+      "delete": {
+        "tags": ["Generic"],
+        "summary": "Clears all data from the database",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": null
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "DB successfully cleared",
+                  "data": null
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "Reason for failure",
                   "data": null
                 }
               }
