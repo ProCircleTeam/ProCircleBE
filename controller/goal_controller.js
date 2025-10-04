@@ -1,10 +1,7 @@
 /* eslint-disable camelcase */
 const {Goal, User} = require('../models');
 const GOAL_STATUS = require('../constants/goalStatus');
-const {
-	pairGoalsService,
-	fetchIndustrySectors,
-} = require('../services/goals');
+const {pairGoalsService, fetchIndustrySectors} = require('../services/goals');
 const RES_CODES = require('../constants/responseCodes');
 const getWeekBoundaries = require('../utils/getWeekBoundaries');
 const {apiResponse, ResponseStatusEnum} = require('../utils/apiResponse');
@@ -13,7 +10,8 @@ const {
 } = require('../services/users/updateProfile');
 const notificationService = require('../services/notification/notification');
 
-const goalPushNotificationMessage = 'We are super proud of you. Success starts from being intentional and we are poised to see you at the top ❤️🥰🥰';
+const goalPushNotificationMessage
+	= 'We are super proud of you. Success starts from being intentional and we are poised to see you at the top ❤️🥰🥰';
 
 // Reusable validation helpers
 function isValidGoalsArray(goals) {
@@ -46,6 +44,8 @@ const createGoal = async (req, res) => {
           'Please complete your profile (professional info, goals info, and engagement info) before creating goals.',
 			});
 		}
+
+		console.log('I am here ====================> 1');
 
 		// Validate goals array
 		if (!isValidGoalsArray(goals)) {
@@ -182,7 +182,6 @@ const updateGoal = async (req, res) => {
 			goals: goals.map(goal => goal.trim()),
 		});
 
-		// Example: after user completes a task
 		await notificationService.sendToUser(
 			userId,
 			'Goal Updated successfully 🎉',
