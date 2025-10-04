@@ -1,6 +1,6 @@
-
 const admin = require('firebase-admin');
 const db = require('../../models');
+const {Notification} = require('../../models');
 
 const {User} = db;
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
@@ -12,6 +12,31 @@ if (!admin.apps.length) {
 }
 
 class NotificationService {
+	/**
+   * Save a notification in DB
+   * @param {Object} payload
+   * @param {number} payload.userId - ID of the user receiving the notification
+   * @param {string} payload.title - Title of the notification
+   * @param {string} payload.content - Body content of the notification
+   * @param {string} [payload.type="general"] - Optional type (e.g. "match", "reminder", "system")
+   * @returns {Promise<Notification>}
+   */
+	static async saveNotification({userId, title, content, type = 'general'}) {
+		try {
+			await Notification.create({
+				userId,
+				title,
+				body: content,
+				type,
+				// eslint-disable-next-line camelcase
+				is_read: false,
+			});
+		} catch (error) {
+			console.error('❌ Error saving notification:', error);
+			throw error;
+		}
+	}
+
 	static async sendToUser(userId, title, body, data = {}) {
 		try {
 			const user = await User.findByPk(userId);
@@ -28,6 +53,11 @@ class NotificationService {
 			};
 
 			await admin.messaging().send(message);
+			await NotificationService.saveNotification({
+				userId,
+				title,
+				content: body,
+			});
 
 			console.log(`✅ Notification sent to user ${userId}`);
 		} catch (error) {
