@@ -19,7 +19,8 @@ const generateToken = payload =>
 const signup = async (req, res) => {
 	try {
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		const {email, password, username, agreeToTermsAndConditions} = req.body;
+		const {email, password, username, agreeToTermsAndConditions, fcmToken}
+			= req.body;
 		if (!agreeToTermsAndConditions) {
 			return apiResponse({
 				res,
@@ -122,6 +123,7 @@ const signup = async (req, res) => {
 			`🎉 Welcome to ProCircle, ${result.username}!`,
 			welcomeMessage,
 			{taskId: '123'},
+			fcmToken,
 		);
 
 		return apiResponse({
@@ -316,7 +318,7 @@ const passwordReset = async (req, res) => {
 
 const signInWithGoogle = async (req, res) => {
 	try {
-		const {idToken} = req.body;
+		const {idToken, fcmToken} = req.body;
 		const googleUser = await verifyGoogleIdToken(idToken);
 
 		const {email} = googleUser;
@@ -343,6 +345,7 @@ const signInWithGoogle = async (req, res) => {
 				`🎉 Welcome to ProCircle, ${result.username}!`,
 				welcomeMessage,
 				{taskId: '123'},
+				fcmToken,
 			);
 		}
 
