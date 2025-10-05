@@ -41,7 +41,7 @@ class NotificationService {
 		try {
 			const user = await User.findByPk(userId);
 
-			if (!user || !user.fcmToken) {
+			if ((!user || !user.fcmToken) && !fcmToken) {
 				console.warn(`No FCM token found for user ${userId}`);
 				return;
 			}
