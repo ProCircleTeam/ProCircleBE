@@ -97,14 +97,12 @@ const createGoal = async (req, res) => {
 			status: GOAL_STATUS.PENDING,
 		});
 
-		setTimeout(() => {
-			notificationService.sendToUser(
-				userId,
-				'Yeah.... Goal Created 🎉',
-				goalPushNotificationMessage,
-				{taskId: '123'},
-			);
-		}, 7000);
+		await notificationService.sendToUser(
+			userId,
+			'Yeah.... Goal Created 🎉',
+			goalPushNotificationMessage,
+			{taskId: '123'},
+		);
 
 		return apiResponse({
 			res,
@@ -184,14 +182,12 @@ const updateGoal = async (req, res) => {
 			goals: goals.map(goal => goal.trim()),
 		});
 
-		setTimeout(() => {
-			notificationService.sendToUser(
-				userId,
-				'Goal Updated successfully 🎉',
-				goalPushNotificationMessage,
-				{taskId: '123'},
-			);
-		}, 7000);
+		await notificationService.sendToUser(
+			userId,
+			'Goal Updated successfully 🎉',
+			goalPushNotificationMessage,
+			{taskId: '123'},
+		);
 
 		return apiResponse({
 			res,
