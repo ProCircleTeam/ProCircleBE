@@ -118,13 +118,15 @@ const signup = async (req, res) => {
 		result.areaOfInterests = null;
 		result.timezone = null;
 
-		await notificationService.sendToUser(
-			result.id,
-			`🎉 Welcome to ProCircle, ${result.username}!`,
-			welcomeMessage,
-			{taskId: '123'},
-			fcmToken,
-		);
+		setTimeout(() => {
+			notificationService.sendToUser(
+				result.id,
+				`🎉 Welcome to ProCircle, ${result.username}!`,
+				welcomeMessage,
+				{taskId: '123'},
+				fcmToken,
+			);
+		}, 7000);
 
 		return apiResponse({
 			res,
@@ -340,13 +342,15 @@ const signInWithGoogle = async (req, res) => {
 				profile_photo: profilePhoto,
 			});
 
-			await notificationService.sendToUser(
-				user.id,
-				`🎉 Welcome to ProCircle, ${result.username}!`,
-				welcomeMessage,
-				{taskId: '123'},
-				fcmToken,
-			);
+			setTimeout(() => {
+				notificationService.sendToUser(
+					user.id,
+					`🎉 Welcome to ProCircle, ${result.username}!`,
+					welcomeMessage,
+					{taskId: '123'},
+					fcmToken,
+				);
+			}, 7000);
 		}
 
 		if (!user) {
