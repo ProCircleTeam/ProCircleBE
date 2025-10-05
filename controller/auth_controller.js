@@ -3,7 +3,7 @@
 const {User, IndustrySector, AreaOfInterest, Timezone} = require('../models');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const {Op} = require('sequelize');
+const {Op, fn, col, where} = require('sequelize');
 const {apiResponse, ResponseStatusEnum} = require('../utils/apiResponse');
 const {verifyGoogleIdToken} = require('../utils/google_id_token_verifier');
 const notificationService = require('../services/notification/notification');
@@ -144,7 +144,7 @@ const signup = async (req, res) => {
 
 const signin = async (req, res) => {
 	try {
-		const {identifier, password} = req.body;
+		let {identifier, password} = req.body;
 		if (!identifier || !password) {
 			return apiResponse({
 				res,
@@ -155,9 +155,19 @@ const signin = async (req, res) => {
 			});
 		}
 
+		const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier);
+		if (!isEmail) {
+			identifier = identifier.toLowerCase();
+		}
+
 		const user = await User.findOne({
 			where: {
-				[Op.or]: [{email: identifier}, {username: identifier}],
+				[Op.or]: [
+					// Case-insensitive username check
+					where(fn('lower', col('username')), identifier),
+					// Normal email check
+					{email: identifier},
+				],
 			},
 			attributes: [
 				'username',
