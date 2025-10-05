@@ -37,7 +37,7 @@ class NotificationService {
 		}
 	}
 
-	static async sendToUser(userId, title, body, data = {}) {
+	static async sendToUser(userId, title, body, data = {}, fcmToken) {
 		try {
 			const user = await User.findByPk(userId);
 
@@ -48,7 +48,7 @@ class NotificationService {
 
 			const message = {
 				notification: {title, body},
-				token: user.fcmToken,
+				token: fcmToken ?? user.fcmToken,
 				data,
 			};
 

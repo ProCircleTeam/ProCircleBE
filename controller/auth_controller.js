@@ -3,7 +3,7 @@
 const {User, IndustrySector, AreaOfInterest, Timezone} = require('../models');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const {Op} = require('sequelize');
+const {Op, fn, col, where} = require('sequelize');
 const {apiResponse, ResponseStatusEnum} = require('../utils/apiResponse');
 const {verifyGoogleIdToken} = require('../utils/google_id_token_verifier');
 const notificationService = require('../services/notification/notification');
@@ -19,7 +19,8 @@ const generateToken = payload =>
 const signup = async (req, res) => {
 	try {
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		const {email, password, username, agreeToTermsAndConditions} = req.body;
+		const {email, password, username, agreeToTermsAndConditions, fcmToken}
+			= req.body;
 		if (!agreeToTermsAndConditions) {
 			return apiResponse({
 				res,
@@ -122,6 +123,7 @@ const signup = async (req, res) => {
 			`🎉 Welcome to ProCircle, ${result.username}!`,
 			welcomeMessage,
 			{taskId: '123'},
+			fcmToken,
 		);
 
 		return apiResponse({
@@ -144,7 +146,7 @@ const signup = async (req, res) => {
 
 const signin = async (req, res) => {
 	try {
-		const {identifier, password} = req.body;
+		let {identifier, password} = req.body;
 		if (!identifier || !password) {
 			return apiResponse({
 				res,
@@ -155,9 +157,19 @@ const signin = async (req, res) => {
 			});
 		}
 
+		const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier);
+		if (!isEmail) {
+			identifier = identifier.toLowerCase();
+		}
+
 		const user = await User.findOne({
 			where: {
-				[Op.or]: [{email: identifier}, {username: identifier}],
+				[Op.or]: [
+					// Case-insensitive username check
+					where(fn('lower', col('username')), identifier),
+					// Normal email check
+					{email: identifier},
+				],
 			},
 			attributes: [
 				'username',
@@ -306,7 +318,7 @@ const passwordReset = async (req, res) => {
 
 const signInWithGoogle = async (req, res) => {
 	try {
-		const {idToken} = req.body;
+		const {idToken, fcmToken} = req.body;
 		const googleUser = await verifyGoogleIdToken(idToken);
 
 		const {email} = googleUser;
@@ -333,6 +345,7 @@ const signInWithGoogle = async (req, res) => {
 				`🎉 Welcome to ProCircle, ${result.username}!`,
 				welcomeMessage,
 				{taskId: '123'},
+				fcmToken,
 			);
 		}
 
