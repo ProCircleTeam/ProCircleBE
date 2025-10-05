@@ -6,6 +6,10 @@ const bcrypt = require('bcrypt');
 const {Op} = require('sequelize');
 const {apiResponse, ResponseStatusEnum} = require('../utils/apiResponse');
 const {verifyGoogleIdToken} = require('../utils/google_id_token_verifier');
+const notificationService = require('../services/notification/notification');
+
+const welcomeMessage
+	= 'You’ve just joined a powerful network of high-performing professionals.\nStart exploring, connecting, and growing. Your next big move begins here. 🚀';
 
 const generateToken = payload =>
 	jwt.sign(payload, process.env.JWT_SECRET, {
@@ -112,6 +116,13 @@ const signup = async (req, res) => {
 		result.industry_sector = null;
 		result.areaOfInterests = null;
 		result.timezone = null;
+
+		await notificationService.sendToUser(
+			result.id,
+			`🎉 Welcome to ProCircle, ${result.username}!`,
+			welcomeMessage,
+			{taskId: '123'},
+		);
 
 		return apiResponse({
 			res,
@@ -308,13 +319,22 @@ const signInWithGoogle = async (req, res) => {
 		let user = await User.findOne({where: {email}});
 
 		// If not, create one
-		user ||= await User.create({
-			email,
-			username,
-			first_name: firstName,
-			last_name: lastName,
-			profile_photo: profilePhoto,
-		});
+		if (!user) {
+			user ||= await User.create({
+				email,
+				username,
+				first_name: firstName,
+				last_name: lastName,
+				profile_photo: profilePhoto,
+			});
+
+			await notificationService.sendToUser(
+				user.id,
+				`🎉 Welcome to ProCircle, ${result.username}!`,
+				welcomeMessage,
+				{taskId: '123'},
+			);
+		}
 
 		if (!user) {
 			return apiResponse({
@@ -353,5 +373,8 @@ const signInWithGoogle = async (req, res) => {
 };
 
 module.exports = {
-	signup, signin, passwordReset, signInWithGoogle,
+	signup,
+	signin,
+	passwordReset,
+	signInWithGoogle,
 };
