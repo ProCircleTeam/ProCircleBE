@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 const {Goal, User} = require('../models');
 const GOAL_STATUS = require('../constants/goalStatus');
-const {pairGoalsService, fetchIndustrySectors} = require('../services/goals');
+const {pairGoalsService, fetchIndustrySectors, backDateGoalService} = require('../services/goals');
 const RES_CODES = require('../constants/responseCodes');
 const getWeekBoundaries = require('../utils/getWeekBoundaries');
 const {apiResponse, ResponseStatusEnum} = require('../utils/apiResponse');
@@ -41,7 +41,7 @@ const createGoal = async (req, res) => {
 				status: ResponseStatusEnum.FAIL,
 				statusCode: 400,
 				message:
-          'Please complete your profile (professional info, goals info, and engagement info) before creating goals.',
+					'Please complete your profile (professional info, goals info, and engagement info) before creating goals.',
 			});
 		}
 
@@ -84,7 +84,7 @@ const createGoal = async (req, res) => {
 				status: ResponseStatusEnum.FAIL,
 				statusCode: 400,
 				message:
-          'You already have goals set for this week. You can update them if they are still pending.',
+					'You already have goals set for this week. You can update them if they are still pending.',
 			});
 		}
 
@@ -502,6 +502,26 @@ const getUserGoalsByDate = async (req, res) => {
 	}
 };
 
+const backDateGoal = async (req, res) => {
+	try {
+		await backDateGoalService();
+		return apiResponse({
+			res,
+			status: ResponseStatusEnum.SUCCESS,
+			statusCode: 200,
+			data: null,
+			message: 'All created goals during the current week were successfully back-dated',
+		});
+	} catch (error) {
+		return apiResponse({
+			res,
+			status: ResponseStatusEnum.FAIL,
+			statusCode: 500,
+			message: error || 'Server error',
+		});
+	}
+};
+
 module.exports = {
 	createGoal,
 	updateGoal,
@@ -511,4 +531,5 @@ module.exports = {
 	getUserGoalsByDate,
 	pairGoals,
 	getIndustrySectors,
+	backDateGoal,
 };

@@ -182,4 +182,24 @@ const pairGoalsService = async ({date}) => {
 
 const fetchIndustrySectors = async () => IndustrySector.findAll({raw: true});
 
-module.exports = {fetchGoalsService, pairGoalsService, fetchIndustrySectors};
+const backDateGoalService = async () => {
+	const {weekStart, weekEnd} = getWeekBoundaries();
+
+	Goal.update({
+		week_start: new Date(Date.parse(weekStart) - (13 * 24 * 60 * 60 * 1000)),
+		week_end: new Date(Date.parse(weekEnd) - (13 * 24 * 60 * 60 * 1000)),
+	}, {
+		where: {
+			week_start: {
+				[Op.gte]: weekStart,
+			},
+			week_end: {
+				[Op.lte]: weekEnd,
+			},
+		},
+	});
+};
+
+module.exports = {
+	fetchGoalsService, pairGoalsService, fetchIndustrySectors, backDateGoalService,
+};
