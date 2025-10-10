@@ -502,9 +502,19 @@ const getUserGoalsByDate = async (req, res) => {
 	}
 };
 
-const backDateGoal = async (req, res) => {
+const backDateGoals = async (req, res) => {
 	try {
-		await backDateGoalService();
+		if (!req.body.userId && !req.body.noOfWeeks) {
+			return apiResponse({
+				res,
+				status: ResponseStatusEnum.FAIL,
+				statusCode: 400,
+				data: null,
+				message: 'userId and noOfWeeks are required fields',
+			});
+		}
+
+		await backDateGoalService(req.body.userId, req.body.noOfWeeks);
 		return apiResponse({
 			res,
 			status: ResponseStatusEnum.SUCCESS,
@@ -513,6 +523,15 @@ const backDateGoal = async (req, res) => {
 			message: 'All created goals during the current week were successfully back-dated',
 		});
 	} catch (error) {
+		if (error.code === RES_CODES.GOAL_EXISTS) {
+			return apiResponse({
+				res,
+				status: ResponseStatusEnum.FAIL,
+				statusCode: 400,
+				message: error.message || 'An error occured',
+			});
+		}
+
 		return apiResponse({
 			res,
 			status: ResponseStatusEnum.FAIL,
@@ -531,5 +550,5 @@ module.exports = {
 	getUserGoalsByDate,
 	pairGoals,
 	getIndustrySectors,
-	backDateGoal,
+	backDateGoals,
 };

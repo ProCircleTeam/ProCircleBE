@@ -9,7 +9,7 @@ const {
 	getUserGoalsByDate,
 	pairGoals,
 	getIndustrySectors,
-	backDateGoal,
+	backDateGoals,
 } = require('../controller/goal_controller');
 
 const {authenticateToken, checkIfUserIsAdmin} = require('../middleware/auth');
@@ -19,7 +19,7 @@ router.route('/').post(authenticateToken, createGoal);
 
 router.route('/industry-sector').get(authenticateToken, getIndustrySectors);
 
-router.route('/back-date').put(authenticateToken, checkIfUserIsAdmin, backDateGoal);
+router.route('/back-date').put(authenticateToken, checkIfUserIsAdmin, backDateGoals);
 
 // Get user goals with pagination
 router.route('/').get(authenticateToken, getUserGoals);

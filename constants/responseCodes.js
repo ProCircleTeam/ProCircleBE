@@ -11,6 +11,7 @@ const RES_CODES = {
 	NO_GOALS_CREATED: 'NO GOALS',
 	OK: 'OK',
 	MATCHING_FAILED: 'MATCHING_FAILED',
+	GOAL_EXISTS: 'GOAL_EXISTS',
 };
 
 // Freeze the object to prevent modifications
