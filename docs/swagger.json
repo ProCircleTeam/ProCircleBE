@@ -5804,6 +5804,80 @@
           }
         }
       }
+    },
+    "/api/v1/goal/back-date": {
+      "patch": {
+        "tags": ["Goal"],
+        "summary": "Back date all goals that were created in the current week",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "noOfWeeks": {
+                    "type": "integer"
+                  },
+                  "userId": {
+                    "type": "integer"
+                  }
+                },
+                "required": ["userId", "noOfWeeks"]
+              },
+              "example": {
+                "noOfWeeks": 3,
+                "userId": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": null
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "All created goals during the current week were successfully back-dated",
+                  "data": null
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "An error occured",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
