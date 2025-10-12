@@ -182,4 +182,46 @@ const pairGoalsService = async ({date}) => {
 
 const fetchIndustrySectors = async () => IndustrySector.findAll({raw: true});
 
-module.exports = {fetchGoalsService, pairGoalsService, fetchIndustrySectors};
+/**
+ *
+ * @param {number} userId - id of user whose goal admin wants to backdate
+ * @param {number} noOfWeeksToBackDate - number of weeks the goal is to be backdated
+ */
+const backDateGoalService = async (userId, noOfWeeksToBackDate) => {
+	const {weekStart, weekEnd} = getWeekBoundaries();
+	const backDatedWeekStart = new Date(Date.parse(weekStart) - ((noOfWeeksToBackDate * 7) * 24 * 60 * 60 * 1000));
+	const backDatedWeekEnd = new Date(Date.parse(weekEnd) - ((noOfWeeksToBackDate * 7) * 24 * 60 * 60 * 1000));
+
+	const existingGoal = await Goal.findOne({
+		where: {
+			user_id: userId,
+			week_start: backDatedWeekStart,
+			week_end: backDatedWeekEnd,
+		},
+	});
+
+	if (existingGoal) {
+		const error = new Error('User already has a goal for the week specified');
+		error.code = RES_CODES.GOAL_EXISTS;
+		throw error;
+	}
+
+	Goal.update({
+		week_start: backDatedWeekStart,
+		week_end: backDatedWeekEnd,
+	}, {
+		where: {
+			user_id: userId,
+			week_start: {
+				[Op.gte]: weekStart,
+			},
+			week_end: {
+				[Op.lte]: weekEnd,
+			},
+		},
+	});
+};
+
+module.exports = {
+	fetchGoalsService, pairGoalsService, fetchIndustrySectors, backDateGoalService,
+};
