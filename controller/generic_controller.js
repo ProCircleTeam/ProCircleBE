@@ -3,6 +3,7 @@ const {sendMail} = require('../utils/mailer');
 const {apiResponse, ResponseStatusEnum} = require('../utils/apiResponse');
 const {EnvEnum} = require('../constants/enums/environments');
 const {clearDBDataService} = require('../services/generic/clearDB');
+const {getAnswerFromModel, findRelevantDocs} = require('../services/ai/ai_services.js');
 
 const generic = async (req, res) => {
 	if (!req.body || !req.body.email) {
@@ -28,7 +29,7 @@ const generic = async (req, res) => {
 		});
 	}
 
-	const resetCode = Math.floor(100000 + (Math.random() * 900000)).toString();
+	const resetCode = Math.floor((100000 + Math.random()) * 900000).toString();
 	const expiration = new Date(Date.now() + (10 * 60 * 1000));
 
 	await user.update({resetCode, resetCodeExpiration: expiration});
@@ -81,7 +82,32 @@ const clearDBData = async (req, res) => {
 	}
 };
 
+const retrieveAugmentedAnswer = async (req, res) => {
+	console.log('I am here ============> 1');
+	try {
+		const {question} = req.body;
+		console.log('I am here ============> 2');
+
+		if (!question) {
+			console.log('I am here ============> 3');
+			return res.status(400).json({error: 'Question is required'});
+		}
+
+		console.log('I am here ============> 4');
+		const context = await findRelevantDocs(question);
+		console.log('I am here ============> 5');
+		const {answer} = await getAnswerFromModel(question, context);
+		console.log('I am here ============> 6');
+
+		console.log('answer: ', answer);
+		return res.json({question, answer});
+	} catch (error) {
+		return res.status(500).json({error: error.message});
+	}
+};
+
 module.exports = {
 	generic,
 	clearDBData,
+	retrieveAugmentedAnswer,
 };
