@@ -6,7 +6,7 @@ const redirectUrl = `${baseUrl}/${process.env.GOOGLE_CALENDAR_REDIRECT_URI}`;
 
 console.log(`Redirect url ====> ${redirectUrl}`);
 
-const client = new OAuth2Client(process.env.WEB_CLIENT_ID, '', redirectUrl);
+const client = new OAuth2Client(process.env.WEB_CLIENT_ID, process.env.WEB_CLIENT_SECRET, redirectUrl);
 
 const generateGoogleCalendarOauthUrl = async () => client.generateAuthUrl({
 	access_type: 'offline', // Gives refresh token
