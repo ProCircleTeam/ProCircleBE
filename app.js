@@ -18,6 +18,7 @@ const userRoutes = require('./routes/user');
 const goalRoutes = require('./routes/goal');
 const genericRoutes = require('./routes/generic');
 const notificationRoutes = require('./routes/notifications');
+const calendar = require('./routes/calendar');
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(cors({
@@ -34,6 +35,7 @@ app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/goal', goalRoutes);
 app.use('/api/v1/generic', genericRoutes);
 app.use('/api/v1/notification', notificationRoutes);
+app.use('/api/v1/calendar', calendar);
 
 app.listen(PORT, () => {
 	console.log(`Server started successfully at http://localhost:${PORT}`);
