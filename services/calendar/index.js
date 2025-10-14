@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 const {OAuth2Client} = require('google-auth-library');
 const {User} = require('../../models');
+const {google} = require('googleapis');
 const PORT = process.env.APP_PORT || 5000;
 const baseUrl = process.env.BASE_URL || `http://localhost:${PORT}`;
 const redirectUrl = `${baseUrl}/${process.env.GOOGLE_CALENDAR_REDIRECT_URI}`;
@@ -26,7 +27,47 @@ const generateGoogleCalendarOauthUrl = async userId =>
 		state: userId,
 	});
 
-const getUserCalendarAvailability = async () => {
+const getUserCalendarBusyPeriod = async (userId, timeMin, timeMax) => {
+	try {
+		const auth = new google.auth.OAuth2();
+		const user = await User.findByPk(userId);
+		if (!user || !user.googleAccessToken) {
+			throw new Error('User not found or not connected to Google Calendar');
+		}
+
+		auth.setCredentials({access_token: user.googleAccessToken});
+
+		const calendar = google.calendar({version: 'v3', auth});
+
+		const response = await calendar.freebusy.query({
+			requestBody: {
+				timeMin: timeMin.toISOString(),
+				timeMax: timeMax.toISOString(),
+				items: [{id: 'primary'}], // User's primary calendar
+			},
+		});
+
+		// Extract busy periods and TimeZone
+		const busyPeriods = response.data.calendars.primary.busy || [];
+		const timeZone = response.data.calendars.primary.timeZone || [];
+
+		// BusyPeriods.forEach((period, index) => {
+		//   console.log(`Busy period ${index + 1}:`);
+		//   console.log("  Start:", period.start);
+		//   console.log("  End:", period.end);
+		//   console.log(
+		//     "  Duration:",
+		//     new Date(period.end) - new Date(period.start),
+		//     "ms"
+		//   );
+		//   console.log("  ---");
+		// });
+
+		return {busyPeriods, timeZone};
+	} catch (error) {
+		console.error('Error fetching free/busy data: ================>', error);
+		throw error;
+	}
 };
 
 const exchangeGoogleTokenAndUpdateDB = async (code, userId) => {
@@ -55,7 +96,7 @@ const exchangeGoogleTokenAndUpdateDB = async (code, userId) => {
 };
 
 module.exports = {
-	getUserCalendarAvailability,
 	generateGoogleCalendarOauthUrl,
 	exchangeGoogleTokenAndUpdateDB,
+	getUserCalendarBusyPeriod,
 };
