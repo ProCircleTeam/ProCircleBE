@@ -29,8 +29,7 @@ const calendarOauthUrl = async (req, res) => {
 const exchangeToken = async (req, res) => {
 	try {
 		const {code} = req.query;
-		const res = await exchangeGoogleToken(code);
-		console.log(`Here is the tokens ===============> ${res}`);
+		await exchangeGoogleToken(code);
 
 		return apiResponse({
 			res,
