@@ -1,12 +1,13 @@
 const {
 	generateGoogleCalendarOauthUrl,
-	exchangeGoogleToken,
+	exchangeGoogleTokenAndUpdateDB,
 } = require('../services/calendar');
 const {apiResponse, ResponseStatusEnum} = require('../utils/apiResponse');
 
 const calendarOauthUrl = async (req, res) => {
+	const userId = req.user.id;
 	try {
-		const calendarUrl = await generateGoogleCalendarOauthUrl();
+		const calendarUrl = await generateGoogleCalendarOauthUrl(userId);
 
 		return apiResponse({
 			res,
@@ -28,8 +29,10 @@ const calendarOauthUrl = async (req, res) => {
 
 const exchangeToken = async (req, res) => {
 	try {
-		const {code} = req.query;
-		await exchangeGoogleToken(code);
+		const {code, state} = req.query;
+		const userId = state;
+
+		await exchangeGoogleTokenAndUpdateDB(code, userId);
 
 		return apiResponse({
 			res,
