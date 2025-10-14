@@ -6,18 +6,23 @@ const redirectUrl = `${baseUrl}/${process.env.GOOGLE_CALENDAR_REDIRECT_URI}`;
 
 console.log(`Redirect url ====> ${redirectUrl}`);
 
-const client = new OAuth2Client(process.env.WEB_CLIENT_ID, process.env.WEB_CLIENT_SECRET, redirectUrl);
+const client = new OAuth2Client(
+	process.env.WEB_CLIENT_ID,
+	process.env.WEB_CLIENT_SECRET,
+	redirectUrl,
+);
 
-const generateGoogleCalendarOauthUrl = async () => client.generateAuthUrl({
-	access_type: 'offline', // Gives refresh token
-	prompt: 'consent',
-	scope: [
-		'https://www.googleapis.com/auth/calendar',
-		'https://www.googleapis.com/auth/calendar.events',
-		'email',
-		'profile',
-	],
-});
+const generateGoogleCalendarOauthUrl = async () =>
+	client.generateAuthUrl({
+		access_type: 'offline', // Gives refresh token
+		prompt: 'consent',
+		scope: [
+			'https://www.googleapis.com/auth/calendar',
+			'https://www.googleapis.com/auth/calendar.events',
+			'email',
+			'profile',
+		],
+	});
 
 const getUserCalendarAvailability = async () => {
 };
@@ -27,8 +32,13 @@ const exchangeGoogleToken = async code => {
 	client.setCredentials(tokens);
 
 	// Save tokens to DB
-	// tokens = { access_token, refresh_token, expiry_date }
-	return tokens;
+	const extractedTokens = {
+		access_token: tokens.access_token,
+		refresh_token: tokens.refresh_token,
+		expiry_date: tokens.expiry_date,
+	};
+
+	return extractedTokens;
 };
 
 module.exports = {
