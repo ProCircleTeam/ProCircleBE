@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const {Op, fn, col, where} = require('sequelize');
 const {apiResponse, ResponseStatusEnum} = require('../utils/apiResponse');
-const {verifyGoogleIdToken} = require('../utils/google_id_token_verifier');
+const {verifyGoogleIdToken, exchangeGoogleToken} = require('../utils/google_id_token_verifier');
 const notificationService = require('../services/notification/notification');
 
 const welcomeMessage
@@ -322,6 +322,7 @@ const signInWithGoogle = async (req, res) => {
 	try {
 		const {idToken, fcmToken} = req.body;
 		const googleUser = await verifyGoogleIdToken(idToken);
+		await exchangeGoogleToken(idToken);
 
 		const {email} = googleUser;
 		const username = googleUser.name.split(' ')[0];

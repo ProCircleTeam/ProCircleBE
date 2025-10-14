@@ -133,6 +133,14 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.STRING,
 				allowNull: true,
 			},
+			googleAccessToken: {
+				type: DataTypes.TEXT,
+				allowNull: true,
+			},
+			googleRefreshToken: {
+				type: DataTypes.TEXT,
+				allowNull: true,
+			},
 		},
 		{
 			sequelize,

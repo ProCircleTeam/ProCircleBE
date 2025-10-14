@@ -24,4 +24,16 @@ async function verifyGoogleIdToken(idToken) {
 	}
 }
 
-module.exports = {verifyGoogleIdToken};
+async function exchangeGoogleToken(code) {
+	try {
+		const {tokens} = await client.getToken({
+			code,
+		});
+
+		console.log(`These are the tokens ==========================> ${tokens}`);
+	} catch (e) {
+		console.log('Error getting tokens ==============> ', e);
+	}
+}
+
+module.exports = {verifyGoogleIdToken, exchangeGoogleToken};
