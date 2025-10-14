@@ -1,12 +1,14 @@
 const {
 	generateGoogleCalendarOauthUrl,
-	exchangeGoogleToken,
+	exchangeGoogleTokenAndUpdateDB,
+	getUserCalendarBusyPeriod,
 } = require('../services/calendar');
 const {apiResponse, ResponseStatusEnum} = require('../utils/apiResponse');
 
 const calendarOauthUrl = async (req, res) => {
+	const userId = req.user.id;
 	try {
-		const calendarUrl = await generateGoogleCalendarOauthUrl();
+		const calendarUrl = await generateGoogleCalendarOauthUrl(userId);
 
 		return apiResponse({
 			res,
@@ -28,8 +30,10 @@ const calendarOauthUrl = async (req, res) => {
 
 const exchangeToken = async (req, res) => {
 	try {
-		const {code} = req.query;
-		await exchangeGoogleToken(code);
+		const {code, state} = req.query;
+		const userId = state;
+
+		await exchangeGoogleTokenAndUpdateDB(code, userId);
 
 		return apiResponse({
 			res,
@@ -50,4 +54,35 @@ const exchangeToken = async (req, res) => {
 	}
 };
 
-module.exports = {calendarOauthUrl, exchangeToken};
+const userCalendarBusyPeriod = async (req, res) => {
+	try {
+		const userId = req.user.id;
+		const {startDate, endDate} = req.query; // ISO string dates
+
+		const data = await getUserCalendarBusyPeriod(
+			userId,
+			new Date(startDate),
+			new Date(endDate),
+		);
+
+		console.log(`User busy periods ======================> ${data}`);
+
+		return apiResponse({
+			res,
+			status: ResponseStatusEnum.SUCCESS,
+			data,
+			statusCode: 200,
+			message: 'User calendar busy period fetched successfully',
+		});
+	} catch (e) {
+		console.log(`Error getting user free periods =======================> ${e}`);
+		return apiResponse({
+			res,
+			status: ResponseStatusEnum.FAIL,
+			statusCode: 500,
+			message: 'Server error',
+		});
+	}
+};
+
+module.exports = {calendarOauthUrl, exchangeToken, userCalendarBusyPeriod};
