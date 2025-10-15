@@ -74,17 +74,27 @@ const exchangeGoogleTokenAndUpdateDB = async (code, userId) => {
 	const {tokens} = await client.getToken(code);
 	client.setCredentials(tokens);
 
+	// Convert to proper date string for Sequelize
+	let expiryDate;
+	if (tokens.expiry_date) {
+		// Convert timestamp to ISO string
+		expiryDate = new Date(tokens.expiry_date).toISOString();
+	} else {
+		// Default to 1 hour from now
+		expiryDate = new Date(Date.now() + (60 * 60 * 1000)).toISOString();
+	}
+
 	const extractedTokens = {
 		access_token: tokens.access_token,
 		refresh_token: tokens.refresh_token,
-		expiry_date: tokens.expiry_date,
+		expiry_date: expiryDate,
 	};
 
 	await User.update(
 		{
 			googleAccessToken: extractedTokens.access_token,
 			googleRefreshToken: extractedTokens.refresh_token,
-
+			googleAccessTokenExpiry: extractedTokens.expiry_date,
 			updatedAt: new Date(),
 		},
 		{
