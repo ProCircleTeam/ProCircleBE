@@ -2,6 +2,7 @@ const {
 	generateGoogleCalendarOauthUrl,
 	exchangeGoogleTokenAndUpdateDB,
 	getUserCalendarBusyPeriod,
+	createCalendarEvent,
 } = require('../services/calendar');
 const {apiResponse, ResponseStatusEnum} = require('../utils/apiResponse');
 
@@ -85,4 +86,79 @@ const userCalendarBusyPeriod = async (req, res) => {
 	}
 };
 
-module.exports = {calendarOauthUrl, exchangeToken, userCalendarBusyPeriod};
+const createAccountabilityEvent = async (req, res) => {
+	try {
+		const userId = req.user.id;
+		const {
+			title,
+			description,
+			startTime, // ISO string
+			endTime, // ISO string
+			partnerEmail,
+			timeZone = 'UTC',
+			createMeetLink = true,
+		} = req.body;
+
+		// Validate required fields
+		if (!title || !startTime || !endTime || !partnerEmail) {
+			return apiResponse({
+				res,
+				status: ResponseStatusEnum.FAIL,
+				statusCode: 400,
+				message:
+          'Missing required fields: title, startTime, endTime, partnerEmail',
+			});
+		}
+
+		const eventData = {
+			title,
+			description: description || `Accountability call with ${partnerEmail}`,
+			startTime,
+			endTime,
+			timeZone,
+			createMeetLink,
+			attendees: [partnerEmail], // Add partner as attendee
+		};
+
+		const createdEvent = await createCalendarEvent(userId, eventData);
+
+		return apiResponse({
+			res,
+			status: ResponseStatusEnum.SUCCESS,
+			data: {
+				event: createdEvent,
+				meetLink: createdEvent.hangoutLink,
+				eventLink: createdEvent.htmlLink,
+			},
+			statusCode: 201,
+			message: 'Accountability event created successfully',
+		});
+	} catch (error) {
+		console.log(`Error creating calendar event =======================> ${error}`);
+
+		let message = 'Failed to create calendar event';
+		let statusCode = 500;
+
+		if (error.message.includes('reauthenticate')) {
+			message = 'Please reconnect your Google Calendar account';
+			statusCode = 401;
+		} else if (error.code === 401) {
+			message = 'Google Calendar authentication failed';
+			statusCode = 401;
+		}
+
+		return apiResponse({
+			res,
+			status: ResponseStatusEnum.FAIL,
+			statusCode,
+			message,
+		});
+	}
+};
+
+module.exports = {
+	calendarOauthUrl,
+	exchangeToken,
+	userCalendarBusyPeriod,
+	createAccountabilityEvent,
+};
