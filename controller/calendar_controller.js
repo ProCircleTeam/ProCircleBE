@@ -57,8 +57,7 @@ const exchangeToken = async (req, res) => {
 
 const userCalendarBusyPeriod = async (req, res) => {
 	try {
-		const userId = req.user.id;
-		const {startDate, endDate} = req.query; // ISO string dates
+		const {startDate, endDate, userId} = req.query; // ISO string dates
 
 		const data = await getUserCalendarBusyPeriod(
 			userId,
